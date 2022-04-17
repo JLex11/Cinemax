@@ -184,7 +184,7 @@ section {
 
 .container_header_items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 10px;
 }
 
@@ -258,7 +258,7 @@ section {
     display: grid;
     grid-auto-flow: dense;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    grid-template-rows: 250px;
+    grid-template-rows: 270px;
     gap: 10px;
 }
 /* ---------------------------------- Item ---------------------------------- */
