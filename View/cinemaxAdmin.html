@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Css -->
+        <link rel="stylesheet" href="../Css/Admin/estilos.css" />
+        <!-- Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>
+        <!-- Google Icons -->
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+            rel="stylesheet"
+        />
+        <title>Cinemax | Administrador</title>
+    </head>
+    <body>
+        <header>
+            <h1>Cinemax | Administrador</h1>
+        </header>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="#home_section" class="option active_option"
+                        ><img src="../Images/Home.png" alt="Inicio"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#users_section" class="option"
+                        ><img src="../Images/user.png" alt="Usuarios"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#data_section" class="option"
+                        ><img src="../Images/folder.png" alt="Datos"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#" class="option"
+                        ><img
+                            src="../Images/settings.png"
+                            alt="Configuraciones"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#" class="option"
+                        ><img src="../Images/logout.png" alt="Salir"
+                    /></a>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="home_section" id="home_section">
+                <div class="section_title">
+                    <h1>Inicio</h1>
+                </div>
+
+                <div class="home_header">
+                    <div class="container_header_items">
+                        <div class="header_item p_inline">
+                            <div>
+                                <span class="material-icons-sharp">person</span>
+                            </div>
+                            <div>
+                                <h5>890</h5>
+                                <h5>Usuarios en linea</h5>
+                            </div>
+                        </div>
+
+                        <div class="header_item p_registered">
+                            <div>
+                                <span class="material-icons-sharp">done</span>
+                            </div>
+                            <div>
+                                <h5>590</h5>
+                                <h5>Usuarios registrados</h5>
+                            </div>
+                        </div>
+
+                        <div class="header_item p_Noregistered">
+                            <div>
+                                <span class="material-icons-sharp">clear</span>
+                            </div>
+                            <div>
+                                <h5>300</h5>
+                                <h5>Usuarios no registrados</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home_body">
+                    <div class="section_subtitle">
+                        <h2>Estadisticas generales</h2>
+                        <div class="item_date">
+                            <span class="material-icons-sharp">update</span>
+                            <h2>hace 5 minutos</h2>
+                        </div>
+                    </div>
+
+                    <div class="section_body">
+                        <div class="container_items">
+                            <!-- item -->
+                            <div class="item">
+                                <div class="item_header">
+                                    <div class="item_title">
+                                        <h3>Pelicula Mas vista</h3>
+                                    </div>
+                                </div>
+                                <div class="item_body">
+                                    <div class="item_info">
+                                        <div>
+                                            <span class="material-icons-sharp">movie</span>
+                                            <h4>¿En que piensan las mujeres?</h3>
+                                        </div>
+                                        <!-- vistas -->
+                                        <div class="vistas_container contadores">
+                                            <span>Visualizaciones</span>
+                                            <div>
+                                                <span class="material-icons-sharp">visibility</span>
+                                                <span>590</span>
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max="100"
+                                            value="50"
+                                        ></progress>
+                                        <!-- likes -->
+                                        <div class="likes_container contadores">
+                                            <span>Me gustas</span>
+                                            <div>
+                                                <span class="material-icons-sharp">favorite</span>
+                                                <span>350</span>
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max="100"
+                                            value="70"
+                                        ></progress>
+                                        <!-- comentarios -->
+                                        <div class="comentarios_container contadores">
+                                            <span>Comentarios</span>
+                                            <div>
+                                                <span class="material-icons-sharp">comment</span>
+                                                <span>110</span>
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max="100"
+                                            value="30"
+                                        ></progress>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="item_body body2">
+                                    <div class="item_header">
+                                        <div class="title">
+                                            <h3>Visitas a la pagina</h3>
+                                        </div>
+                                    </div>
+                                    <div class="container_grafico">
+                                        <canvas class="grafico" id="grafico" width="350px" height="160px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="users_section" id="users_section">
+                <div class="section_title">
+                    <h1>Control de usuarios</h1>
+                </div>
+
+                <div class="section_body">
+                    <div class="container_subsection">
+                        <div class="section_subtitle">
+                            <h2>Usuarios registrados</h2>
+                            <div>
+                                <span class="material-icons-sharp">people</span>
+                                <h2>579</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="section_subbody">
+                            <div class="container_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Id usuario</th>
+                                            <th>Usuario</th>
+                                            <th>Nivel</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>00001</td>
+                                            <td>John_Lenon</td>
+                                            <td>1</td>
+                                            <td>Activo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data_section" id="data_section">
+                <div class="section_title">
+                    <h1>Datos generales</h1>
+                </div>
+
+                <div class="section_body">
+                    <div class="container_subsection">
+                        <div class="section_subtitle">
+                            <h2>Peliculas</h2>
+                            <div>
+                                <span class="material-icons-sharp">movie</span>
+                                <h2>1579</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="section_subbody">
+                            <div class="container_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Id Pelicula</th>
+                                            <th>Titulo original</th>
+                                            <th>Titulo latino</th>
+                                            <th>Lanzamiento</th>
+                                            <th>Descripcion</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>00001</td>
+                                            <td>Ironman</td>
+                                            <td>Hombre de hierro</td>
+                                            <td>2019</td>
+                                            <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit nam enim, facere eos aut, recusandae consequuntur pariatur qui voluptatum ullam fugiat, facilis magni. Ea sit adipisci nulla tempore eveniet. Harum?</td>
+                                            <td>Activo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside></aside>
+        <footer></footer>
+    </body>
+    <script src="../Js/Admin/main.js" type="text/javascript"></script>
+</html>
