@@ -65,6 +65,8 @@ async function peticionFetch() {
         })
     }
     let url = '../Model/facade.php?opc=1';
-    let respuesta = await fetch(url, parametros);
-    console.log(await respuesta);
+    let peticion = await fetch(url, parametros);
+    console.log(peticion.json());
 }
+
+peticionFetch();
