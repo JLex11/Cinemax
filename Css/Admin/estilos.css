@@ -257,8 +257,8 @@ section {
 .container_items {
     display: grid;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    grid-template-rows: 270px;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+    grid-template-rows: 250px;
     gap: 10px;
 }
 /* ---------------------------------- Item ---------------------------------- */
@@ -347,7 +347,7 @@ section {
     height: 100%;
 }
 
-.container_grafico canvas {
+.container_grafico canvas.grafico {
     width: 100%;
     height: 100%;
 }

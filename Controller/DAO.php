@@ -7,11 +7,14 @@ class Pelicula {
         if ($opc == '1') {
             $sql = "SELECT * FROM pelicula";
         }
-        $consulta = mysqli_query($cnn, $sql);
-        $rows = mysql_num_rows($consulta);
 
-        $i = 0;
-        $datos = $consulta->fetch_assoc();
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+
+        for ($i = 0; $i < $rows; $i++) {
+            $datos[$i] = $consulta->fetch_assoc();
+        }
         return $datos;
     }
 }

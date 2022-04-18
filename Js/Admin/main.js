@@ -54,19 +54,21 @@ window.addEventListener('load', () => {
     crearGrafico(contenedor, labels, parametros, valores);
 })
 
-async function peticionFetch() {
-    let parametros = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            opc: '1'
-        })
-    }
+async function peticionFetch(/* parametros, url */) {
+    let parametros = new FormData();
+        parametros.append('opc', '1');
     let url = '../Model/facade.php?opc=1';
-    let peticion = await fetch(url, parametros);
-    console.log(peticion.json());
+    
+    try {
+        let peticion = await fetch(url, {
+            method: 'POST',
+            body: parametros
+        });
+
+        console.log(await peticion.json());
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 peticionFetch();

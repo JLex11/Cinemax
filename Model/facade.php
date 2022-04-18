@@ -1,20 +1,19 @@
 <?php
 //include permite invocar archivos externos
 //$_SERVER invoca un archivo principal de trabajo
-include $_SERVER["DOCUMENT_ROOT"] . 'Cinemax/Controller/DAO.php';
+include $_SERVER["DOCUMENT_ROOT"] . '/Cinemax/Controller/DAO.php';
 
 $opcion = $_REQUEST['opc'];
 
 // !Pelicula
 /* -------------------------------- Pelicula  1-20 -------------------------------- */
-if ($_REQUEST['opc'] == '1') {
-    $opcion = $_REQUEST['opc'];
+if ($_POST['opc'] == '1') {
+    $opcion = $_POST['opc'];
     $campo = "";
     $valor = "";
     
-    $pelicula = Pelicula::listar($opc, $campo, $valor);
-    $pelicula = json_encode($pelicula);
-    echo $pelicula;
+    $pelicula = Pelicula::listar($opcion, $campo, $valor);
+    echo json_encode($pelicula);
 }
 
 // !Estadisticas
