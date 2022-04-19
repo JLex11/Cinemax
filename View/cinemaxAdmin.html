@@ -164,7 +164,7 @@
                                         </div>
                                     </div>
                                     <div class="container_grafico">
-                                        <canvas class="grafico" id="grafico" width="350px" height="290px"></canvas>
+                                        <canvas class="grafico" id="grafico" width="350px" height="180px"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -218,14 +218,14 @@
                 <div class="section_title">
                     <h1>Datos generales</h1>
                 </div>
-
+                <!-- ------------------------- lista de peliculas -------------------------- -->
                 <div class="section_body">
                     <div class="container_subsection">
                         <div class="section_subtitle">
                             <h2>Peliculas</h2>
                             <div>
                                 <span class="material-icons-sharp">movie</span>
-                                <h2>1579</h2>
+                                <h2 class="contPeliculas">1579</h2>
                             </div>
                         </div>
                         
@@ -238,19 +238,73 @@
                                             <th>Titulo original</th>
                                             <th>Titulo latino</th>
                                             <th>Lanzamiento</th>
+                                            <th>Reseña</th>
+                                            <th>Duracion</th>
+                                            <th>Tipo</th>
+                                            <th>Pais</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tPeliculas">
+                                        <!-- Se agregan las filas desde js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- -------------------------- Lista de actores --------------------------- -->
+                    <div class="container_subsection">
+                        <div class="section_subtitle">
+                            <h2>Actores</h2>
+                            <div>
+                                <span class="material-icons-sharp">person</span>
+                                <h2 class="contActores">1579</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="section_subbody">
+                            <div class="container_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Id actor</th>
+                                            <th>Nombre</th>
+                                            <th>Fecha nacimiento</th>
                                             <th>Descripcion</th>
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tActores">
+                                        <!-- se agregan las filas desde js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ------------------------- Lista de directores ------------------------- -->
+                    <div class="container_subsection">
+                        <div class="section_subtitle">
+                            <h2>Directores</h2>
+                            <div>
+                                <span class="material-icons-sharp">person</span>
+                                <h2 class="contDirectores">1579</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="section_subbody">
+                            <div class="container_table">
+                                <table>
+                                    <thead>
                                         <tr>
-                                            <td>00001</td>
-                                            <td>Ironman</td>
-                                            <td>Hombre de hierro</td>
-                                            <td>2019</td>
-                                            <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit nam enim, facere eos aut, recusandae consequuntur pariatur qui voluptatum ullam fugiat, facilis magni. Ea sit adipisci nulla tempore eveniet. Harum?</td>
-                                            <td>Activo</td>
+                                            <th>Id director</th>
+                                            <th>Nombre</th>
+                                            <th>Fecha nacimiento</th>
+                                            <th>Descripcion</th>
+                                            <th>Estado</th>
                                         </tr>
+                                    </thead>
+                                    <tbody id="tDirectores">
+                                        <!-- se agregan las filas desde js -->
                                     </tbody>
                                 </table>
                             </div>

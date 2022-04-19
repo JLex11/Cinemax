@@ -3,12 +3,13 @@
 //$_SERVER invoca un archivo principal de trabajo
 include $_SERVER["DOCUMENT_ROOT"] . '/Cinemax/Controller/DAO.php';
 
-$opcion = $_REQUEST['opc'];
+/* $opcion = $_REQUEST['opc']; */
 
 // !Pelicula
 /* -------------------------------- Pelicula  1-20 -------------------------------- */
-if ($_POST['opc'] == '1') {
-    $opcion = $_POST['opc'];
+$opc = $_POST['opc'];
+if ($opc == '1') {
+    $opcion = $opc;
     $campo = "";
     $valor = "";
     
@@ -23,11 +24,27 @@ if ($_POST['opc'] == '1') {
 
 // !Actor
 /* ---------------------------------- Actor 61-80 --------------------------------- */
+if ($opc == '61') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $actor = Actor::listar($opcion, $campo, $valor);
+    echo json_encode($actor);
+}
 
 /* ----------------------------- Actor pelicula 81-100 ----------------------------- */
 
 // !Director
 /* -------------------------------- Director 101-120 -------------------------------- */
+if ($opc == '101') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $director = Director::listar($opcion, $campo, $valor);
+    echo json_encode($director);
+}
 
 /* ---------------------------- Director pelicula 121-140 --------------------------- */
 

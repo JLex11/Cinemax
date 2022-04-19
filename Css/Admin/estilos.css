@@ -1,6 +1,6 @@
 /* Imports */
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;600;700;800&display=swap");
 
 * {
     scroll-behavior: smooth;
@@ -51,14 +51,14 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70px;
+    height: 40px;
     font-family: var(--Font-Principal);
 }
 
 h1 {
     color: var(--color-dark);
     font-weight: 300;
-    font-size: 26pt;
+    font-size: 20pt;
 }
 
 /* ----------------------------------- Nav ---------------------------------- */
@@ -76,7 +76,7 @@ nav {
     border-radius: var(--border-radius-3);
     background: rgba(255, 255, 255, 0.256);
     backdrop-filter: blur(10px);
-    box-shadow: 0 10px 20px #00000033;
+    box-shadow: 0 10px 20px #0000006b;
 }
 
 nav ul {
@@ -140,29 +140,48 @@ a.active_option img {
 }
 /* ---------------------------------- Main ---------------------------------- */
 main {
-    display: -webkit-box;
-    width: 100vw;
+    display: flex;
+    width: 100%;
     max-width: 1300px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 40px);
     margin: 0 auto;
     overflow-y: hidden;
     overflow-x: auto;
-flex-direction: row;flex-wrap: nowrap;}
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
 
 main::-webkit-scrollbar {
     display: none;
 }
 
-h2 {font-weight: 300;}
-h3 {font-weight: 300;}
+h2 {
+    font-weight: 300;
+}
+h3 {
+    font-weight: 300;
+}
 /* -------------------------------- Sections -------------------------------- */
 section {
     width: 100%;
+    min-width: 100%;
     max-height: 100%;
-    padding: 0 2% 100px 2%;
-    border-radius: var(--border-radius-2);
-    color: var(--color-dark);
+    padding: 0 20px 100px 20px;
     overflow-y: auto;
+    scroll-margin-left: 100px;
+}
+
+section::-webkit-scrollbar,
+.container_table::-webkit-scrollbar {
+    height: 10px;
+    width: 7px;
+    border-radius: 10px;
+    background: transparent;
+}
+section::-webkit-scrollbar-thumb,
+.container_table::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--color-blue);
 }
 
 .section_title {
@@ -193,11 +212,20 @@ section {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    bottom: 0;
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 20px;
     color: white;
+    transition: bottom 0.3s ease-in-out, box-shadow 0.5s ease, transform 0.2s;
     box-shadow: 3px 7px 13px #00000062, -3px -3px 15px #fefefe2a inset;
+}
+
+.header_item:hover {
+    bottom: 5px;
+    transform: scale(1.05);
+    box-shadow: 0px 10px 10px #0000007a, -3px -3px 15px #fefefe2a inset;
+    z-index: 2;
 }
 
 .p_inline {
@@ -268,6 +296,13 @@ section {
     border-radius: var(--border-radius-3);
     background: var(--color-white);
     box-shadow: var(--item-box-shadow);
+    transition: box-shadow 0.5s .1s ease, transform 0.3s .1s;
+}
+
+.item:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 10px rgb(0 0 0 / 30%);
+    z-index: 2;
 }
 
 .item_header {
@@ -312,7 +347,6 @@ section {
     gap: 5px;
 }
 
-
 .item_info > .contadores {
     display: flex;
     justify-content: space-between;
@@ -328,6 +362,17 @@ section {
 .item_info progress {
     width: 100%;
     height: 20px;
+    animation: progressBar 0.9s forwards;
+}
+@keyframes progressBar {
+    0% {
+        width: 0%;
+        opacity: 0;
+    }
+    100% {
+        width: 100%;
+        opacity: 1;
+    }
 }
 
 /* item estadiscas */
@@ -365,6 +410,7 @@ section {
 }
 
 .container_table {
+    border-radius: 10px;
     width: 100%;
     overflow: auto;
     padding-bottom: 5px;
@@ -384,8 +430,12 @@ th {
     color: var(--color-white);
     white-space: nowrap;
 }
-th:first-child {border-radius: 10px 0 0 10px;}
-th:last-child {border-radius:0 10px 10px 0;}
+th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+th:last-child {
+    border-radius: 0 10px 10px 0;
+}
 
 tbody tr:hover {
     background: rgba(55, 56, 61, 0.057);
@@ -398,5 +448,9 @@ td {
     overflow: hidden;
     white-space: nowrap;
 }
-td:first-child {border-radius: 10px 0 0 10px;}
-td:last-child {border-radius:0 10px 10px 0;}
+td:first-child {
+    border-radius: 10px 0 0 10px;
+}
+td:last-child {
+    border-radius: 0 10px 10px 0;
+}
