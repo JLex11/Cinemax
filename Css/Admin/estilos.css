@@ -4,7 +4,7 @@
 
 * {
     scroll-behavior: smooth;
-    position: relative;
+    /* position: relative; */
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -22,6 +22,8 @@
     --border-radius-3: 20px;
     --color-active: rgba(247, 241, 238, 0.642);
     --color-blue: rgb(16, 136, 213);
+    --color-green: #4caf50;
+    --color-red: #f44336;
     --color-dark: rgb(55, 55, 77);
     --color-hover: rgba(220, 206, 200, 0.511);
     --color-white: #fafafe;
@@ -108,6 +110,7 @@ a:hover {
 }
 
 a.active_option {
+    position: relative;
     border-radius: var(--border-radius-2);
     background: var(--color-active);
     box-shadow: 0 2px 3px rgb(0 0 0 / 12%), 0 -2px 3px rgb(100 100 100 / 5%);
@@ -149,6 +152,7 @@ main {
     overflow-x: auto;
     flex-direction: row;
     flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
 }
 
 main::-webkit-scrollbar {
@@ -168,7 +172,7 @@ section {
     max-height: 100%;
     padding: 0 20px 100px 20px;
     overflow-y: auto;
-    scroll-margin-left: 100px;
+    scroll-snap-align: start;
 }
 
 section::-webkit-scrollbar,
@@ -263,7 +267,7 @@ section::-webkit-scrollbar-thumb,
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding-bottom: 5px;
     border-bottom: 1px solid;
 }
@@ -285,8 +289,8 @@ section::-webkit-scrollbar-thumb,
 .container_items {
     display: grid;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-    grid-template-rows: 250px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* grid-template-rows: 250px; */
     gap: 10px;
 }
 /* ---------------------------------- Item ---------------------------------- */
@@ -296,7 +300,7 @@ section::-webkit-scrollbar-thumb,
     border-radius: var(--border-radius-3);
     background: var(--color-white);
     box-shadow: var(--item-box-shadow);
-    transition: box-shadow 0.5s .1s ease, transform 0.3s .1s;
+    transition: box-shadow 0.5s 0.1s ease, transform 0.3s 0.1s;
 }
 
 .item:hover {
@@ -335,12 +339,12 @@ section::-webkit-scrollbar-thumb,
 }
 
 .item_info h4 {
-    font-weight: 300;
+    white-space: nowrap;font-weight: 300;
     font-size: 14pt;
 }
 
 .item_info div:first-child {
-    display: flex;
+    overflow: hidden;display: flex;
     margin-bottom: 5px;
     padding-bottom: 4px;
     border-bottom: 1px solid;
@@ -398,6 +402,46 @@ section::-webkit-scrollbar-thumb,
 }
 
 /* ------------------------------ User section ------------------------------ */
+.container_actions_icons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    gap: 5px;
+}
+
+.container_actions_icons div {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 10px;
+    font-size: 9pt;
+    text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    box-shadow: -3px 4px 10px #00000062;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.container_actions_icons div:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 7px #00000083;
+    z-index: 1;
+}
+
+.container_actions_icons #agregar {
+    background: linear-gradient(to right, #2c692e, var(--color-green));
+}
+.container_actions_icons #editar {
+    background: linear-gradient(to right, rgb(12, 89, 137), var(--color-blue));
+}
+.container_actions_icons #eliminar {
+    background: linear-gradient(to right, #992921, var(--color-red));
+}
+
 .section_subbody {
     display: flex;
     justify-content: center;
@@ -421,10 +465,13 @@ table {
     min-width: 100%;
 }
 
+thead {
+    background: var(--color-blue);
+}
+
 th {
     padding: 5px 10px;
     border-bottom: 1px solid;
-    background: var(--color-blue);
     font-weight: 400;
     text-align: start;
     color: var(--color-white);
@@ -442,15 +489,21 @@ tbody tr:hover {
 }
 
 td {
-    max-width: 250px;
-    padding: 3px 10px;
+    max-width: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
     white-space: nowrap;
 }
 td:first-child {
     border-radius: 10px 0 0 10px;
+    padding-left: 5px;
 }
 td:last-child {
     border-radius: 0 10px 10px 0;
+}
+td label {
+    padding: 0 95% 0 0;
 }

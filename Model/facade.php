@@ -50,6 +50,14 @@ if ($opc == '101') {
 
 // !Genero
 /* --------------------------------- Genero 141-160 --------------------------------- */
+if ($opc == '141') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $genero = Genero::listar($opcion, $campo, $valor);
+    echo json_encode($genero);
+}
 
 /* ----------------------------- Genero pelicula 161-180 ---------------------------- */
 

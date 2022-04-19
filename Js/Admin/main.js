@@ -81,6 +81,7 @@ window.addEventListener("load", () => {
     consultarPeliculas();
     consultarActores();
     consultarDirectores();
+    consultarGeneros();
 });
 
 // !Consultar peliculas
@@ -110,17 +111,16 @@ const consultarPeliculas = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-        <tr>
-            <td>${idpelicula}</td>
-            <td>${titulooriginal}</td>
-            <td>${titulolatino}</td>
-            <td>${lanzamiento}</td>
-            <td>${resena}</td>
-            <td>${duracion} minutos</td>
-            <td>${tipo}</td>
-            <td>${pais}</td>
-            <td>${estado}</td>
-        </tr>
+            <td><input type="checkbox" id="${idpelicula}"></td>
+            <td><label for="${idpelicula}">${idpelicula}</label></td>
+            <td><label for="${idpelicula}">${titulooriginal}</label></td>
+            <td><label for="${idpelicula}">${titulolatino}</label></td>
+            <td><label for="${idpelicula}">${lanzamiento}</label></td>
+            <td><label for="${idpelicula}">${resena}</label></td>
+            <td><label for="${idpelicula}">${duracion} min</label></td>
+            <td><label for="${idpelicula}">${tipo}</label></td>
+            <td><label for="${idpelicula}">${pais}</label></td>
+            <td><label for="${idpelicula}">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }
@@ -150,11 +150,12 @@ const consultarActores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-        <td>${idactor}</td>
-        <td>${nombre}</td>
-        <td>${fechanacimiento}</td>
-        <td>${descripcion}</td>
-        <td>${estado}</td>
+            <td><input type="checkbox" id="${idactor}"></td>
+            <td><label for="${idactor}">${idactor}</label></td>
+            <td><label for="${idactor}">${nombre}</label></td>
+            <td><label for="${idactor}">${fechanacimiento}</label></td>
+            <td><label for="${idactor}">${descripcion}</label></td>
+            <td><label for="${idactor}">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }
@@ -184,11 +185,43 @@ const consultarDirectores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-        <td>${iddirector}</td>
-        <td>${nombre}</td>
-        <td>${fechanacimiento}</td>
-        <td>${descripcion}</td>
-        <td>${estado}</td>
+            <td><input type="checkbox" id="${iddirector}"></td>
+            <td><label for="${iddirector}">${iddirector}</label></td>
+            <td><label for="${iddirector}">${nombre}</label></td>
+            <td><label for="${iddirector}">${fechanacimiento}</label></td>
+            <td><label for="${iddirector}">${descripcion}</label></td>
+            <td><label for="${iddirector}">${estado}</label></td>
+        `;
+        fragment.appendChild(tr);
+    }
+    tbody.appendChild(fragment);
+};
+
+// !Consultar generos
+const consultarGeneros = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "141");
+    let url = "../Model/facade.php";
+    let response = await peticionFetch(parametros, url);
+
+    document.querySelector(".contGeneros").textContent = response.length;
+    let tbody = document.getElementById("tGeneros");
+    let fragment = document.createDocumentFragment();
+
+    for (r of response) {
+        //itera mi array de objetos
+        let tr = document.createElement("tr");
+        let {
+            //destructura mi objeto
+            idgenero,
+            nombre,
+            estado,
+        } = r;
+        tr.innerHTML = `
+            <td><input type="checkbox" id="${idgenero}"></td>
+            <td><label for="${idgenero}">${idgenero}</label></td>
+            <td><label for="${idgenero}">${nombre}</label></td>
+            <td><label for="${idgenero}">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }

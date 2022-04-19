@@ -96,8 +96,7 @@
                     <div class="section_subtitle">
                         <h2>Estadisticas generales</h2>
                         <div class="item_date">
-                            <span class="material-icons-sharp">update</span>
-                            <h2>hace 5 minutos</h2>
+                            <span class="material-icons-sharp">bar_chart</span>
                         </div>
                     </div>
 
@@ -229,11 +228,27 @@
                             </div>
                         </div>
                         
+                        <div class="container_actions_icons">
+                            <div id="agregar">
+                                <span class="material-icons-sharp">add</span>
+                                <h2>Nueva</h2>
+                            </div>
+                            <div id="editar">
+                                <span class="material-icons-sharp">edit</span>
+                                <h2>Editar</h2>
+                            </div>
+                            <div id="eliminar">
+                                <span class="material-icons-sharp">delete</span>
+                                <h2>Eliminar</h2>
+                            </div>
+                        </div>
+
                         <div class="section_subbody">
                             <div class="container_table">
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Id Pelicula</th>
                                             <th>Titulo original</th>
                                             <th>Titulo latino</th>
@@ -267,6 +282,7 @@
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Id actor</th>
                                             <th>Nombre</th>
                                             <th>Fecha nacimiento</th>
@@ -296,6 +312,7 @@
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Id director</th>
                                             <th>Nombre</th>
                                             <th>Fecha nacimiento</th>
@@ -310,6 +327,35 @@
                             </div>
                         </div>
                     </div>
+                    <!-- ------------------------- Lista de generos ------------------------- -->
+                    <div class="container_subsection">
+                        <div class="section_subtitle">
+                            <h2>Generos</h2>
+                            <div>
+                                <span class="material-icons-sharp">theater_comedy</span>
+                                <h2 class="contGeneros">1579</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="section_subbody">
+                            <div class="container_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Id genero</th>
+                                            <th>Nombre</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tGeneros">
+                                        <!-- se agregan las filas desde js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </main>
