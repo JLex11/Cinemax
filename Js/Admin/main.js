@@ -1,68 +1,76 @@
-/* ------------------------- Selector de navegacion ------------------------- */
+/* ------------------------- Navegacion por sections ------------------------- */
 let options = document.querySelectorAll(".option");
-options.forEach((op) => {
+let sections = document.querySelectorAll("section");
+let main = document.querySelector("main");
+
+let sectionsX = [];
+sections.forEach((section, index) => {
+    sectionsX[index] = section.getBoundingClientRect();
+    console.log("sectionsx", sectionsX[index].x);
+});
+
+options.forEach((op, index) => {
     op.addEventListener("click", () => {
-        options.forEach((e) => {
-            e.classList.remove("active_option");
-        });
-        op.classList.add("active_option");
+        if (sectionsX[index]) {
+            options.forEach((e) => {
+                e.classList.remove("active_option");
+            });
+            op.classList.add("active_option");
+            window.scrollTo({
+                top: 0
+            });
+            main.scrollLeft = sectionsX[index].x;
+            console.log(sectionsX[index].x);
+        };
     });
 });
+
+/* ------------------------- Cambiar color a header ------------------------- */
+window.addEventListener("scroll", ()=>{
+    if (document.documentElement.scrollTop > 40) {
+        document.querySelector("header").style.backgroundColor = "rgb(255 255 255 / 70%)";
+        document.querySelector("header").classList.add("bdFilter_Header");
+    } else {
+        document.querySelector("header").style.backgroundColor = "transparent";
+        document.querySelector("header").classList.remove("bdFilter_Header");
+    }
+})
 
 /* --------------------------------- Grafico -------------------------------- */
 function crearGrafico(contenedor, labels, parametros, valores) {
     let canvasGrafico = document.getElementById(`${contenedor}`);
 
-    let chartGrafico = new Chart(canvasGrafico, {
-        type: "line",
+    const grafico = new Chart(canvasGrafico, {
+        type: "bar",
         data: {
             labels: parametros,
             datasets: [
                 {
                     label: labels[0],
                     data: valores[0],
-                    backgroundColor: ["#077fdb"],
-                },
-                {
-                    label: labels[1],
-                    data: valores[1],
-                    backgroundColor: ["#3ca440"],
-                },
-                {
-                    label: labels[2],
-                    data: valores[2],
-                    backgroundColor: ["#077fdb"],
-                },
+                    backgroundColor: ["#077fdb", "green", "red"],
+                }
             ],
         },
     });
+    let chartGrafico = grafico;
 }
 
 window.addEventListener("load", () => {
     contenedor = "grafico";
-    labels = ["1er Pelicula", "2da Pelicula", "3er Pelicula"];
+    labels = ["Total"];
     parametros = [
-        "enero",
-        "febrero",
-        "marzo",
-        "abril",
-        "mayo",
-        "junio",
-        "julio",
-        "agosto",
-        "septiembre",
-        "octubre",
-        "noviembre",
-        "diciembre",
+        "Total",
+        "Registrados",
+        "No registrados"
     ];
     valores = [
-        [500, 450, 630, 690, 900, 870, 987, 1158, 679, 860, 1009, 1110],
-        [100, 290, 360, 510, 730, 700, 587, 958, 279, 760, 809, 1000],
+        [5000, 3500, 1500]
     ];
     crearGrafico(contenedor, labels, parametros, valores);
 });
 
-/* ---------------------------- Datos del server ---------------------------- */
+/* ---------------------------- Manipulacion de datos ---------------------------- */
 // !Fetch
 async function peticionFetch(parametros, url) {
     let peticion = await fetch(url, {
@@ -83,6 +91,18 @@ window.addEventListener("load", () => {
     consultarDirectores();
     consultarGeneros();
 });
+
+// !Eliminar
+let btn_eliminar = document.getElementById("eliminar");
+btn_eliminar.addEventListener("click", () => {
+    let check = document.querySelectorAll(".table_check");
+    check.forEach((c, index) => {
+        if (c.checked) {
+            let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
+            trCheck.remove();
+        }
+    })
+})
 
 // !Consultar peliculas
 const consultarPeliculas = async () => {
@@ -111,16 +131,16 @@ const consultarPeliculas = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idpelicula}"></td>
-            <td><label for="${idpelicula}">${idpelicula}</label></td>
-            <td><label for="${idpelicula}">${titulooriginal}</label></td>
-            <td><label for="${idpelicula}">${titulolatino}</label></td>
-            <td><label for="${idpelicula}">${lanzamiento}</label></td>
-            <td><label for="${idpelicula}">${resena}</label></td>
-            <td><label for="${idpelicula}">${duracion} min</label></td>
-            <td><label for="${idpelicula}">${tipo}</label></td>
-            <td><label for="${idpelicula}">${pais}</label></td>
-            <td><label for="${idpelicula}">${estado}</label></td>
+            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
+            <td><label for="${idpelicula}-pelicula">${idpelicula}</label></td>
+            <td><label for="${idpelicula}-pelicula">${titulooriginal}</label></td>
+            <td><label for="${idpelicula}-pelicula">${titulolatino}</label></td>
+            <td><label for="${idpelicula}-pelicula">${lanzamiento}</label></td>
+            <td><label for="${idpelicula}-pelicula">${resena}</label></td>
+            <td><label for="${idpelicula}-pelicula">${duracion} min</label></td>
+            <td><label for="${idpelicula}-pelicula">${tipo}</label></td>
+            <td><label for="${idpelicula}-pelicula">${pais}</label></td>
+            <td><label for="${idpelicula}-pelicula">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }
@@ -150,12 +170,12 @@ const consultarActores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idactor}"></td>
-            <td><label for="${idactor}">${idactor}</label></td>
-            <td><label for="${idactor}">${nombre}</label></td>
-            <td><label for="${idactor}">${fechanacimiento}</label></td>
-            <td><label for="${idactor}">${descripcion}</label></td>
-            <td><label for="${idactor}">${estado}</label></td>
+            <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
+            <td><label for="${idactor}-actor">${idactor}</label></td>
+            <td><label for="${idactor}-actor">${nombre}</label></td>
+            <td><label for="${idactor}-actor">${fechanacimiento}</label></td>
+            <td><label for="${idactor}-actor">${descripcion}</label></td>
+            <td><label for="${idactor}-actor">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }
@@ -185,12 +205,12 @@ const consultarDirectores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${iddirector}"></td>
-            <td><label for="${iddirector}">${iddirector}</label></td>
-            <td><label for="${iddirector}">${nombre}</label></td>
-            <td><label for="${iddirector}">${fechanacimiento}</label></td>
-            <td><label for="${iddirector}">${descripcion}</label></td>
-            <td><label for="${iddirector}">${estado}</label></td>
+            <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
+            <td><label for="${iddirector}-director">${iddirector}</label></td>
+            <td><label for="${iddirector}-director">${nombre}</label></td>
+            <td><label for="${iddirector}-director">${fechanacimiento}</label></td>
+            <td><label for="${iddirector}-director">${descripcion}</label></td>
+            <td><label for="${iddirector}-director">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }
@@ -218,10 +238,10 @@ const consultarGeneros = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idgenero}"></td>
-            <td><label for="${idgenero}">${idgenero}</label></td>
-            <td><label for="${idgenero}">${nombre}</label></td>
-            <td><label for="${idgenero}">${estado}</label></td>
+            <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
+            <td><label for="${idgenero}-genero">${idgenero}</label></td>
+            <td><label for="${idgenero}-genero">${nombre}</label></td>
+            <td><label for="${idgenero}-genero">${estado}</label></td>
         `;
         fragment.appendChild(tr);
     }

@@ -42,6 +42,7 @@ body {
     background-repeat: no-repeat;
     background-size: 100%;
     font-family: var(--Font-Principal);
+    min-height: 100vh;
 }
 
 .material-icons-sharp {
@@ -50,11 +51,15 @@ body {
 }
 /* --------------------------------- Header --------------------------------- */
 header {
-    display: flex;
+    z-index: 1000;top: 0;position: sticky;display: flex;
     align-items: center;
     justify-content: center;
     height: 40px;
     font-family: var(--Font-Principal);
+}
+
+.bdFilter_Header {
+    backdrop-filter: blur(10px);
 }
 
 h1 {
@@ -109,15 +114,17 @@ a:hover {
     border-radius: var(--border-radius-1);
 }
 
-a.active_option {
+.active_option {
+    display: flex;
+    justify-content: center;
     position: relative;
+    padding: 5px;
     border-radius: var(--border-radius-2);
     background: var(--color-active);
     box-shadow: 0 2px 3px rgb(0 0 0 / 12%), 0 -2px 3px rgb(100 100 100 / 5%);
-    padding: 5px;
 }
 
-a.active_option::before {
+.active_option::before {
     content: "";
     position: absolute;
     bottom: 0px;
@@ -127,7 +134,7 @@ a.active_option::before {
     background: var(--color-blue);
 }
 
-a.active_option img {
+.active_option img {
     animation: active_option 0.3s ease-in-out;
 }
 @keyframes active_option {
@@ -146,13 +153,12 @@ main {
     display: flex;
     width: 100%;
     max-width: 1300px;
-    height: calc(100vh - 40px);
     margin: 0 auto;
-    overflow-y: hidden;
     overflow-x: auto;
     flex-direction: row;
     flex-wrap: nowrap;
     scroll-snap-type: x mandatory;
+    scroll-margin-top: 0;
 }
 
 main::-webkit-scrollbar {
@@ -169,20 +175,19 @@ h3 {
 section {
     width: 100%;
     min-width: 100%;
-    max-height: 100%;
     padding: 0 20px 100px 20px;
-    overflow-y: auto;
     scroll-snap-align: start;
+    scroll-padding-top: 40px;
 }
 
-section::-webkit-scrollbar,
+body::-webkit-scrollbar,
 .container_table::-webkit-scrollbar {
     height: 10px;
     width: 7px;
     border-radius: 10px;
     background: transparent;
 }
-section::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
 .container_table::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: var(--color-blue);
@@ -304,7 +309,7 @@ section::-webkit-scrollbar-thumb,
 }
 
 .item:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     box-shadow: 0px 10px 10px rgb(0 0 0 / 30%);
     z-index: 2;
 }
@@ -339,12 +344,14 @@ section::-webkit-scrollbar-thumb,
 }
 
 .item_info h4 {
-    white-space: nowrap;font-weight: 300;
+    white-space: nowrap;
+    font-weight: 300;
     font-size: 14pt;
 }
 
 .item_info div:first-child {
-    overflow: hidden;display: flex;
+    overflow: hidden;
+    display: flex;
     margin-bottom: 5px;
     padding-bottom: 4px;
     border-bottom: 1px solid;
@@ -403,11 +410,11 @@ section::-webkit-scrollbar-thumb,
 
 /* ------------------------------ User section ------------------------------ */
 .container_actions_icons {
-    display: flex;
+    position: sticky;display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
     gap: 5px;
-}
+top: 45px;}
 
 .container_actions_icons div {
     cursor: pointer;
