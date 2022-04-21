@@ -93,23 +93,20 @@ nav ul {
 }
 
 ul li {
-    display: inline-block;
-}
-
-ul li a {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-bottom: 3px;
     transition: background 0.3s, border-radius 0.5s;
     gap: 2px;
+    cursor: pointer;
 }
 
-a img {
+li img {
     width: 50px;
 }
 
-a:hover {
+li:hover {
     background: var(--color-hover);
     border-radius: var(--border-radius-1);
 }
@@ -194,7 +191,7 @@ body::-webkit-scrollbar-thumb,
 }
 
 .section_title {
-    width: 100%;
+    display: flex;width: 100%;
     margin-bottom: 5px;
     padding-bottom: 5px;
     font-size: 20pt;
@@ -429,24 +426,17 @@ body::-webkit-scrollbar-thumb,
     color: white;
     cursor: pointer;
     display: flex;
-    gap: 5px;
+    gap: 0;
     box-shadow: -3px 4px 10px #00000062;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.container_actions_icons div input[type="checkbox"] {
-    display: none;
-}
-.container_actions_icons div input[type="checkbox"]:checked ~ label {
-    font-size: 9pt;
-    display: flex;
-    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s, font-size 0.3s;
 }
 
 .container_actions_icons div:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 7px #00000083;
-    z-index: 1;
+    font-size: 9pt;
+    align-items: center;
+    gap: 5px;
 }
 
 .container_actions_icons #agregar {
