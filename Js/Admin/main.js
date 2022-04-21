@@ -4,26 +4,33 @@ let sections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
 let sectionsX = [];
-sections.forEach((section, index) => {
-    sectionsX[index] = section.getBoundingClientRect();
-    console.log("sectionsx", sectionsX[index].x);
-});
+sections.forEach((section, index) => sectionsX[index] = section.getBoundingClientRect());
 
 options.forEach((op, index) => {
-    op.addEventListener("click", () => {
-        if (sectionsX[index]) {
-            options.forEach((e) => {
-                e.classList.remove("active_option");
-            });
-            op.classList.add("active_option");
-            window.scrollTo({
-                top: 0
-            });
-            main.scrollLeft = sectionsX[index].x;
-            console.log(sectionsX[index].x);
-        };
+    op.addEventListener("click", ()=> {//indica al scroll a que posicion en el eje x debe ir
+        if (sectionsX[index]) main.scrollLeft = sectionsX[index].x;
     });
 });
+
+let indexSectionActiva;
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
+            indexSectionActiva = [...sections].indexOf(entry.target);
+            options.forEach((op, index) => {
+                window.scrollTo({top: 0});
+                if (index == indexSectionActiva) op.classList.add("active_option");
+                else op.classList.remove("active_option");
+            });
+        }
+    })
+}, {
+    root: main,
+    threshold: 0.7
+})
+
+sections.forEach(section => observer.observe(section));
 
 /* ------------------------- Cambiar color a header ------------------------- */
 window.addEventListener("scroll", ()=>{

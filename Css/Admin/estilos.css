@@ -410,11 +410,12 @@ body::-webkit-scrollbar-thumb,
 
 /* ------------------------------ User section ------------------------------ */
 .container_actions_icons {
-    position: sticky;display: flex;
+    height: 40px;
+    display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
     gap: 5px;
-top: 45px;}
+}
 
 .container_actions_icons div {
     cursor: pointer;
@@ -423,7 +424,7 @@ top: 45px;}
     justify-content: center;
     padding: 7px;
     border-radius: 10px;
-    font-size: 9pt;
+    font-size: 0;
     text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
     color: white;
     cursor: pointer;
@@ -431,6 +432,15 @@ top: 45px;}
     gap: 5px;
     box-shadow: -3px 4px 10px #00000062;
     transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.container_actions_icons div input[type="checkbox"] {
+    display: none;
+}
+.container_actions_icons div input[type="checkbox"]:checked ~ label {
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
 }
 
 .container_actions_icons div:hover {
