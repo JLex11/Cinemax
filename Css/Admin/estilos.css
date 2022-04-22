@@ -35,12 +35,12 @@ body {
     background: rgb(207, 228, 207);
     background: linear-gradient(
         90deg,
-        rgb(216, 232, 216) 0%,
-        rgb(227, 213, 207) 53%,
-        rgb(204, 221, 232) 100%
+        rgb(216, 232, 216),
+        rgb(227, 213, 207),
+        rgb(204, 221, 232)
     );
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 800% 800%;
     font-family: var(--Font-Principal);
     min-height: 100vh;
 }
@@ -170,7 +170,7 @@ h3 {
 }
 /* -------------------------------- Sections -------------------------------- */
 section {
-    width: 100%;
+    position: relative;width: 100%;
     min-width: 100%;
     padding: 0 20px 100px 20px;
     scroll-snap-align: start;
@@ -407,36 +407,41 @@ body::-webkit-scrollbar-thumb,
 
 /* ------------------------------ User section ------------------------------ */
 .container_actions_icons {
-    height: 40px;
+    height: 45px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     margin-bottom: 10px;
     gap: 5px;
 }
 
 .container_actions_icons div {
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 7px;
+    padding: 10px;
     border-radius: 10px;
     font-size: 0;
     text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
     color: white;
+    transition: transform 0.3s, box-shadow 0.3s, font-size 0.3s;
     cursor: pointer;
-    display: flex;
     gap: 0;
     box-shadow: -3px 4px 10px #00000062;
-    transition: transform 0.3s, box-shadow 0.3s, font-size 0.3s;
 }
 
 .container_actions_icons div:hover {
+    font-size: 10pt;
     transform: scale(1.05);
-    box-shadow: 0px 4px 7px #00000083;
-    font-size: 9pt;
-    align-items: center;
+    box-shadow: 0px 4px 13px #0000009c;
     gap: 5px;
+}
+
+.action_btn_active {
+    font-size: 10pt;
+    transform: scale(1.05);
+    gap: 5px;
+    box-shadow: 0px 4px 7px #00000083;
+    outline: 2px solid var(--color-white);
 }
 
 .container_actions_icons #agregar {
@@ -449,6 +454,7 @@ body::-webkit-scrollbar-thumb,
     background: linear-gradient(to right, #992921, var(--color-red));
 }
 
+/* --------------------------------- Subbody -------------------------------- */
 .section_subbody {
     display: flex;
     justify-content: center;

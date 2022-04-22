@@ -99,18 +99,74 @@ window.addEventListener("load", () => {
     consultarGeneros();
 });
 
+// !Activar los checkbox
+function actCheckBox() {
+    let check = document.querySelectorAll(".table_check");
+    let arrPosChecked = [];
+    let i = 0;
+    if (check[0].style.display == "none") {
+        check.forEach(c => {
+            c.style.display = "block";
+            c.checked = false;
+        });
+    } else {
+        check.forEach((c, index) => {
+            if (c.checked) {
+                arrPosChecked[i] = index;
+                i++;
+            }
+        })
+        check.forEach(c => c.style.display = "none");
+    }
+    return arrPosChecked;
+}
+
 // !Eliminar
 let btn_eliminar = document.getElementById("eliminar");
 btn_eliminar.addEventListener("click", () => {
-    let check = document.querySelectorAll(".table_check");
-    check.forEach((c, index) => {
-        if (c.checked) {
-            let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
-            trCheck.remove();
-        }
-    })
+    btn_eliminar.classList.toggle("action_btn_active");
+    //activa los checkbox si estan desactivados y de lo contario me devuelve un array con las posiciones checkeadas
+    let arrIndexCheckboxes = actCheckBox();
+    if (arrIndexCheckboxes.length != 0) {
+        let check = document.querySelectorAll(".table_check");
+        check.forEach((c, index) => {
+            for (let i = 0; i < arrIndexCheckboxes.length; i++) {
+                if (index == arrIndexCheckboxes[i]) {
+                    let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
+                    trCheck.remove();
+                }
+            }
+        })
+    }
 })
 
+// !Editar
+let btn_editar = document.getElementById("editar");
+let on = false;
+btn_editar.addEventListener("click", () => {
+    if (on == false) {
+        let check = document.querySelectorAll(".table_check");
+        check.forEach(c => {
+            c.style.display = "none";
+            if (c.checked) {
+                let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
+                let trCheckHijos = trCheck.querySelectorAll("td");
+                trCheckHijos.forEach(trHijo => {
+                    trHijo.contentEditable = true;
+                })
+            }
+        })
+        on = true;
+    } else if (on == true) {
+        let check = document.querySelectorAll(".table_check");
+        check.forEach(c => {
+            c.style.display = "block";
+        })
+    }
+})
+
+
+/* -------------------------------- Consultar ------------------------------- */
 // !Consultar peliculas
 const consultarPeliculas = async () => {
     let parametros = new FormData();
@@ -138,7 +194,7 @@ const consultarPeliculas = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
+            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check" style="display:none;"></td>
             <td><label for="${idpelicula}-pelicula">${idpelicula}</label></td>
             <td><label for="${idpelicula}-pelicula">${titulooriginal}</label></td>
             <td><label for="${idpelicula}-pelicula">${titulolatino}</label></td>
@@ -177,7 +233,7 @@ const consultarActores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
+            <td><input type="checkbox" id="${idactor}-actor" class="table_check" style="display:none;"></td>
             <td><label for="${idactor}-actor">${idactor}</label></td>
             <td><label for="${idactor}-actor">${nombre}</label></td>
             <td><label for="${idactor}-actor">${fechanacimiento}</label></td>
@@ -212,7 +268,7 @@ const consultarDirectores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
+            <td><input type="checkbox" id="${iddirector}-director" class="table_check" style="display:none;"></td>
             <td><label for="${iddirector}-director">${iddirector}</label></td>
             <td><label for="${iddirector}-director">${nombre}</label></td>
             <td><label for="${iddirector}-director">${fechanacimiento}</label></td>
@@ -245,7 +301,7 @@ const consultarGeneros = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
+            <td><input type="checkbox" id="${idgenero}-genero" class="table_check" style="display:none;"></td>
             <td><label for="${idgenero}-genero">${idgenero}</label></td>
             <td><label for="${idgenero}-genero">${nombre}</label></td>
             <td><label for="${idgenero}-genero">${estado}</label></td>
