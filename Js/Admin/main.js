@@ -78,7 +78,7 @@ window.addEventListener("load", () => {
 });
 
 /* ---------------------------- Manipulacion de datos ---------------------------- */
-// !Fetch
+// ?Fetch
 async function peticionFetch(parametros, url) {
     let peticion = await fetch(url, {
         method: "POST",
@@ -99,75 +99,70 @@ window.addEventListener("load", () => {
     consultarGeneros();
 });
 
-// !Activar los checkbox
+
+/* -------------------------- Activar los checkbox -------------------------- */
 function actCheckBox() {
-    let check = document.querySelectorAll(".table_check");
-    let arrPosChecked = [];
-    let i = 0;
-    if (check[0].style.display == "none") {
-        check.forEach(c => {
-            c.style.display = "block";
-            c.checked = false;
-        });
-    } else {
-        check.forEach((c, index) => {
-            if (c.checked) {
-                arrPosChecked[i] = index;
-                i++;
-            }
-        })
-        check.forEach(c => c.style.display = "none");
-    }
-    return arrPosChecked;
+    if (check[0].style.display == "none") check.forEach(c => c.style.display = "block");
+    else check.forEach(c => c.style.display = "none");
 }
 
-// !Eliminar
+/* ------------------------------ Ventana modal ----------------------------- */
+function vModal(title, content) {
+    let modal = document.getElementById("modal");
+    let tituloModal = modal.querySelector(".header_modal").querySelector("h2");
+    let contentModal = modal.querySelector(".content_modal");
+    let fragment = document.createDocumentFragment();
+    let btn_modal_close = modal.querySelector(".btn_modal_close");
+    btn_modal_close.addEventListener("click", () => {
+        modal.classList.remove("modal");
+        document.querySelector("body").style.overflow = "unset";
+        contentModal.innerHTML = "";
+    })
+
+    tituloModal.textContent = title;
+
+    content.forEach(c => {
+        let div = document.createElement("div");
+        let td = c.querySelectorAll("td");
+        td.forEach((t, index) => {
+            if (index !== 0) {
+                let input = document.createElement("input");
+                input.type = "text";
+                input.value = t.textContent;
+                div.appendChild(input);
+            }
+        })
+        fragment.appendChild(div);
+    })
+    contentModal.appendChild(fragment);
+    modal.classList.add("modal");
+    document.querySelector("body").style.overflow = "hidden";
+}
+
+/* -------------------------------- Eliminar -------------------------------- */
 let btn_eliminar = document.getElementById("eliminar");
 btn_eliminar.addEventListener("click", () => {
-    btn_eliminar.classList.toggle("action_btn_active");
-    //activa los checkbox si estan desactivados y de lo contario me devuelve un array con las posiciones checkeadas
-    let arrIndexCheckboxes = actCheckBox();
-    if (arrIndexCheckboxes.length != 0) {
-        let check = document.querySelectorAll(".table_check");
-        check.forEach((c, index) => {
-            for (let i = 0; i < arrIndexCheckboxes.length; i++) {
-                if (index == arrIndexCheckboxes[i]) {
-                    let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
-                    trCheck.remove();
-                }
-            }
-        })
-    }
+    let check = document.querySelectorAll(".table_check");
+    check.forEach(c => {
+        if (c.checked == true) c.parentNode.parentNode.remove();
+        c.checked = false;
+    })
 })
 
-// !Editar
+/* --------------------------------- Editar --------------------------------- */
 let btn_editar = document.getElementById("editar");
-let on = false;
 btn_editar.addEventListener("click", () => {
-    if (on == false) {
-        let check = document.querySelectorAll(".table_check");
-        check.forEach(c => {
-            c.style.display = "none";
-            if (c.checked) {
-                let trCheck = c.parentNode.parentNode; //tr abuelo del checkbox
-                let trCheckHijos = trCheck.querySelectorAll("td");
-                trCheckHijos.forEach(trHijo => {
-                    trHijo.contentEditable = true;
-                })
-            }
-        })
-        on = true;
-    } else if (on == true) {
-        let check = document.querySelectorAll(".table_check");
-        check.forEach(c => {
-            c.style.display = "block";
-        })
-    }
+    let check = document.querySelectorAll(".table_check");
+    let tr = [];
+    check.forEach((c, index) => {
+        if (c.checked) tr[index] = c.parentNode.parentNode;
+    })
+    vModal("Titulo de prueba", tr);
 })
 
 
 /* -------------------------------- Consultar ------------------------------- */
-// !Consultar peliculas
+/* --------------------------- Consultar peliculas -------------------------- */
 const consultarPeliculas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "1");
@@ -194,23 +189,23 @@ const consultarPeliculas = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check" style="display:none;"></td>
-            <td><label for="${idpelicula}-pelicula">${idpelicula}</label></td>
-            <td><label for="${idpelicula}-pelicula">${titulooriginal}</label></td>
-            <td><label for="${idpelicula}-pelicula">${titulolatino}</label></td>
-            <td><label for="${idpelicula}-pelicula">${lanzamiento}</label></td>
-            <td><label for="${idpelicula}-pelicula">${resena}</label></td>
-            <td><label for="${idpelicula}-pelicula">${duracion} min</label></td>
-            <td><label for="${idpelicula}-pelicula">${tipo}</label></td>
-            <td><label for="${idpelicula}-pelicula">${pais}</label></td>
-            <td><label for="${idpelicula}-pelicula">${estado}</label></td>
+            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
+            <td>${idpelicula}</td>
+            <td>${titulooriginal}</td>
+            <td>${titulolatino}</td>
+            <td>${lanzamiento}</td>
+            <td>${resena}</td>
+            <td>${duracion} min</td>
+            <td>${tipo}</td>
+            <td>${pais}</td>
+            <td>${estado}</td>
         `;
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
 };
 
-// !Consultar actores
+/* ---------------------------- Consultar actores --------------------------- */
 const consultarActores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "61");
@@ -233,19 +228,19 @@ const consultarActores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idactor}-actor" class="table_check" style="display:none;"></td>
-            <td><label for="${idactor}-actor">${idactor}</label></td>
-            <td><label for="${idactor}-actor">${nombre}</label></td>
-            <td><label for="${idactor}-actor">${fechanacimiento}</label></td>
-            <td><label for="${idactor}-actor">${descripcion}</label></td>
-            <td><label for="${idactor}-actor">${estado}</label></td>
+            <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
+            <td>${idactor}</td>
+            <td>${nombre}</td>
+            <td>${fechanacimiento}</td>
+            <td>${descripcion}</td>
+            <td>${estado}</td>
         `;
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
 };
 
-// !Consultar directores
+/* -------------------------- Consultar directores -------------------------- */
 const consultarDirectores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "101");
@@ -268,19 +263,19 @@ const consultarDirectores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${iddirector}-director" class="table_check" style="display:none;"></td>
-            <td><label for="${iddirector}-director">${iddirector}</label></td>
-            <td><label for="${iddirector}-director">${nombre}</label></td>
-            <td><label for="${iddirector}-director">${fechanacimiento}</label></td>
-            <td><label for="${iddirector}-director">${descripcion}</label></td>
-            <td><label for="${iddirector}-director">${estado}</label></td>
+            <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
+            <td>${iddirector}</td>
+            <td>${nombre}</td>
+            <td>${fechanacimiento}</td>
+            <td>${descripcion}</td>
+            <td>${estado}</td>
         `;
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
 };
 
-// !Consultar generos
+/* ---------------------------- Consultar generos --------------------------- */
 const consultarGeneros = async () => {
     let parametros = new FormData();
     parametros.append("opc", "141");
@@ -301,10 +296,10 @@ const consultarGeneros = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idgenero}-genero" class="table_check" style="display:none;"></td>
-            <td><label for="${idgenero}-genero">${idgenero}</label></td>
-            <td><label for="${idgenero}-genero">${nombre}</label></td>
-            <td><label for="${idgenero}-genero">${estado}</label></td>
+            <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
+            <td>${idgenero}</td>
+            <td>${nombre}</td>
+            <td>${estado}</td>
         `;
         fragment.appendChild(tr);
     }

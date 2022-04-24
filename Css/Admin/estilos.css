@@ -40,26 +40,109 @@ body {
         rgb(204, 221, 232)
     );
     background-repeat: no-repeat;
-    background-size: 800% 800%;
     font-family: var(--Font-Principal);
     min-height: 100vh;
 }
 
 .material-icons-sharp {
     user-select: none;
+    -webkit-user-select: none;
     text-shadow: -1px 1px 1.5px rgba(0, 0, 0, 0.297);
 }
-/* --------------------------------- Header --------------------------------- */
-header {
-    z-index: 1000;top: 0;position: sticky;display: flex;
+
+/* ------------------------------ Ventana modal ----------------------------- */
+.modal_hide {
+    width: 0;
+    height: 0;
+    background: transparent;
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.3s;
+    position: absolute;
+}
+
+div.modal {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgb(0 0 0 / 15%);
+    display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1001;
+    opacity: 1;
+}
+
+.container_modal {
+    max-width: 80%;
+    background: var(--color-white);
+    padding: var(--item-padding);
+    box-shadow: var(--item-box-shadow);
+    border-radius: var(--border-radius-3);
+    font-size: 14pt;
+}
+
+.header_modal {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 10px;
+}
+.header_modal .material-icons-sharp {
+    cursor: pointer;
+    font-size: 25pt;
+}
+
+.content_modal {
+    max-height: 50vh;
+    overflow: auto;
+    padding: 5px 20px;
+}
+
+.content_modal > div {
+    box-shadow: var(--item-box-shadow);
+    border-radius: var(--border-radius-3);
+    margin: 15px 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+justify-content: center;}
+
+.content_modal > div > input {
+    
+    width: fit-content;
+    padding: 10px;
+    border: none;
+    border-radius: var(--border-radius-1);
+    outline: none;
+    background: transparent;
+}
+
+.content_modal > div > input:focus {
+    /* background: var(--color-active); */
+    outline: 2px solid var(--color-blue);
+}
+
+/* --------------------------------- Header --------------------------------- */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     height: 40px;
     font-family: var(--Font-Principal);
 }
 
 .bdFilter_Header {
     backdrop-filter: blur(10px);
+    -webtkit-backdrop-filter: blur(10px);
 }
 
 h1 {
@@ -75,14 +158,16 @@ nav {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 10px;
+    bottom: 5px;
     z-index: 1000;
     width: fit-content;
+    width: -moz-fit-content;
     margin: 0 auto;
     padding: 7px;
     border-radius: var(--border-radius-3);
     background: rgba(255, 255, 255, 0.256);
     backdrop-filter: blur(10px);
+    -webtkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 20px #0000006b;
 }
 
@@ -170,7 +255,8 @@ h3 {
 }
 /* -------------------------------- Sections -------------------------------- */
 section {
-    position: relative;width: 100%;
+    position: relative;
+    width: 100%;
     min-width: 100%;
     padding: 0 20px 100px 20px;
     scroll-snap-align: start;
@@ -191,7 +277,8 @@ body::-webkit-scrollbar-thumb,
 }
 
 .section_title {
-    display: flex;width: 100%;
+    display: flex;
+    width: 100%;
     margin-bottom: 5px;
     padding-bottom: 5px;
     font-size: 20pt;
@@ -436,12 +523,12 @@ body::-webkit-scrollbar-thumb,
     gap: 5px;
 }
 
-.action_btn_active {
+div.action_btn_active {
     font-size: 10pt;
     transform: scale(1.05);
     gap: 5px;
     box-shadow: 0px 4px 7px #00000083;
-    outline: 2px solid var(--color-white);
+    outline: 1.5px solid var(--color-white);
 }
 
 .container_actions_icons #agregar {
