@@ -211,15 +211,15 @@ const consultarPeliculas = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
-            <td id="idpelicula">${idpelicula}</td>
-            <td id="titulooriginal">${titulooriginal}</td>
-            <td id="titulolatino">${titulolatino}</td>
-            <td id="lanzamiento">${lanzamiento}</td>
-            <td id="resena">${resena}</td>
-            <td id="duracion">${duracion} min</td>
-            <td id="tipo">${tipo}</td>
-            <td id="pais">${pais}</td>
-            <td id="estado">${estado}</td>
+            <td id="idpelicula"><p>${idpelicula}</p></td>
+            <td id="titulooriginal"><p>${titulooriginal}</p></td>
+            <td id="titulolatino"><p>${titulolatino}</p></td>
+            <td id="lanzamiento"><p>${lanzamiento}</p></td>
+            <td id="resena"><p>${resena}</p></td>
+            <td id="duracion"><p>${duracion}</p></td>
+            <td id="tipo"><p>${tipo}</p></td>
+            <td id="pais"><p>${pais}</p></td>
+            <td id="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -250,11 +250,11 @@ const consultarActores = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
-            <td id="idactor">${idactor}</td>
-            <td id="nombre">${nombre}</td>
-            <td id="fechanacimiento">${fechanacimiento}</td>
-            <td id="descripcion">${descripcion}</td>
-            <td id="estado">${estado}</td>
+            <td id="idactor"><p>${idactor}</p></td>
+            <td id="nombre"><p>${nombre}</p></td>
+            <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td id="descripcion"><p>${descripcion}</p></td>
+            <td id="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -285,11 +285,11 @@ const consultarDirectores = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
-            <td id="iddirector">${iddirector}</td>
-            <td id="nombre">${nombre}</td>
-            <td id="fechanacimiento">${fechanacimiento}</td>
-            <td id="descripcion">${descripcion}</td>
-            <td id="estado">${estado}</td>
+            <td id="iddirector"><p>${iddirector}</p></td>
+            <td id="nombre"><p>${nombre}</p></td>
+            <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td id="descripcion"><p>${descripcion}</p></td>
+            <td id="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -318,9 +318,9 @@ const consultarGeneros = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
-            <td id="idgenero">${idgenero}</td>
-            <td id="nombre">${nombre}</td>
-            <td id="estado">${estado}</td>
+            <td id="idgenero"><p>${idgenero}</p></td>
+            <td id="nombre"><p>${nombre}</p></td>
+            <td id="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }

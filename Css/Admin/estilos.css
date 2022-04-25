@@ -9,36 +9,36 @@
     padding: 0;
     text-decoration: none;
     box-sizing: border-box;
-    /* outline: 1px solid rgba(0, 0, 0, 0.99); */
+    /* outline: 1px solid #000000fc; */
     list-style: none;
 }
 
 :root {
     --Font-Principal: "Poppins", sans-serif;
     /* --Font-Principal: "Plus Jakarta Sans", sans-serif; */
-    --background-light-color: rgb(236, 238, 249);
+    --background-light-color: #eceef9;
     --border-radius-1: 5px;
     --border-radius-2: 10px;
     --border-radius-3: 15px;
     --border-radius-4: 20px;
-    --color-active: rgba(255, 255, 255, 0.703);
-    --color-blue: rgb(16, 136, 213);
-    --color-green: #4caf50;
+    --color-active: #ffffffb3;
+    --color-blue: #1088d5;
+    --color-green: #51be55;
     --color-red: #f44336;
-    --color-dark: rgb(55, 55, 77);
-    --color-hover: rgba(220, 206, 200, 0.511);
+    --color-dark: #37374d;
+    --color-hover: #dccec882;
     --color-white: #fafafe;
-    --item-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.224);
+    --item-box-shadow: 5px 5px 20px #00000039;
     --item-padding: 10px;
 }
 
 body {
-    background: rgb(238 245 238);
+    background: #eef5ee;
     background: linear-gradient(
         90deg,
-        rgb(228 238 228),
-        rgb(233 224 220),
-        rgb(212 226 234)
+        #e4eee4,
+        #e9e0dc,
+        #d4e2ea
     );
     background-repeat: no-repeat;
     font-family: var(--Font-Principal);
@@ -48,7 +48,7 @@ body {
 .material-icons-sharp {
     user-select: none;
     -webkit-user-select: none;
-    text-shadow: -1px 1px 1.5px rgba(0, 0, 0, 0.297);
+    text-shadow: -1px 1px 1.5px #0000004c;
 }
 
 /* ------------------------------ Ventana modal ----------------------------- */
@@ -112,12 +112,11 @@ div.container_modal {
 
 .container_table::-webkit-scrollbar {
     background: transparent;
-    width: 6px;
+    height: 8px;
 }
 .container_table::-webkit-scrollbar-thumb {
-    width: 6px;
     border-radius: 10px;
-    background: #4f4f4f;
+    background: var(--color-blue);
 }
 
 .content_modal > div {
@@ -179,7 +178,7 @@ nav {
     margin: 0 auto;
     padding: 7px;
     border-radius: var(--border-radius-3);
-    background: rgba(255, 255, 255, 0.256);
+    background: #ffffffb3;
     backdrop-filter: blur(10px);
     -webtkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 20px #0000006b;
@@ -217,7 +216,7 @@ li:hover {
     padding: 5px;
     border-radius: var(--border-radius-2);
     background: var(--color-active);
-    box-shadow: 0 2px 3px rgb(0 0 0 / 12%), 0 -2px 3px rgb(100 100 100 / 5%);
+    box-shadow: 0 2px 3px #0000001f, 0 -2px 3px #6464640d;
 }
 
 .active_option::before {
@@ -277,15 +276,13 @@ section {
     scroll-padding-top: 40px;
 }
 
-body::-webkit-scrollbar,
-.container_table::-webkit-scrollbar {
+body::-webkit-scrollbar {
     height: 8px;
     width: 7px;
     border-radius: 10px;
     background: transparent;
 }
-body::-webkit-scrollbar-thumb,
-.container_table::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: var(--color-blue);
 }
@@ -304,12 +301,12 @@ body::-webkit-scrollbar-thumb,
 }
 
 /* -------------------------- Sections header items ------------------------- */
-.home_header {
+.section_header {
     margin-bottom: 10px;
 }
 
 .container_header_items {
-    display: grid;
+    margin-bottom: 20px;display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
 }
@@ -320,7 +317,6 @@ body::-webkit-scrollbar-thumb,
     align-items: center;
     justify-content: flex-start;
     bottom: 0;
-    margin-bottom: 15px;
     padding: 15px;
     border-radius: 20px;
     color: white;
@@ -347,16 +343,16 @@ body::-webkit-scrollbar-thumb,
     background: linear-gradient(to right, #8b0000, #dc3b30);
 }
 
-.header_item div span.material-icons-sharp {
+.header_item span.material-icons-sharp {
     text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
     font-size: 40pt;
 }
 
-.header_item div h5 {
+.header_item h5 {
     font-weight: 300;
 }
 
-.header_item div h5:first-child {
+.header_item h5:first-child {
     font-size: 17pt;
 }
 
@@ -370,7 +366,7 @@ body::-webkit-scrollbar-thumb,
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid;
 }
@@ -408,7 +404,7 @@ body::-webkit-scrollbar-thumb,
 
 .item:hover {
     transform: scale(1.03);
-    box-shadow: 0px 10px 10px rgb(0 0 0 / 30%);
+    box-shadow: 0px 10px 10px #0000004d;
     z-index: 2;
 }
 
@@ -507,54 +503,20 @@ body::-webkit-scrollbar-thumb,
 }
 
 /* ------------------------------ User section ------------------------------ */
-.container_actions_icons {
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    gap: 5px;
-}
-
-.container_actions_icons div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 0;
-    text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
-    color: white;
-    transition: transform 0.3s, box-shadow 0.3s, font-size 0.3s;
-    user-select: none;
+#agregar, #editar, #eliminar {
+    gap: 10px;
+    padding: 20px 10px;
     cursor: pointer;
-    gap: 0;
-    box-shadow: -3px 4px 10px #00000062;
 }
 
-.container_actions_icons div:hover {
-    font-size: 10pt;
-    transform: scale(1.05);
-    box-shadow: 0px 4px 13px #0000009c;
-    gap: 5px;
+#agregar {
+    background: linear-gradient(to right, #2e6531, #3ca440);
 }
-
-div.action_btn_active {
-    outline: 1.5px solid var(--color-white);
-    font-size: 10pt;
-    transform: scale(1.05);
-    user-select: none;
-    gap: 5px;
-    box-shadow: 0px 4px 7px #00000083;
+#editar {
+    background: linear-gradient(to right, #004981, #077fdb);
 }
-
-.container_actions_icons #agregar {
-    background: linear-gradient(to right, #2c692e, var(--color-green));
-}
-.container_actions_icons #editar {
-    background: linear-gradient(to right, rgb(12, 89, 137), var(--color-blue));
-}
-.container_actions_icons #eliminar {
-    background: linear-gradient(to right, #992921, var(--color-red));
+#eliminar {
+    background: linear-gradient(to right, #8b0000, #dc3b30);
 }
 
 /* --------------------------------- Subbody -------------------------------- */
@@ -589,12 +551,12 @@ th {
 }
 
 tbody tr:hover {
-    background: rgba(55, 56, 61, 0.057);
+    background: #37383d0f;
 }
 
 td {
-    max-width: 300px;
-    padding: 4px 10px 4px 0;
+    max-width: 200px;
+    padding: 5px 10px 5px 0;
     font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
@@ -602,4 +564,8 @@ td {
 }
 td:first-child {
     padding-left: 5px;
+}
+
+tbody td p {
+    overflow: hidden;
 }
