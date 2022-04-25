@@ -112,30 +112,51 @@ function vModal(title, content) {
     let tituloModal = modal.querySelector(".header_modal").querySelector("h2");
     let contentModal = modal.querySelector(".content_modal");
     let fragment = document.createDocumentFragment();
+
     let btn_modal_close = modal.querySelector(".btn_modal_close");
     btn_modal_close.addEventListener("click", () => {
         modal.classList.remove("modal");
+        modal.querySelector(".container_modal_hide").classList.remove("container_modal");
         document.querySelector("body").style.overflow = "unset";
         contentModal.innerHTML = "";
     })
 
     tituloModal.textContent = title;
-
-    content.forEach(c => {
-        let div = document.createElement("div");
-        let td = c.querySelectorAll("td");
-        td.forEach((t, index) => {
-            if (index !== 0) {
+    if (content.length > 0) {
+        content.forEach(c => {
+            let subtitle = document.createElement("h3");
+            let div = document.createElement("div");
+            let td = c.querySelectorAll("td");
+            td.forEach((t, index) => {
                 let input = document.createElement("input");
-                input.type = "text";
-                input.value = t.textContent;
+                if (index == 0) {
+                    idInput = t.querySelector("input").id;
+                    posNomTabla = idInput.search("-") + 1;
+                    nomTabla = idInput.slice(posNomTabla, idInput.length);
+                    subtitle.innerHTML = `${nomTabla[0].toUpperCase()}${nomTabla.slice(1, nomTabla.length)}`;
+                    input.type = "hidden";
+                    input.value = nomTabla;
+                } else {
+                    let nomLabel = document.createElement("p");
+                    nomLabel.innerHTML = t.id;
+                    div.appendChild(nomLabel);
+    
+                    input.type = "text";
+                    input.value = t.textContent;
+                }
                 div.appendChild(input);
-            }
+            })
+            fragment.appendChild(subtitle);
+            fragment.appendChild(div);
         })
-        fragment.appendChild(div);
-    })
+    } else {
+        let msj = document.createElement('h3');
+        msj.innerHTML = "Selecciona una casilla";
+        fragment.appendChild(msj);
+    }
     contentModal.appendChild(fragment);
     modal.classList.add("modal");
+    modal.querySelector(".container_modal_hide").classList.add("container_modal");
     document.querySelector("body").style.overflow = "hidden";
 }
 
@@ -157,7 +178,7 @@ btn_editar.addEventListener("click", () => {
     check.forEach((c, index) => {
         if (c.checked) tr[index] = c.parentNode.parentNode;
     })
-    vModal("Titulo de prueba", tr);
+    vModal("Editar", tr);
 })
 
 
@@ -190,15 +211,15 @@ const consultarPeliculas = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
-            <td>${idpelicula}</td>
-            <td>${titulooriginal}</td>
-            <td>${titulolatino}</td>
-            <td>${lanzamiento}</td>
-            <td>${resena}</td>
-            <td>${duracion} min</td>
-            <td>${tipo}</td>
-            <td>${pais}</td>
-            <td>${estado}</td>
+            <td id="idpelicula">${idpelicula}</td>
+            <td id="titulooriginal">${titulooriginal}</td>
+            <td id="titulolatino">${titulolatino}</td>
+            <td id="lanzamiento">${lanzamiento}</td>
+            <td id="resena">${resena}</td>
+            <td id="duracion">${duracion} min</td>
+            <td id="tipo">${tipo}</td>
+            <td id="pais">${pais}</td>
+            <td id="estado">${estado}</td>
         `;
         fragment.appendChild(tr);
     }
@@ -229,11 +250,11 @@ const consultarActores = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
-            <td>${idactor}</td>
-            <td>${nombre}</td>
-            <td>${fechanacimiento}</td>
-            <td>${descripcion}</td>
-            <td>${estado}</td>
+            <td id="idactor">${idactor}</td>
+            <td id="nombre">${nombre}</td>
+            <td id="fechanacimiento">${fechanacimiento}</td>
+            <td id="descripcion">${descripcion}</td>
+            <td id="estado">${estado}</td>
         `;
         fragment.appendChild(tr);
     }
@@ -264,11 +285,11 @@ const consultarDirectores = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
-            <td>${iddirector}</td>
-            <td>${nombre}</td>
-            <td>${fechanacimiento}</td>
-            <td>${descripcion}</td>
-            <td>${estado}</td>
+            <td id="iddirector">${iddirector}</td>
+            <td id="nombre">${nombre}</td>
+            <td id="fechanacimiento">${fechanacimiento}</td>
+            <td id="descripcion">${descripcion}</td>
+            <td id="estado">${estado}</td>
         `;
         fragment.appendChild(tr);
     }
@@ -297,9 +318,9 @@ const consultarGeneros = async () => {
         } = r;
         tr.innerHTML = `
             <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
-            <td>${idgenero}</td>
-            <td>${nombre}</td>
-            <td>${estado}</td>
+            <td id="idgenero">${idgenero}</td>
+            <td id="nombre">${nombre}</td>
+            <td id="estado">${estado}</td>
         `;
         fragment.appendChild(tr);
     }
