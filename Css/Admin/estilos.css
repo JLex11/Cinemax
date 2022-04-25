@@ -85,19 +85,18 @@ div.modal {
 div.container_modal {
     border-radius: var(--border-radius-4);
     background: var(--color-white);
-    
     transform: scale(1);
     opacity: 1;
     box-shadow: var(--item-box-shadow);
 }
 
 .header_modal {
-    gap: 10px;padding: 10px;display: flex;
+    gap: 10px;
+    padding: 10px;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    
-    
 }
 .header_modal .material-icons-sharp {
     cursor: pointer;
@@ -555,7 +554,7 @@ div.action_btn_active {
     background: linear-gradient(to right, rgb(12, 89, 137), var(--color-blue));
 }
 .container_actions_icons #eliminar {
-    user-select: none;background: linear-gradient(to right, #992921, var(--color-red));
+    background: linear-gradient(to right, #992921, var(--color-red));
 }
 
 /* --------------------------------- Subbody -------------------------------- */
@@ -571,10 +570,10 @@ div.action_btn_active {
 }
 
 .container_table {
-    border-radius: 10px;
     width: 100%;
-    overflow: auto;
     padding-bottom: 5px;
+    border-radius: 10px;
+    overflow: auto;
 }
 
 table {
@@ -582,23 +581,11 @@ table {
     min-width: 100%;
 }
 
-thead {
-    background: var(--color-blue);
-}
-
 th {
-    padding: 5px 10px;
-    border-bottom: 1px solid;
+    padding: 10px 15px 10px 0;
     font-weight: 400;
     text-align: start;
-    color: var(--color-white);
     white-space: nowrap;
-}
-th:first-child {
-    border-radius: 10px 0 0 10px;
-}
-th:last-child {
-    border-radius: 0 10px 10px 0;
 }
 
 tbody tr:hover {
@@ -606,21 +593,13 @@ tbody tr:hover {
 }
 
 td {
-    max-width: 200px;
-    padding-left: 10px;
-    padding-right: 10px;
+    max-width: 300px;
+    padding: 4px 10px 4px 0;
     font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
     white-space: nowrap;
 }
 td:first-child {
-    border-radius: 10px 0 0 10px;
     padding-left: 5px;
-}
-td:last-child {
-    border-radius: 0 10px 10px 0;
-}
-td label {
-    padding: 0 95% 0 0;
 }
