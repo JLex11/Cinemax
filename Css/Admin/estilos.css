@@ -407,10 +407,14 @@ justify-content: flex-start;}
 
 .header_item h5 {
     font-weight: 300;
+    transition: font-size .3s;
 }
 
 .header_item h5:first-child {
-    font-size: 17pt;
+    font-size: 16pt;
+}
+.header_item h5:last-child {
+    font-size: 9pt;
 }
 
 /* ------------------------------ Section body ------------------------------ */
@@ -622,7 +626,7 @@ tbody tr:hover {
 }
 
 td {
-    max-width: 160px;
+    max-width: 140px;
     padding: 5px 10px 5px 0;
     font-size: 12pt;
     font-weight: 300;

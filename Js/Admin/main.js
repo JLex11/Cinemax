@@ -58,7 +58,7 @@ sections.forEach((section) => observer.observe(section));
 
 /* ------------------------- Cambiar color a header ------------------------- */
 window.addEventListener("scroll", () => {
-    if (document.documentElement.scrollTop > 40) {
+    if (document.documentElement.scrollTop >= 40) {
         document.querySelector("header").style.backgroundColor =
             "rgb(255 255 255 / 70%)";
         document.querySelector("header").classList.add("bdFilter_Header");

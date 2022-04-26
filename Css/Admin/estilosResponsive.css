@@ -13,23 +13,32 @@
         width: 60px;
     }
 
-    .container_header_items {
+    div#chi2 {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
 
-    .header_item {
+    div#chi2 .header_item {
         flex-direction: column;
         justify-content: center;
         padding: 7px;
     }
 
-    .header_item h5 {
+    .header_item span.material-icons-sharp {
+        font-size: 25pt;
+    }
+
+    div#chi2 .header_item h5 {
         text-align: center;
     }
 
-    .header_item h5:last-child {
+    .header_item h5:first-child {
+        font-size: 14pt;
+    }
+
+    div#chi2 .header_item h5:last-child {
         display: none;
     }
+
 
     #agregar, #editar, #eliminar {
         gap: 0;
