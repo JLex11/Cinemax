@@ -1,5 +1,4 @@
 /* Imports */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;600;700;800&display=swap");
 
 * {
@@ -15,7 +14,6 @@
 
 :root {
     --Font-Principal: "Poppins", sans-serif;
-    /* --Font-Principal: "Plus Jakarta Sans", sans-serif; */
     --background-light-color: #eceef9;
     --border-radius-1: 5px;
     --border-radius-2: 10px;
@@ -105,10 +103,14 @@ div.container_modal {
     overflow: auto;
 }
 
+.content_modal h3 {
+    padding-left: 5px;
+}
+
 .content_modal > div {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin: 15px 0;
+    
+    
+    margin: 5px 0 15px 0;
     padding: 10px;
     border-radius: var(--border-radius-4);
     box-shadow: var(--item-box-shadow);
@@ -116,7 +118,7 @@ div.container_modal {
 
 .content_modal > div > div {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
 }
 
@@ -137,6 +139,63 @@ div.container_modal {
     outline: 2px solid var(--color-blue);
 }
 
+/* --------------------------------- Loader --------------------------------- */
+div.loader {
+    z-index: 100;
+    display: flex;
+}
+.loader_hide {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100vh;
+    background: rgb(0 0 0 / 10%);
+}
+
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 10px;
+}
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid var(--color-blue);
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: var(--color-blue) transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 /* --------------------------------- Header --------------------------------- */
 header {
     display: flex;
@@ -150,8 +209,8 @@ header {
 }
 
 .bdFilter_Header {
-    backdrop-filter: blur(10px);
-    -webtkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(2px);
+    -webtkit-backdrop-filter: blur(2px);
 }
 
 h1 {
@@ -174,9 +233,9 @@ nav {
     margin: 0 auto;
     padding: 7px;
     border-radius: var(--border-radius-3);
-    background: #ffffffb3;
-    backdrop-filter: blur(10px);
-    -webtkit-backdrop-filter: blur(10px);
+    background: #ffffff41;
+    backdrop-filter: blur(3px);
+    -webtkit-backdrop-filter: blur(3px);
     box-shadow: 0 10px 20px #0000006b;
 }
 
@@ -191,8 +250,9 @@ ul li {
     align-items: center;
     justify-content: center;
     padding-bottom: 3px;
-    transition: background 0.3s, border-radius 0.5s;
-    gap: 2px;
+    box-shadow: 0 0 1px #00000009, 0 0 0px #64646404;
+    transition: background .3s, border-radius .3s, transform .3s, box-shadow .3s;
+    
     cursor: pointer;
 }
 
@@ -206,13 +266,10 @@ li:hover {
 }
 
 .active_option {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    padding: 5px;
+    transform: scale(1.1);
     border-radius: var(--border-radius-2);
     background: var(--color-active);
-    box-shadow: 0 2px 3px #0000001f, 0 -2px 3px #6464640d;
+    box-shadow: 0 2px 3px #0000002d, 0 -2px 3px #6464640d;
 }
 
 .active_option::before {
@@ -299,7 +356,7 @@ body::-webkit-scrollbar-thumb {
 /* -------------------------- Sections header items ------------------------- */
 .section_header {
     display: flex;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     justify-content: flex-start;
 }
 
@@ -315,14 +372,14 @@ body::-webkit-scrollbar-thumb {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    
     bottom: 0;
     padding: 15px;
     border-radius: 20px;
     color: white;
     transition: bottom 0.3s ease-in-out, box-shadow 0.5s ease, transform 0.2s;
     box-shadow: 3px 7px 13px #00000062, -3px -3px 15px #fefefe2a inset;
-}
+justify-content: flex-start;}
 
 .header_item:hover {
     bottom: 5px;
@@ -565,7 +622,7 @@ tbody tr:hover {
 }
 
 td {
-    max-width: 200px;
+    max-width: 160px;
     padding: 5px 10px 5px 0;
     font-size: 12pt;
     font-weight: 300;
@@ -574,8 +631,76 @@ td {
 }
 td:first-child {
     padding-left: 5px;
+    border-radius: 7px 0 0 7px;
+}
+td:last-child {
+    border-radius: 0 7px 7px 0;
 }
 
 tbody td p {
     overflow: hidden;
+}
+
+.table_check {
+    display: none;
+}
+
+.custom_checkbox {
+    width: 50px;
+    height: 25px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.397) inset;
+    position: relative;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.custom_checkbox::after {
+    content: "";
+    width: calc(50% - 4px);
+    height: calc(100% - 4px);
+    position: absolute;
+    border-radius: 10px;
+    left: 2px;
+    background: rgb(191, 191, 191);
+    box-shadow: 1px 0px 4px rgba(104, 104, 104, 0.726);
+    transition: left 0.3s, background 0.5s, box-shadow 0.5s;
+}
+
+.table_check:checked + label > .custom_checkbox::after {
+    border-radius: 10px;
+    left: calc(50% + 2px);
+    background: var(--color-blue);
+    box-shadow: -1px 0px 4px #1088d5;
+}
+
+.pre-loading_tr {
+    box-shadow: 20px 0px 20px var(--color-white) inset;
+    background: linear-gradient(
+        to right,
+        #e5e5e589,
+        #e5e5e5bb,
+        #a5a5a5,
+        #e5e5e5c7,
+        #e5e5e578,
+        #e5e5e51b
+    );
+    background-size: 400% 400%;
+    animation: preLoadingTr 2s ease infinite;
+}
+
+@keyframes preLoadingTr {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.pre-loading_tr > td {
+    border-radius: none !important;
 }

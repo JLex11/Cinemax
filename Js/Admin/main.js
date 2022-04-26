@@ -4,44 +4,69 @@ let sections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
 let sectionsX = [];
-sections.forEach((section, index) => sectionsX[index] = section.getBoundingClientRect());
+sections.forEach(
+    (section, index) => (sectionsX[index] = section.getBoundingClientRect())
+);
 
 options.forEach((op, index) => {
-    op.addEventListener("click", ()=> {//indica al scroll a que posicion en el eje x debe ir
+    op.addEventListener("click", () => {
+        //indica al scroll a que posicion en el eje x debe ir
         if (sectionsX[index]) main.scrollLeft = sectionsX[index].x;
     });
 });
 
 let indexSectionActiva;
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
-            indexSectionActiva = [...sections].indexOf(entry.target);
-            options.forEach((op, index) => {
-                window.scrollTo({top: 0});
-                if (index == indexSectionActiva) op.classList.add("active_option");
-                else op.classList.remove("active_option");
-            });
-        }
-    })
-}, {
-    root: main,
-    threshold: 0.7
-})
+let fEjecutada = true;
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
+                indexSectionActiva = [...sections].indexOf(entry.target);
+                options.forEach((op, index) => {
+                    window.scrollTo({ top: 0 });
+                    if (index == indexSectionActiva)
+                        op.classList.add("active_option");
+                    else op.classList.remove("active_option");
+                });
 
-sections.forEach(section => observer.observe(section));
+                var loader = document.getElementById("loader");
+                if (entry.target.id == "data_section" && indexSectionActiva == 2) {
+                    /* fEjecutada = true; dejar en true para ejecutar cada que es intersectada */
+                    if (fEjecutada) {
+                        loader.classList.toggle("loader");
+                        consultarPeliculas();
+                        consultarActores();
+                        consultarDirectores();
+                        consultarGeneros();
+                        loader.classList.toggle("loader");
+                        fEjecutada = false;
+                    }
+                } else {
+                    loader.classList.remove("loader");
+                }
+            }
+        });
+    },
+    {
+        root: main,
+        threshold: 0.7,
+    }
+);
+
+sections.forEach((section) => observer.observe(section));
 
 /* ------------------------- Cambiar color a header ------------------------- */
-window.addEventListener("scroll", ()=>{
+window.addEventListener("scroll", () => {
     if (document.documentElement.scrollTop > 40) {
-        document.querySelector("header").style.backgroundColor = "rgb(255 255 255 / 70%)";
+        document.querySelector("header").style.backgroundColor =
+            "rgb(255 255 255 / 70%)";
         document.querySelector("header").classList.add("bdFilter_Header");
     } else {
         document.querySelector("header").style.backgroundColor = "transparent";
         document.querySelector("header").classList.remove("bdFilter_Header");
     }
-})
+});
 
 /* --------------------------------- Grafico -------------------------------- */
 function crearGrafico(contenedor, labels, parametros, valores) {
@@ -56,7 +81,7 @@ function crearGrafico(contenedor, labels, parametros, valores) {
                     label: labels[0],
                     data: valores[0],
                     backgroundColor: ["#077fdb", "green", "red"],
-                }
+                },
             ],
         },
     });
@@ -66,14 +91,8 @@ function crearGrafico(contenedor, labels, parametros, valores) {
 window.addEventListener("load", () => {
     contenedor = "grafico";
     labels = ["Total"];
-    parametros = [
-        "Total",
-        "Registrados",
-        "No registrados"
-    ];
-    valores = [
-        [5000, 3500, 1500]
-    ];
+    parametros = ["Total", "Registrados", "No registrados"];
+    valores = [[5000, 3500, 1500]];
     crearGrafico(contenedor, labels, parametros, valores);
 });
 
@@ -92,18 +111,13 @@ async function peticionFetch(parametros, url) {
 }
 
 // ?Se ejecuta al cargar toda la pagina
-window.addEventListener("load", () => {
-    consultarPeliculas();
-    consultarActores();
-    consultarDirectores();
-    consultarGeneros();
-});
-
+window.addEventListener("load", () => {});
 
 /* -------------------------- Activar los checkbox -------------------------- */
 function actCheckBox() {
-    if (check[0].style.display == "none") check.forEach(c => c.style.display = "block");
-    else check.forEach(c => c.style.display = "none");
+    if (check[0].style.display == "none")
+        check.forEach((c) => (c.style.display = "block"));
+    else check.forEach((c) => (c.style.display = "none"));
 }
 
 /* ------------------------------ Ventana modal ----------------------------- */
@@ -116,14 +130,16 @@ function vModal(title, content) {
     let btn_modal_close = modal.querySelector(".btn_modal_close");
     btn_modal_close.addEventListener("click", () => {
         modal.classList.remove("modal");
-        modal.querySelector(".container_modal_hide").classList.remove("container_modal");
+        modal
+            .querySelector(".container_modal_hide")
+            .classList.remove("container_modal");
         document.querySelector("body").style.overflow = "unset";
         contentModal.innerHTML = "";
-    })
+    });
 
     tituloModal.textContent = title;
     if (content.length > 0) {
-        content.forEach(c => {
+        content.forEach((c) => {
             let subtitle = document.createElement("h3");
             let div = document.createElement("div");
             let td = c.querySelectorAll("td");
@@ -132,16 +148,17 @@ function vModal(title, content) {
                 let input = document.createElement("input");
 
                 if (index == 0) {
-
                     idInput = t.querySelector("input").id;
                     posNomTabla = idInput.search("-") + 1;
                     nomTabla = idInput.slice(posNomTabla, idInput.length);
-                    subtitle.innerHTML = `${nomTabla[0].toUpperCase()}${nomTabla.slice(1, nomTabla.length)}`;
+                    subtitle.innerHTML = `${nomTabla[0].toUpperCase()}${nomTabla.slice(
+                        1,
+                        nomTabla.length
+                    )}`;
                     input.type = "hidden";
                     input.value = nomTabla;
                     divLabel.style.display = "none";
                 } else {
-
                     let nomLabel = document.createElement("p");
                     nomLabel.innerHTML = t.id;
                     divLabel.appendChild(nomLabel);
@@ -150,18 +167,20 @@ function vModal(title, content) {
                     divLabel.appendChild(input);
                 }
                 div.appendChild(divLabel);
-            })
+            });
             fragment.appendChild(subtitle);
             fragment.appendChild(div);
-        })
+        });
     } else {
-        let msj = document.createElement('h3');
+        let msj = document.createElement("h3");
         msj.innerHTML = "Selecciona una casilla";
         fragment.appendChild(msj);
     }
     contentModal.appendChild(fragment);
     modal.classList.add("modal");
-    modal.querySelector(".container_modal_hide").classList.add("container_modal");
+    modal
+        .querySelector(".container_modal_hide")
+        .classList.add("container_modal");
     document.querySelector("body").style.overflow = "hidden";
 }
 
@@ -169,11 +188,11 @@ function vModal(title, content) {
 let btn_eliminar = document.getElementById("eliminar");
 btn_eliminar.addEventListener("click", () => {
     let check = document.querySelectorAll(".table_check");
-    check.forEach(c => {
+    check.forEach((c) => {
         if (c.checked == true) c.parentNode.parentNode.remove();
         c.checked = false;
-    })
-})
+    });
+});
 
 /* --------------------------------- Editar --------------------------------- */
 let btn_editar = document.getElementById("editar");
@@ -182,10 +201,9 @@ btn_editar.addEventListener("click", () => {
     let tr = [];
     check.forEach((c, index) => {
         if (c.checked) tr[index] = c.parentNode.parentNode;
-    })
+    });
     vModal("Editar", tr);
-})
-
+});
 
 /* -------------------------------- Consultar ------------------------------- */
 /* --------------------------- Consultar peliculas -------------------------- */
@@ -215,7 +233,12 @@ const consultarPeliculas = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idpelicula}-pelicula" class="table_check"></td>
+            <td>
+            <input type="checkbox" id="${idpelicula}-pelicula" class="table_check">
+            <label for="${idpelicula}-pelicula">
+                <div class="custom_checkbox"></div>
+            </label>
+            </td>
             <td id="idpelicula"><p>${idpelicula}</p></td>
             <td id="titulooriginal"><p>${titulooriginal}</p></td>
             <td id="titulolatino"><p>${titulolatino}</p></td>
@@ -254,7 +277,12 @@ const consultarActores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idactor}-actor" class="table_check"></td>
+            <td>
+            <input type="checkbox" id="${idactor}-actor" class="table_check">
+            <label for="${idactor}-actor">
+                <div class="custom_checkbox"></div>
+            </label>
+            </td>
             <td id="idactor"><p>${idactor}</p></td>
             <td id="nombre"><p>${nombre}</p></td>
             <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
@@ -289,7 +317,12 @@ const consultarDirectores = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${iddirector}-director" class="table_check"></td>
+            <td>
+            <input type="checkbox" id="${iddirector}-director" class="table_check">
+            <label for="${iddirector}-director">
+                <div class="custom_checkbox"></div>
+            </label>
+            </td>
             <td id="iddirector"><p>${iddirector}</p></td>
             <td id="nombre"><p>${nombre}</p></td>
             <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
@@ -322,7 +355,12 @@ const consultarGeneros = async () => {
             estado,
         } = r;
         tr.innerHTML = `
-            <td><input type="checkbox" id="${idgenero}-genero" class="table_check"></td>
+            <td>
+            <input type="checkbox" id="${idgenero}-genero" class="table_check">
+            <label for="${idgenero}-genero">
+                <div class="custom_checkbox"></div>
+            </label>
+            </td>
             <td id="idgenero"><p>${idgenero}</p></td>
             <td id="nombre"><p>${nombre}</p></td>
             <td id="estado"><p>${estado}</p></td>
