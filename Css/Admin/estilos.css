@@ -34,12 +34,7 @@
 
 body {
     background: #eef5ee;
-    background: linear-gradient(
-        90deg,
-        #e4eee4,
-        #e9e0dc,
-        #d4e2ea
-    );
+    background: linear-gradient(90deg, #e4eee4, #e9e0dc, #d4e2ea);
     background-repeat: no-repeat;
     font-family: var(--Font-Principal);
     min-height: 100vh;
@@ -110,15 +105,6 @@ div.container_modal {
     overflow: auto;
 }
 
-.container_table::-webkit-scrollbar {
-    background: transparent;
-    height: 8px;
-}
-.container_table::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: var(--color-blue);
-}
-
 .content_modal > div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -128,16 +114,26 @@ div.container_modal {
     box-shadow: var(--item-box-shadow);
 }
 
-.content_modal > div > input {
-    width: 100%;
-    padding: 10px;
+.content_modal > div > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.content_modal > div > div > p {
+    padding: 5px;
+    text-transform: capitalize;
+}
+
+.content_modal > div > div > input {
+    padding: 10px 5px;
     border: 0;
+    width: 100%;
     border-radius: var(--border-radius-1);
-    outline: none;
     background: transparent;
 }
 
-.content_modal > div > input:focus {
+.content_modal > div > div > input:focus {
     outline: 2px solid var(--color-blue);
 }
 
@@ -247,7 +243,7 @@ li:hover {
 main {
     display: flex;
     width: 100%;
-    max-width: 1300px;
+    max-width: 1500px;
     margin: 0 auto;
     overflow-x: auto;
     flex-direction: row;
@@ -302,13 +298,17 @@ body::-webkit-scrollbar-thumb {
 
 /* -------------------------- Sections header items ------------------------- */
 .section_header {
-    margin-bottom: 10px;
+    display: flex;
+    margin-bottom: 40px;
+    justify-content: flex-start;
 }
 
 .container_header_items {
-    margin-bottom: 20px;display: grid;
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
+    width: 100%;
+    max-width: 900px;
 }
 
 .header_item {
@@ -503,7 +503,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* ------------------------------ User section ------------------------------ */
-#agregar, #editar, #eliminar {
+#agregar,
+#editar,
+#eliminar {
     gap: 10px;
     padding: 20px 10px;
     cursor: pointer;
@@ -536,6 +538,14 @@ body::-webkit-scrollbar-thumb {
     padding-bottom: 5px;
     border-radius: 10px;
     overflow: auto;
+}
+.container_table::-webkit-scrollbar {
+    background: transparent;
+    height: 7px;
+}
+.container_table::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background: var(--color-blue);
 }
 
 table {

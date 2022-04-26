@@ -128,23 +128,28 @@ function vModal(title, content) {
             let div = document.createElement("div");
             let td = c.querySelectorAll("td");
             td.forEach((t, index) => {
+                let divLabel = document.createElement("div");
                 let input = document.createElement("input");
+
                 if (index == 0) {
+
                     idInput = t.querySelector("input").id;
                     posNomTabla = idInput.search("-") + 1;
                     nomTabla = idInput.slice(posNomTabla, idInput.length);
                     subtitle.innerHTML = `${nomTabla[0].toUpperCase()}${nomTabla.slice(1, nomTabla.length)}`;
                     input.type = "hidden";
                     input.value = nomTabla;
+                    divLabel.style.display = "none";
                 } else {
+
                     let nomLabel = document.createElement("p");
                     nomLabel.innerHTML = t.id;
-                    div.appendChild(nomLabel);
-    
+                    divLabel.appendChild(nomLabel);
                     input.type = "text";
                     input.value = t.textContent;
+                    divLabel.appendChild(input);
                 }
-                div.appendChild(input);
+                div.appendChild(divLabel);
             })
             fragment.appendChild(subtitle);
             fragment.appendChild(div);
