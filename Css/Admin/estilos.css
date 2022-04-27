@@ -3,7 +3,6 @@
 
 * {
     scroll-behavior: smooth;
-
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -15,10 +14,10 @@
 :root {
     --Font-Principal: "Poppins", sans-serif;
     --background-light-color: #eceef9;
-    --border-radius-1: 5px;
-    --border-radius-2: 10px;
-    --border-radius-3: 15px;
-    --border-radius-4: 20px;
+    --border-radius-5px: 5px;
+    --border-radius-10px: 10px;
+    --border-radius-15px: 15px;
+    --border-radius-20px: 20px;
     --color-active: #ffffffb3;
     --color-blue: #1088d5;
     --color-green: #51be55;
@@ -74,7 +73,7 @@ div.modal {
 }
 
 div.container_modal {
-    border-radius: var(--border-radius-4);
+    border-radius: var(--border-radius-20px);
     background: var(--color-white);
     transform: scale(1);
     opacity: 1;
@@ -110,7 +109,7 @@ div.container_modal {
     width: 90vw;
     margin: 5px 0 15px 0;
     padding: 10px;
-    border-radius: var(--border-radius-4);
+    border-radius: var(--border-radius-20px);
     box-shadow: var(--item-box-shadow);
 }
 
@@ -130,7 +129,7 @@ div.container_modal {
     padding: 10px 5px;
     border: 0;
     width: 100%;
-    border-radius: var(--border-radius-1);
+    border-radius: var(--border-radius-5px);
     background: transparent;
 }
 
@@ -231,7 +230,7 @@ nav {
     width: -moz-fit-content;
     margin: 0 auto;
     padding: 7px;
-    border-radius: var(--border-radius-3);
+    border-radius: var(--border-radius-15px);
     background: #ffffff41;
     backdrop-filter: blur(3px);
     -webtkit-backdrop-filter: blur(3px);
@@ -262,12 +261,12 @@ li img {
 
 li:hover {
     background: var(--color-hover);
-    border-radius: var(--border-radius-1);
+    border-radius: var(--border-radius-5px);
 }
 
 .active_option {
     transform: scale(1.1);
-    border-radius: var(--border-radius-2);
+    border-radius: var(--border-radius-10px);
     background: var(--color-active);
     box-shadow: 0 2px 3px #0000002d, 0 -2px 3px #6464640d;
 }
@@ -278,7 +277,7 @@ li:hover {
     bottom: 0px;
     width: 40%;
     height: 4px;
-    border-radius: var(--border-radius-1);
+    border-radius: var(--border-radius-5px);
     background: var(--color-blue);
 }
 
@@ -458,7 +457,7 @@ body::-webkit-scrollbar-thumb {
 .item {
     display: inline-block;
     padding: var(--item-padding);
-    border-radius: var(--border-radius-4);
+    border-radius: var(--border-radius-20px);
     background: var(--color-white);
     box-shadow: var(--item-box-shadow);
     transition: box-shadow 0.5s 0.1s ease, transform 0.3s 0.1s;
@@ -589,7 +588,7 @@ body::-webkit-scrollbar-thumb {
     justify-content: center;
     width: 100%;
     padding: var(--item-padding);
-    border-radius: var(--border-radius-4);
+    border-radius: var(--border-radius-20px);
     background: var(--color-white);
     overflow: hidden;
     box-shadow: var(--item-box-shadow);
@@ -598,7 +597,7 @@ body::-webkit-scrollbar-thumb {
 .container_table {
     width: 100%;
     padding-bottom: 5px;
-    border-radius: 10px;
+    border-radius: var(--border-radius-10px);
     overflow: auto;
 }
 .container_table::-webkit-scrollbar {
@@ -606,7 +605,7 @@ body::-webkit-scrollbar-thumb {
     height: 7px;
 }
 .container_table::-webkit-scrollbar-thumb {
-    border-radius: 15px;
+    border-radius: var(--border-radius-15px);
     background: var(--color-blue);
 }
 
@@ -653,7 +652,7 @@ tbody td p {
 .custom_checkbox {
     width: 50px;
     height: 25px;
-    border-radius: 15px;
+    border-radius: var(--border-radius-15px);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.397) inset;
     position: relative;
     padding: 2px;
@@ -665,7 +664,7 @@ tbody td p {
     width: calc(50% - 4px);
     height: calc(100% - 4px);
     position: absolute;
-    border-radius: 10px;
+    border-radius: var(--border-radius-10px);
     left: 2px;
     background: rgb(191, 191, 191);
     box-shadow: 1px 0px 4px rgba(104, 104, 104, 0.726);
@@ -673,7 +672,7 @@ tbody td p {
 }
 
 .table_check:checked + label > .custom_checkbox::after {
-    border-radius: 10px;
+    border-radius: var(--border-radius-10px);
     left: calc(50% + 2px);
     background: var(--color-blue);
     box-shadow: -1px 0px 4px #1088d5;

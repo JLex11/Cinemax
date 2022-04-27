@@ -23,7 +23,7 @@
         padding: 7px;
     }
 
-    .header_item span.material-icons-sharp {
+    div#chi2 .header_item span.material-icons-sharp {
         font-size: 25pt;
     }
 
@@ -31,7 +31,7 @@
         text-align: center;
     }
 
-    .header_item h5:first-child {
+    div#chi2 .header_item h5:first-child {
         font-size: 14pt;
     }
 
