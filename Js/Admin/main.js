@@ -16,7 +16,7 @@ options.forEach((op, index) => {
 });
 
 let indexSectionActiva;
-let fEjecutada = true;
+let fEjecutada = false;
 var loader = document.getElementById("loader");
 const observer = new IntersectionObserver(
     (entries) => {
@@ -33,16 +33,16 @@ const observer = new IntersectionObserver(
 
                 
                 if (entry.target.id == "data_section" && indexSectionActiva == 2) {
-                    /* fEjecutada = true; */
+                    /* fEjecutada = false; */
                     /* dejar en true para ejecutar cada que es intersectada */
-                    if (fEjecutada) {
-                        loader.classList.toggle("loader");
+                    if (!fEjecutada) {
+                        loader.classList.add("loader");
                         consultarPeliculas();
                         consultarActores();
                         consultarDirectores();
                         consultarGeneros();
-                        loader.classList.toggle("loader");
-                        fEjecutada = false;
+                        //se desactiva el loader desde una de las funciones
+                        fEjecutada = true;
                     }
                 } else {
                     loader.classList.remove("loader");
@@ -254,6 +254,9 @@ const consultarPeliculas = async () => {
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
+
+    //desactivar loader
+    loader.classList.remove("loader");
 };
 
 /* ---------------------------- Consultar actores --------------------------- */
@@ -294,6 +297,8 @@ const consultarActores = async () => {
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
+    //desactivar loader
+    loader.classList.remove("loader");
 };
 
 /* -------------------------- Consultar directores -------------------------- */
@@ -334,6 +339,8 @@ const consultarDirectores = async () => {
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
+    //desactivar loader
+    loader.classList.remove("loader");
 };
 
 /* ---------------------------- Consultar generos --------------------------- */
@@ -370,4 +377,6 @@ const consultarGeneros = async () => {
         fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
+    //desactivar loader
+    loader.classList.remove("loader");
 };
