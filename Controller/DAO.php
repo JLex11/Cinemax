@@ -5,19 +5,19 @@ class Pelicula {
         include "../Connection/conexion.php";
         
         if ($opc == '1') {
-            $sql = "SELECT \n"
-            . "pelicula.idpelicula,\n"
-            . "pelicula.titulooriginal,\n"
-            . "pelicula.titulolatino,\n"
-            . "pelicula.foto,\n"
-            . "pelicula.lanzamiento,\n"
-            . "pelicula.duracion,\n"
-            . "pelicula.resena,\n"
-            . "pelicula.estado,\n"
-            . "tipo.tipo,\n"
-            . "pais.nombre AS pais\n"
-            . "FROM pelicula\n"
-            . "INNER JOIN tipo ON pelicula.idtipo = tipo.idtipo\n"        
+            $sql = "SELECT "
+            . "pelicula.idpelicula,"
+            . "pelicula.titulooriginal,"
+            . "pelicula.titulolatino,"
+            . "pelicula.foto,"
+            . "pelicula.lanzamiento,"
+            . "pelicula.duracion,"
+            . "pelicula.resena,"
+            . "pelicula.estado,"
+            . "tipo.tipo,"
+            . "pais.nombre AS pais"
+            . "FROM pelicula"
+            . "INNER JOIN tipo ON pelicula.idtipo = tipo.idtipo"        
             . "INNER JOIN pais ON pelicula.idpais = pais.idpais;";
         }
 
