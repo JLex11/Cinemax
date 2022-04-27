@@ -7,6 +7,11 @@ let sectionsX = [];
 sections.forEach(
     (section, index) => (sectionsX[index] = section.getBoundingClientRect())
 );
+window.addEventListener("resize", () => {
+    sections.forEach(
+        (section, index) => (sectionsX[index] = section.getBoundingClientRect())
+    );
+})
 
 options.forEach((op, index) => {
     op.addEventListener("click", () => {
@@ -98,7 +103,7 @@ window.addEventListener("load", () => {
     crearGrafico(contenedor, labels, parametros, valores);
 });
 
-/* ---------------------------- Manipulacion de datos ---------------------------- */
+/* ---------------------------- Fetch ---------------------------- */
 // ?Fetch
 async function peticionFetch(parametros, url) {
     let peticion = await fetch(url, {
@@ -111,9 +116,6 @@ async function peticionFetch(parametros, url) {
         console.log(error);
     }
 }
-
-// ?Se ejecuta al cargar toda la pagina
-window.addEventListener("load", () => {});
 
 /* -------------------------- Activar los checkbox -------------------------- */
 function actCheckBox() {

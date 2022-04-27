@@ -6,11 +6,14 @@
 
     nav li:hover {
         background: var(--color-active);
-        border-radius: var(--border-radius-2);
     }
 
     nav li img {
         width: 60px;
+    }
+
+    main {
+        scroll-snap-type: x proximity;
     }
 
     div#chi2 {
@@ -47,5 +50,9 @@
 
     section {
         padding: 0 10px 100px 10px;
+    }
+
+    .container_items {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     }
 }
