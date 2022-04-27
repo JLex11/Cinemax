@@ -121,7 +121,7 @@ div.container_modal {
 }
 
 .content_modal > div > div > p {
-    padding: 5px;
+    white-space: nowrap;padding: 5px;
     text-transform: capitalize;
 }
 
@@ -653,6 +653,7 @@ th {
     font-weight: 400;
     text-align: start;
     white-space: nowrap;
+    max-width: 120px;
 }
 
 tbody tr:hover {
@@ -660,7 +661,7 @@ tbody tr:hover {
 }
 
 td {
-    max-width: 140px;
+    max-width: 120px;
     padding: 5px 10px 5px 0;
     font-size: 12pt;
     font-weight: 300;

@@ -140,8 +140,8 @@ function vModal(title, content) {
         document.querySelector("body").style.overflow = "unset";
         contentModal.innerHTML = "";
     });
-
     tituloModal.textContent = title;
+    
     if (content.length > 0) {
         content.forEach((c) => {
             let subtitle = document.createElement("h3");
@@ -164,7 +164,7 @@ function vModal(title, content) {
                     divLabel.style.display = "none";
                 } else {
                     let nomLabel = document.createElement("p");
-                    nomLabel.innerHTML = t.id;
+                    nomLabel.innerHTML = t.dataset.label;
                     divLabel.appendChild(nomLabel);
                     input.type = "text";
                     input.value = t.textContent;
@@ -230,11 +230,14 @@ const consultarPeliculas = async () => {
             titulooriginal,
             titulolatino,
             lanzamiento,
-            resena,
             duracion,
+            resena,
             tipo,
             pais,
             estado,
+            cantvistas,
+            cantlikes,
+            cantcomentarios
         } = r;
         tr.innerHTML = `
             <td>
@@ -243,15 +246,18 @@ const consultarPeliculas = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td id="idpelicula"><p>${idpelicula}</p></td>
-            <td id="titulooriginal"><p>${titulooriginal}</p></td>
-            <td id="titulolatino"><p>${titulolatino}</p></td>
-            <td id="lanzamiento"><p>${lanzamiento}</p></td>
-            <td id="resena"><p>${resena}</p></td>
-            <td id="duracion"><p>${duracion}</p></td>
-            <td id="tipo"><p>${tipo}</p></td>
-            <td id="pais"><p>${pais}</p></td>
-            <td id="estado"><p>${estado}</p></td>
+            <td data-label="id pelicula"><p>${idpelicula}</p></td>
+            <td data-label="titulo original"><p>${titulooriginal}</p></td>
+            <td data-label="titulo latino"><p>${titulolatino}</p></td>
+            <td data-label="lanzamiento"><p>${lanzamiento}</p></td>
+            <td data-label="duracion(min)"><p>${duracion}</p></td>
+            <td data-label="resena"><p>${resena}</p></td>
+            <td data-label="tipo"><p>${tipo}</p></td>
+            <td data-label="pais"><p>${pais}</p></td>
+            <td data-label="estado"><p>${estado}</p></td>
+            <td data-label="cantidad vistas"><p>${cantvistas}</p></td>
+            <td data-label="cantidad likes"><p>${cantlikes}</p></td>
+            <td data-label="cantidad comentarios"><p>${cantcomentarios}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -290,11 +296,11 @@ const consultarActores = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td id="idactor"><p>${idactor}</p></td>
-            <td id="nombre"><p>${nombre}</p></td>
-            <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
-            <td id="descripcion"><p>${descripcion}</p></td>
-            <td id="estado"><p>${estado}</p></td>
+            <td data-label="idactor"><p>${idactor}</p></td>
+            <td data-label="nombre"><p>${nombre}</p></td>
+            <td data-label="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td data-label="descripcion"><p>${descripcion}</p></td>
+            <td data-label="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -332,11 +338,11 @@ const consultarDirectores = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td id="iddirector"><p>${iddirector}</p></td>
-            <td id="nombre"><p>${nombre}</p></td>
-            <td id="fechanacimiento"><p>${fechanacimiento}</p></td>
-            <td id="descripcion"><p>${descripcion}</p></td>
-            <td id="estado"><p>${estado}</p></td>
+            <td data-label="iddirector"><p>${iddirector}</p></td>
+            <td data-label="nombre"><p>${nombre}</p></td>
+            <td data-label="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td data-label="descripcion"><p>${descripcion}</p></td>
+            <td data-label="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -372,9 +378,9 @@ const consultarGeneros = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td id="idgenero"><p>${idgenero}</p></td>
-            <td id="nombre"><p>${nombre}</p></td>
-            <td id="estado"><p>${estado}</p></td>
+            <td data-label="idgenero"><p>${idgenero}</p></td>
+            <td data-label="nombre"><p>${nombre}</p></td>
+            <td data-label="estado"><p>${estado}</p></td>
         `;
         fragment.appendChild(tr);
     }
