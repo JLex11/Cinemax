@@ -32,7 +32,7 @@
 
 body {
     background: #eef5ee;
-    background: linear-gradient(90deg, #e4eee4, #e9e0dc, #d4e2ea);
+    background: linear-gradient(90deg, #f3f8f3, #f4f0ef, #f1f5f8);
     background-repeat: no-repeat;
     font-family: var(--Font-Principal);
     min-height: 100vh;
@@ -106,7 +106,7 @@ div.container_modal {
 }
 
 .content_modal > div {
-    max-width: 1000px;
+    max-width: 700px;
     width: 90vw;
     margin: 5px 0 15px 0;
     padding: 10px;
