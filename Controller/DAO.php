@@ -6,18 +6,18 @@ class Pelicula {
         
         if ($opc == '1') {
             $sql = "SELECT "
-            . "pelicula.idpelicula,"
-            . "pelicula.titulooriginal,"
-            . "pelicula.titulolatino,"
-            . "pelicula.foto,"
-            . "pelicula.lanzamiento,"
-            . "pelicula.duracion,"
-            . "pelicula.resena,"
-            . "pelicula.estado,"
-            . "tipo.tipo,"
-            . "pais.nombre AS pais"
-            . "FROM pelicula"
-            . "INNER JOIN tipo ON pelicula.idtipo = tipo.idtipo"        
+            . "pelicula.idpelicula,\t"
+            . "pelicula.titulooriginal,\t"
+            . "pelicula.titulolatino,\t"
+            . "pelicula.foto,\t"
+            . "pelicula.lanzamiento,\t"
+            . "pelicula.duracion,\t"
+            . "pelicula.resena,\t"
+            . "pelicula.estado,\t"
+            . "tipo.tipo,\t"
+            . "pais.nombre AS pais\t"
+            . "FROM pelicula\t"
+            . "INNER JOIN tipo ON pelicula.idtipo = tipo.idtipo\t"        
             . "INNER JOIN pais ON pelicula.idpais = pais.idpais;";
         }
 
