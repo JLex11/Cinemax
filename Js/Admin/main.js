@@ -17,6 +17,7 @@ options.forEach((op, index) => {
 
 let indexSectionActiva;
 let fEjecutada = true;
+var loader = document.getElementById("loader");
 const observer = new IntersectionObserver(
     (entries) => {
         entries.forEach((entry) => {
@@ -30,9 +31,10 @@ const observer = new IntersectionObserver(
                     else op.classList.remove("active_option");
                 });
 
-                var loader = document.getElementById("loader");
+                
                 if (entry.target.id == "data_section" && indexSectionActiva == 2) {
-                    /* fEjecutada = true; dejar en true para ejecutar cada que es intersectada */
+                    /* fEjecutada = true; */
+                    /* dejar en true para ejecutar cada que es intersectada */
                     if (fEjecutada) {
                         loader.classList.toggle("loader");
                         consultarPeliculas();
