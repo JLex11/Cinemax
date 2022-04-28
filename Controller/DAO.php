@@ -37,6 +37,23 @@ class Pelicula {
         }
         return $datos;
     }
+
+    public static function editar($opc, $campo, $valor) {
+        include "../Connection/conexion.php";
+        
+        if ($opc == '2') {
+            $sql = "UPDATE pelicula SET\n"
+            . "idpelicula = ''";
+        }
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+        if ($rows == 0) {
+            $datos[0] = "no se actualizaron los datos";
+        }
+        return $datos;
+    }
 }
 
 class Actor {

@@ -131,26 +131,26 @@ function vModal(title, content) {
     let contentModal = modal.querySelector(".content_modal");
     let fragment = document.createDocumentFragment();
 
-    let btn_modal_close = modal.querySelector(".btn_modal_close");
-    btn_modal_close.addEventListener("click", () => {
+    let cerrarModal = () => {
         modal.classList.remove("modal");
         modal
             .querySelector(".container_modal_hide")
             .classList.remove("container_modal");
         document.querySelector("body").style.overflow = "unset";
         contentModal.innerHTML = "";
-    });
-    tituloModal.textContent = title;
+    }
     
+    tituloModal.textContent = title;
+
     if (content.length > 0) {
         content.forEach((c) => {
             let subtitle = document.createElement("h3");
-            let div = document.createElement("div");
+            let form = document.createElement("form");
             let td = c.querySelectorAll("td");
             td.forEach((t, index) => {
                 let divLabel = document.createElement("div");
                 let input = document.createElement("input");
-
+                input.name = t.dataset.label;
                 if (index == 0) {
                     idInput = t.querySelector("input").id;
                     posNomTabla = idInput.search("-") + 1;
@@ -170,10 +170,11 @@ function vModal(title, content) {
                     input.value = t.textContent;
                     divLabel.appendChild(input);
                 }
-                div.appendChild(divLabel);
+                form.appendChild(divLabel);
             });
+            form.id = nomTabla;
             fragment.appendChild(subtitle);
-            fragment.appendChild(div);
+            fragment.appendChild(form);
         });
     } else {
         let msj = document.createElement("h3");
@@ -182,10 +183,28 @@ function vModal(title, content) {
     }
     contentModal.appendChild(fragment);
     modal.classList.add("modal");
-    modal
-        .querySelector(".container_modal_hide")
-        .classList.add("container_modal");
+    modal.querySelector(".container_modal_hide").classList.add("container_modal");
     document.querySelector("body").style.overflow = "hidden";
+
+    /* ----------------------- Botones de cerrar y aceptar ---------------------- */
+    let btn_modal_close = modal.querySelector(".btn_modal_close");
+    btn_modal_close.addEventListener("click", () => {
+        cerrarModal();
+    });
+
+    let btn_modal_aceptar = document.getElementById("btn_modal_aceptar");
+    btn_modal_aceptar.addEventListener("click", () => {
+        let arrFormData = [];
+        let formularios = modal.querySelectorAll("form");
+        formularios.forEach((f, index) => {
+            arrFormData[index] = new FormData(f);
+            tabla = f.id;
+            editarDatos(tabla, arrFormData[index]);
+        });
+        cerrarModal();
+        let check = document.querySelectorAll(".table_check");
+        check.forEach((c) => c.checked = false);
+    })
 }
 
 /* -------------------------------- Eliminar -------------------------------- */
@@ -209,12 +228,28 @@ btn_editar.addEventListener("click", () => {
     vModal("Editar", tr);
 });
 
+let editarDatos = async (tabla, parametros) => {
+    let opc;
+    if (tabla == "pelicula") opc = 2;
+    else if (tabla == "estadisticas") opc = 22;
+    else if (tabla == "estadisticaspelicula") opc = 42;
+    else if (tabla == "actor") opc = 62;
+    else if (tabla == "actorpelicula") opc = 82;
+    else if (tabla == "director") opc = 102;
+    else if (tabla == "directorpelicula") opc = 122;
+    else if (tabla == "genero") opc = 142;
+    else if (tabla == "generopelicula") opc = 162;
+    let url = `../Model/facade.php?opc=${opc}`;
+    let response = await peticionFetch(parametros, url);
+    alert(await response);
+}
+
 /* -------------------------------- Consultar ------------------------------- */
 /* --------------------------- Consultar peliculas -------------------------- */
 const consultarPeliculas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "1");
-    let url = "../Model/facade.php";
+    let url = "../Model/facade.php?opc=1";
     let response = await peticionFetch(parametros, url);
 
     document.querySelector(".contPeliculas").textContent = response.length;
@@ -271,7 +306,7 @@ const consultarPeliculas = async () => {
 const consultarActores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "61");
-    let url = "../Model/facade.php";
+    let url = "../Model/facade.php?opc=1";
     let response = await peticionFetch(parametros, url);
 
     document.querySelector(".contActores").textContent = response.length;
@@ -296,9 +331,9 @@ const consultarActores = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td data-label="idactor"><p>${idactor}</p></td>
+            <td data-label="id actor"><p>${idactor}</p></td>
             <td data-label="nombre"><p>${nombre}</p></td>
-            <td data-label="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td data-label="fecha nacimiento"><p>${fechanacimiento}</p></td>
             <td data-label="descripcion"><p>${descripcion}</p></td>
             <td data-label="estado"><p>${estado}</p></td>
         `;
@@ -313,7 +348,7 @@ const consultarActores = async () => {
 const consultarDirectores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "101");
-    let url = "../Model/facade.php";
+    let url = "../Model/facade.php?opc=101";
     let response = await peticionFetch(parametros, url);
 
     document.querySelector(".contDirectores").textContent = response.length;
@@ -338,9 +373,9 @@ const consultarDirectores = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td data-label="iddirector"><p>${iddirector}</p></td>
+            <td data-label="id director"><p>${iddirector}</p></td>
             <td data-label="nombre"><p>${nombre}</p></td>
-            <td data-label="fechanacimiento"><p>${fechanacimiento}</p></td>
+            <td data-label="fecha nacimiento"><p>${fechanacimiento}</p></td>
             <td data-label="descripcion"><p>${descripcion}</p></td>
             <td data-label="estado"><p>${estado}</p></td>
         `;
@@ -355,7 +390,7 @@ const consultarDirectores = async () => {
 const consultarGeneros = async () => {
     let parametros = new FormData();
     parametros.append("opc", "141");
-    let url = "../Model/facade.php";
+    let url = "../Model/facade.php?opc=141";
     let response = await peticionFetch(parametros, url);
 
     document.querySelector(".contGeneros").textContent = response.length;
@@ -378,7 +413,7 @@ const consultarGeneros = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td data-label="idgenero"><p>${idgenero}</p></td>
+            <td data-label="id genero"><p>${idgenero}</p></td>
             <td data-label="nombre"><p>${nombre}</p></td>
             <td data-label="estado"><p>${estado}</p></td>
         `;
