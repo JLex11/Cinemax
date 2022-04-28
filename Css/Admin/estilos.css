@@ -271,8 +271,8 @@ nav {
     padding: 7px;
     border-radius: var(--border-radius-15px);
     background: #ffffff41;
-    backdrop-filter: blur(3px);
-    -webtkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(5px);
+    -webtkit-backdrop-filter: blur(5px);
     box-shadow: 0 10px 20px #0000006b;
 }
 

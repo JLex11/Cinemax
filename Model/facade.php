@@ -18,11 +18,18 @@ if ($opc == '1') {
 }
 
 if ($opc == '2') {
-    $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $idpelicula = $_POST["id pelicula"];
+    $titulooriginal = $_POST["titulo original"];
+    $titulolatino = $_POST["titulo latino"];
+    $foto = $_POST["foto"];
+    $idtipo = $_POST["id tipo"];
+    $idpais = $_POST["id pais"];
+    $lanzamiento = $_POST["lanzamiento"];
+    $duracion = $_POST["duracion"];
+    $resena = $_POST["resena"];
+    $estado = $_POST["estado"];
     
-    $pelicula = Pelicula::editar($opcion, $campo, $valor);
+    $pelicula = Pelicula::editar($idpelicula, $titulooriginal, $titulolatino, $foto, $idtipo, $idpais, $lanzamiento, $duracion, $resena, $estado);
     echo json_encode($pelicula);
 }
 

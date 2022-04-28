@@ -38,19 +38,28 @@ class Pelicula {
         return $datos;
     }
 
-    public static function editar($opc, $campo, $valor) {
+    public static function editar($idpelicula, $titulooriginal, $titulolatino, $foto, $idtipo, $idpais, $lanzamiento, $duracion, $resena, $estado) {
         include "../Connection/conexion.php";
         
-        if ($opc == '2') {
-            $sql = "UPDATE pelicula SET\n"
-            . "idpelicula = ''";
-        }
+        $sql = "UPDATE pelicula SET\n"
+        . "titulooriginal = '$titulooriginal'\n"
+        . "titulolatino = '$titulolatino'\n"
+        . "foto = '$foto'\n"
+        . "idtipo = '$idtipo'\n"
+        . "idpais = '$idpais'\n"
+        . "lanzamiento = '$lanzamiento'\n"
+        . "duracion = '$duracion'\n"
+        . "resena = '$resena'\n"
+        . "estado = '$estado'\n"
+        . "WHERE idpelicula = '$idpelicula'";
 
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
         if ($rows == 0) {
             $datos[0] = "no se actualizaron los datos";
+        } else {
+            $datos[0] = "se actualizo correctamente";
         }
         return $datos;
     }

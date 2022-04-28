@@ -239,9 +239,11 @@ let editarDatos = async (tabla, parametros) => {
     else if (tabla == "directorpelicula") opc = 122;
     else if (tabla == "genero") opc = 142;
     else if (tabla == "generopelicula") opc = 162;
+    else alert("Ha ocurrido un error al actualizar la informacion");
     let url = `../Model/facade.php?opc=${opc}`;
+    console.log(tabla, parametros, opc, url);
     let response = await peticionFetch(parametros, url);
-    alert(await response);
+    console.log(await response);
 }
 
 /* -------------------------------- Consultar ------------------------------- */
