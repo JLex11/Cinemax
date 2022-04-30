@@ -241,7 +241,9 @@ let editarDatos = async (tabla, parametros) => {
     else if (tabla == "generopelicula") opc = 162;
     else alert("Ha ocurrido un error al actualizar la informacion");
     let url = `../Model/facade.php?opc=${opc}`;
-    console.log(tabla, parametros, opc, url);
+    parametros.forEach(p => {
+        console.log(p);
+    })
     let response = await peticionFetch(parametros, url);
     console.log(await response);
 }
@@ -283,18 +285,18 @@ const consultarPeliculas = async () => {
                 <div class="custom_checkbox"></div>
             </label>
             </td>
-            <td data-label="id pelicula"><p>${idpelicula}</p></td>
-            <td data-label="titulo original"><p>${titulooriginal}</p></td>
-            <td data-label="titulo latino"><p>${titulolatino}</p></td>
+            <td data-label="idpelicula"><p>${idpelicula}</p></td>
+            <td data-label="titulooriginal"><p>${titulooriginal}</p></td>
+            <td data-label="titulolatino"><p>${titulolatino}</p></td>
             <td data-label="lanzamiento"><p>${lanzamiento}</p></td>
-            <td data-label="duracion(min)"><p>${duracion}</p></td>
+            <td data-label="duracion"><p>${duracion}</p></td>
             <td data-label="resena"><p>${resena}</p></td>
             <td data-label="tipo"><p>${tipo}</p></td>
             <td data-label="pais"><p>${pais}</p></td>
             <td data-label="estado"><p>${estado}</p></td>
-            <td data-label="cantidad vistas"><p>${cantvistas}</p></td>
-            <td data-label="cantidad likes"><p>${cantlikes}</p></td>
-            <td data-label="cantidad comentarios"><p>${cantcomentarios}</p></td>
+            <td data-label="vistas"><p>${cantvistas}</p></td>
+            <td data-label="likes"><p>${cantlikes}</p></td>
+            <td data-label="comentarios"><p>${cantcomentarios}</p></td>
         `;
         fragment.appendChild(tr);
     }
@@ -425,3 +427,4 @@ const consultarGeneros = async () => {
     //desactivar loader
     loader.classList.remove("loader");
 };
+

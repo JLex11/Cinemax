@@ -18,12 +18,12 @@ if ($opc == '1') {
 }
 
 if ($opc == '2') {
-    $idpelicula = $_POST["id pelicula"];
-    $titulooriginal = $_POST["titulo original"];
-    $titulolatino = $_POST["titulo latino"];
-    $foto = $_POST["foto"];
-    $idtipo = $_POST["id tipo"];
-    $idpais = $_POST["id pais"];
+    $idpelicula = $_POST["idpelicula"];
+    $titulooriginal = $_POST["titulooriginal"];
+    $titulolatino = $_POST["titulolatino"];
+    $foto = "foto";
+    $idtipo = $_POST["tipo"];
+    $idpais = $_POST["pais"];
     $lanzamiento = $_POST["lanzamiento"];
     $duracion = $_POST["duracion"];
     $resena = $_POST["resena"];
@@ -44,15 +44,6 @@ if ($opc == '21') {
     echo json_encode($Estadisticas);
 }
 
-if ($opc == '22') {
-    $opcion = $opc;
-    $campo = "";
-    $valor = "";
-    
-    $estadisticas = Estadisticas::editar($opcion, $campo, $valor);
-    echo json_encode($estadisticas);
-}
-
 /* -------------------------- Estadisticas pelicula 41-60 ------------------------- */
 if ($opc == '41') {
     $opcion = $opc;
@@ -61,15 +52,6 @@ if ($opc == '41') {
     
     $estadisticaspelicula = EstadisticasPelicula::listar($opcion, $campo, $valor);
     echo json_encode($Estadisticas);
-}
-
-if ($opc == '42') {
-    $opcion = $opc;
-    $campo = "";
-    $valor = "";
-    
-    $estadisticaspelicula = EstadisticasPelicula::editar($opcion, $campo, $valor);
-    echo json_encode($estadisticaspelicula);
 }
 
 // !Actor
@@ -85,10 +67,14 @@ if ($opc == '61') {
 
 if ($opc == '62') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $idactor = $_POST["idactor"];
+    $nombre = $_POST["nombre"];
+    $fechanacimiento = $_POST["fechanacimiento"];
+    $descripcion = $_POST["descripcion"];
+    $foto = $_POST["foto"];
+    $estado = $_POST["estado"];
     
-    $actor = Actor::editar($opcion, $campo, $valor);
+    $actor = Actor::editar($idactor, $nombre, $fechanacimiento, $descripcion, $foto, $estado);
     echo json_encode($actor);
 }
 
@@ -104,10 +90,13 @@ if ($opc == '81') {
 
 if ($opc == '82') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $idactorpelicula = $_POST["idactorpelicula"];
+    $idactor = $_POST["idactor"];
+    $idpelicula = $_POST["idpelicula"];
+    $personaje = $_POST["personaje"];
+    $estado = $_POST["estado"];
     
-    $actorpelicula = ActorPelicula::editar($opcion, $campo, $valor);
+    $actorpelicula = ActorPelicula::editar($idactorpelicula, $idactor, $idpelicula, $personaje, $estado);
     echo json_encode($actorpelicula);
 }
 
@@ -124,10 +113,14 @@ if ($opc == '101') {
 
 if ($opc == '102') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
-    
-    $director = Director::editar($opcion, $campo, $valor);
+    $iddirector = $_POST["iddirector"];
+    $nombre = $_POST["nombre"];
+    $fechanacimiento = $_POST["fechanacimiento"];
+    $descripcion = $_POST["descripcion"];
+    $foto = $_POST["foto"];
+    $estado = $_POST["estado"];
+
+    $director = Director::editar($iddirector, $nombre, $fechanacimiento, $descripcion, $foto, $estado);
     echo json_encode($director);
 }
 
@@ -143,10 +136,12 @@ if ($opc == '121') {
 
 if ($opc == '122') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $iddirectorpelicula = $_POST["iddirectorpelicula"];
+    $iddirector = $_POST["iddirector"];
+    $idpelicula = $_POST["idpelicula"];
+    $estado = $_POST["estado"];
     
-    $directorpelicula = DirectorPelicula::editar($opcion, $campo, $valor);
+    $directorpelicula = DirectorPelicula::editar($iddirectorpelicula, $iddirector, $idpelicula, $estado);
     echo json_encode($directorpelicula);
 }
 
@@ -163,10 +158,11 @@ if ($opc == '141') {
 
 if ($opc == '142') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $idgenero = $_POST["idgenero"];
+    $nombre = $_POST["nombre"];
+    $estado = $_POST["estado"];
     
-    $genero = Genero::editar($opcion, $campo, $valor);
+    $genero = Genero::editar($idgenero, $nombre, $estado);
     echo json_encode($genero);
 }
 
@@ -182,10 +178,12 @@ if ($opc == '161') {
 
 if ($opc == '162') {
     $opcion = $opc;
-    $campo = "";
-    $valor = "";
+    $idgeneropelicula = $_POST["idgeneropelicula"];
+    $idgenero = $_POST["idgenero"];
+    $idpelicula = $_POST["idpelicula"];
+    $estado = $_POST["estado"];
     
-    $generopelicula = GeneroPelicula::editar($opcion, $campo, $valor);
+    $generopelicula = GeneroPelicula::editar($idgeneropelicula, $idgenero, $idpelicula, $estado);
     echo json_encode($generopelicula);
 }
 
