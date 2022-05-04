@@ -153,8 +153,8 @@ class DataTable {
 
         this.actions_buttons.classList.add('act_btns');
 
-        this.section_subbody.appendChild(this.container_table);
         this.section_subbody.appendChild(this.actions_buttons);
+        this.section_subbody.appendChild(this.container_table);
         this.section_subbody.classList.add('section_subbody');
 
         this.container_subsection.appendChild(this.section_subtitle);
@@ -226,7 +226,7 @@ class DataTable {
     }
 
     renderActionBtns() {
-        let ics = ["add", "edit", "remove"];
+        let ics = ["add", "edit", "delete"];
         let fragment = document.createDocumentFragment();
         ics.forEach((i, index) => {
             let divBtn = document.createElement('div');
