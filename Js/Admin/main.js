@@ -428,3 +428,195 @@ const consultarGeneros = async () => {
     loader.classList.remove("loader");
 };
 
+/* ------------------------- Prueba Class DataTable ------------------------- */
+const consultarPeliculas2 = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "1");
+    let url = "../Model/facade.php?opc=1";
+    let response = await peticionFetch(parametros, url);
+    let contents = {
+        titulo: "peliculas",
+        titleIcon: "movie",
+        headers: Object.keys(response[0]),
+        trs: response,
+    };
+    let tPeliculas = new DataTable(".data", contents);
+}
+
+class DataTable {
+    elementParent;
+    container_subsection;
+    container_table;
+    section_subbody;
+    section_subtitle;
+    titulo;
+    titleIcon;
+    headers;
+    trs;
+    cantRows;
+    table;
+    thead;
+    tbody;
+
+    constructor(elementParent, contents) {
+        this.elementParent = document.querySelector(elementParent);
+        this.container_subsection = document.createElement('div');
+        this.section_subtitle = document.createElement('div');
+        this.section_subbody = document.createElement('div');
+        this.container_table = document.createElement('div');
+        this.table = document.createElement("table");
+        this.thead = document.createElement("thead");
+        this.tbody = document.createElement("tbody");
+        this.titulo = this.capitalizarString(contents.titulo);
+        this.titleIcon = contents.titleIcon;
+        this.headers = contents.headers;
+        this.trs = contents.trs;
+        this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
+        this.makeTable();
+    }
+
+    makeTable() {
+        this.renderHeaders();
+        this.renderTrs();
+        this.renderTitleBar();
+
+        this.table.appendChild(this.thead);
+        this.table.appendChild(this.tbody);
+
+        this.container_table.appendChild(this.table);
+        this.container_table.classList.add('container_table');
+
+        this.section_subbody.appendChild(this.container_table);
+        this.section_subbody.classList.add('section_subbody');
+
+        this.container_subsection.appendChild(this.section_subtitle);
+        this.container_subsection.appendChild(this.section_subbody);
+        this.container_subsection.classList.add('container_subsection');
+
+        this.elementParent.appendChild(this.container_subsection);
+    }
+
+    capitalizarString(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    renderTitleBar() {
+        this.section_subtitle.innerHTML = `
+        <div class="section_subtitle">
+            <h2>${this.titulo}</h2>
+            <div>
+                <span class="material-icons-sharp">${this.titleIcon}</span>
+                <h2 class="contRows">${this.cantRows}</h2>
+            </div>
+        </div>
+        `;
+    }
+
+    renderHeaders() {
+        let tr = document.createElement("tr");
+        let dFragment = document.createDocumentFragment();
+        let th = document.createElement("th");
+        tr.appendChild(th);
+
+        this.headers.forEach((header) => {
+            let th = document.createElement("th");
+            th.textContent = this.capitalizarString(header);
+            dFragment.appendChild(th);
+        });
+        tr.appendChild(dFragment);
+        this.thead.appendChild(tr);
+    }
+
+    renderTrs() {
+        let dFragment = document.createDocumentFragment();
+        this.trs.forEach((t) => {
+            let tr = document.createElement("tr");
+            tr.id = Math.floor(Math.random() * 100);
+            let td = document.createElement("td");
+            td.innerHTML = `<input type="checkbox" id="${tr.id+1}" class="table_check">
+            <label for="${tr.id+1}">
+                <div class="custom_checkbox"></div>
+            </label>`;
+            tr.appendChild(td);
+
+            for (let i in t) {
+                let td = document.createElement("td");
+                if (typeof t[i] == 'array' || typeof t[i] == 'object') {
+                    td.innerHTML = `<select></select>`;
+                    let select = td.querySelector('select');
+                    t[i].forEach(i => {
+                        select.innerHTML += `<option value="${i}">${i}</option>`;
+                    })
+                } else {
+                    td.textContent = t[i];
+                }
+                tr.appendChild(td);
+            }
+            dFragment.appendChild(tr);
+        });
+        this.tbody.appendChild(dFragment);
+    }
+
+    insertarFilas(datos) {
+        let dFragment = document.createDocumentFragment();
+        let tr = document.createElement("tr");
+        tr.id = Math.floor(Math.random() * 100);
+        let td = document.createElement("td");
+        td.innerHTML = `<input type="checkbox" id="${tr.id+1}" class="table_check">
+        <label for="${tr.id+1}">
+            <div class="custom_checkbox"></div>
+        </label>`;
+        tr.appendChild(td);
+
+        datos.forEach((fila) => {
+            let td = document.createElement("td");
+            td.textContent = fila;
+            tr.appendChild(td);
+        });
+        dFragment.appendChild(tr);
+        this.tbody.appendChild(dFragment);
+        this.cantRows++;
+        this.renderTitleBar();
+    }
+
+    eliminarFilas(idFila) {
+        let filaEliminar = document.getElementById(idFila);
+        let fElimParent = filaEliminar.parentNode; //parent es el tr contenedor
+        fElimParent.removeChild(filaEliminar);
+        this.cantRows--;
+        this.renderTitleBar();
+    }
+
+    editarFilas(idFila) {
+        let filaEditar = document.getElementById(idFila); //es el tr contenedor
+        let fEHijos = filaEditar.querySelectorAll("td");
+        let datosEditados = [];
+        fEHijos.forEach((hijo, index) => {
+            if (index == 0) {
+                let input = hijo.querySelector("input");
+                input.type = "button";
+                input.value = "aceptar";
+                input.addEventListener("click", () => {
+                    let parent = input.parentNode.parentNode;
+                    let pHijos = parent.querySelectorAll("td");
+                    pHijos.forEach((h, index) => {
+                        if (index == 0) {
+                            input.type = "checkbox";
+                            input.value = "";
+                            input.checked = false;
+                        } else {
+                            h.contentEditable = false;
+                            h.classList.remove("editableOn");
+                            datosEditados.push(h.textContent);
+                        }
+                    });
+                }, {once:true});
+            } else {
+                hijo.contentEditable = true;
+                hijo.classList.add("editableOn");
+            }
+        });
+    }
+}
+
+consultarPeliculas2();
