@@ -54,12 +54,6 @@
             </div>
         </div>
 
-        <div class="loader_hide" id="loader">
-            <div class="container_loader">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
-        </div>
-
         <!-- -------------------------------- Main --------------------------------- -->
         <main>
             <section class="home_section" id="home_section">
@@ -266,131 +260,13 @@
                 </div>
 
                 <div class="section_body data">
-                    <!-- ------------------------- lista de peliculas -------------------------- -->
-                    <div class="container_subsection">
-                        <div class="section_subtitle">
-                            <h2>Peliculas</h2>
-                            <div>
-                                <span class="material-icons-sharp">movie</span>
-                                <h2 class="contPeliculas">1579</h2>
-                            </div>
-                        </div>
-                        
-                        <div class="section_subbody">
-                            <div class="container_table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Id Pelicula</th>
-                                            <th>Titulo original</th>
-                                            <th>Titulo latino</th>
-                                            <th>Lanzamiento</th>
-                                            <th>Duracion(min)</th>
-                                            <th>Reseña</th>
-                                            <th>Tipo</th>
-                                            <th>Pais</th>
-                                            <th>Estado</th>
-                                            <th>Vistas</th>
-                                            <th>Likes</th>
-                                            <th>Comentarios</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tPeliculas">
-                                        <!-- Se agregan las filas desde js -->
-                                    </tbody>
-                                </table>
-                            </div>
+                    <!-- --------------------- Loader ---------------------- -->
+                    <div class="loader_hide" id="loader">
+                        <div class="container_loader">
+                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                         </div>
                     </div>
-                    <!-- -------------------------- Lista de actores --------------------------- -->
-                    <div class="container_subsection">
-                        <div class="section_subtitle">
-                            <h2>Actores</h2>
-                            <div>
-                                <span class="material-icons-sharp">person</span>
-                                <h2 class="contActores">1579</h2>
-                            </div>
-                        </div>
-                        
-                        <div class="section_subbody">
-                            <div class="container_table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Id actor</th>
-                                            <th>Nombre</th>
-                                            <th>Fecha nacimiento</th>
-                                            <th>Descripcion</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tActores">
-                                        <!-- se agregan las filas desde js -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ------------------------- Lista de directores ------------------------- -->
-                    <div class="container_subsection">
-                        <div class="section_subtitle">
-                            <h2>Directores</h2>
-                            <div>
-                                <span class="material-icons-sharp">person</span>
-                                <h2 class="contDirectores">1579</h2>
-                            </div>
-                        </div>
-                        
-                        <div class="section_subbody">
-                            <div class="container_table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Id director</th>
-                                            <th>Nombre</th>
-                                            <th>Fecha nacimiento</th>
-                                            <th>Descripcion</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tDirectores">
-                                        <!-- se agregan las filas desde js -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ------------------------- Lista de generos ------------------------- -->
-                    <div class="container_subsection">
-                        <div class="section_subtitle">
-                            <h2>Generos</h2>
-                            <div>
-                                <span class="material-icons-sharp">theater_comedy</span>
-                                <h2 class="contGeneros">1579</h2>
-                            </div>
-                        </div>
-                        
-                        <div class="section_subbody">
-                            <div class="container_table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Id genero</th>
-                                            <th>Nombre</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tGeneros">
-                                        <!-- se agregan las filas desde js -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- -------- Se renderizan mis tablas desde js -------- -->
                 </div>
             </section>
         </main>

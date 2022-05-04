@@ -109,6 +109,7 @@ class DataTable {
     elementParent;
     container_subsection;
     container_table;
+    actions_buttons;
     section_subbody;
     section_subtitle;
     titulo;
@@ -126,6 +127,7 @@ class DataTable {
         this.section_subtitle = document.createElement('div');
         this.section_subbody = document.createElement('div');
         this.container_table = document.createElement('div');
+        this.actions_buttons = document.createElement('div');
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
@@ -141,6 +143,7 @@ class DataTable {
         this.renderHeaders();
         this.renderTrs();
         this.renderTitleBar();
+        this.renderActionBtns();
 
         this.table.appendChild(this.thead);
         this.table.appendChild(this.tbody);
@@ -148,7 +151,10 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add('container_table');
 
+        this.actions_buttons.classList.add('act_btns');
+
         this.section_subbody.appendChild(this.container_table);
+        this.section_subbody.appendChild(this.actions_buttons);
         this.section_subbody.classList.add('section_subbody');
 
         this.container_subsection.appendChild(this.section_subtitle);
@@ -195,8 +201,8 @@ class DataTable {
             let tr = document.createElement("tr");
             tr.id = Math.floor(Math.random() * 100);
             let td = document.createElement("td");
-            td.innerHTML = `<input type="checkbox" id="${tr.id+1}" class="table_check">
-            <label for="${tr.id+1}">
+            td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
+            <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
                 <div class="custom_checkbox"></div>
             </label>`;
             tr.appendChild(td);
@@ -219,13 +225,24 @@ class DataTable {
         this.tbody.appendChild(dFragment);
     }
 
+    renderActionBtns() {
+        let ics = ["add", "edit", "remove"];
+        let fragment = document.createDocumentFragment();
+        ics.forEach((i, index) => {
+            let divBtn = document.createElement('div');
+            divBtn.innerHTML = `<span class="material-icons-sharp">${ics[index]}</span>`;
+            fragment.appendChild(divBtn);
+        })
+        this.actions_buttons.appendChild(fragment);
+    }
+
     insertarFilas(datos) {
         let dFragment = document.createDocumentFragment();
         let tr = document.createElement("tr");
         tr.id = Math.floor(Math.random() * 100);
         let td = document.createElement("td");
-        td.innerHTML = `<input type="checkbox" id="${tr.id+1}" class="table_check">
-        <label for="${tr.id+1}">
+        td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
+        <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
             <div class="custom_checkbox"></div>
         </label>`;
         tr.appendChild(td);

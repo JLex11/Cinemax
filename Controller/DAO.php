@@ -6,9 +6,9 @@ class Pelicula {
         
         if ($opc == '1') {
             $sql = "SELECT\n"
-            . "    pelicula.idpelicula,\n" 
-            . "    pelicula.titulooriginal,\n"      
-            . "    pelicula.titulolatino,\n"
+            . "    pelicula.idpelicula AS 'id pelicula',\n" 
+            . "    pelicula.titulooriginal AS 'titulo original',\n"      
+            . "    pelicula.titulolatino AS 'titulo latino',\n"
             . "    pelicula.foto,\n"
             . "    pelicula.lanzamiento,\n"
             . "    pelicula.duracion,\n"
@@ -16,9 +16,9 @@ class Pelicula {
             . "    pelicula.estado,\n"
             . "    tipo.tipo,\n"
             . "    pais.nombre AS pais,\n"
-            . "    estadisticas.cantvistas,\n"
-            . "    estadisticas.cantlikes,\n"
-            . "    estadisticas.cantcomentarios\n"
+            . "    estadisticas.cantvistas AS vistas,\n"
+            . "    estadisticas.cantlikes AS likes,\n"
+            . "    estadisticas.cantcomentarios AS comentarios\n"
             . "FROM\n"
             . "    pelicula\n"
             . "INNER JOIN tipo ON pelicula.idtipo = tipo.idtipo\n"
@@ -71,7 +71,12 @@ class Estadisticas {
         include "../Connection/conexion.php";
         
         if ($opc == '21') {
-            $sql = "SELECT * FROM estadisticas ORDER BY estado ASC;";
+            $sql = "SELECT\n"
+            . "idestadisticas AS 'id estadisticas',\n"
+            . "cantvistas AS vistas,\n"
+            . "cantlikes AS likes,\n"
+            . "cantcomentarios AS comentarios\n"
+            . "FROM estadisticas ORDER BY estado ASC";
         }
 
         $datos = array();
@@ -111,7 +116,13 @@ class Actor {
         include "../Connection/conexion.php";
         
         if ($opc == '61') {
-            $sql = "SELECT * FROM actor";
+            $sql = "SELECT\n"
+            . "idactor AS 'id actor',\n"
+            . "nombre, fechanacimiento AS 'fecha nacimiento',\n"
+            . "descripcion,\n"
+            . "foto,\n"
+            . "estado\n"
+            . "FROM `actor`";
         }
 
         $datos = array();
@@ -194,7 +205,14 @@ class Director {
         include "../Connection/conexion.php";
         
         if ($opc == '101') {
-            $sql = "SELECT * FROM director";
+            $sql = "SELECT\n"
+            . "iddirector AS 'id director',\n"
+            . "nombre,\n"
+            . "fechanacimiento AS 'fecha nacimiento',\n"
+            . "descripcion,\n"
+            . "foto,\n"
+            . "estado \n"
+            . "FROM director";
         }
 
         $datos = array();
@@ -276,7 +294,11 @@ class Genero {
         include "../Connection/conexion.php";
         
         if ($opc == '141') {
-            $sql = "SELECT * FROM genero";
+            $sql = "SELECT\n"
+            . "idgenero AS 'id genero',\n"
+            . "nombre,\n"
+            . "estado\n"
+            . "FROM genero";
         }
 
         $datos = array();

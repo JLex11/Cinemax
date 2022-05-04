@@ -171,7 +171,7 @@ button#btn_modal_aceptar {
 
 button#btn_modal_aceptar:hover {
     transform: scale(1.05);
-    
+
     color: var(--color-white);
     background: var(--color-blue);
     box-shadow: 0 2px 3px #00000040;
@@ -185,51 +185,67 @@ div.loader {
     display: none;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    position: fixed;
     left: 0;
     top: 0;
     z-index: -1;
     width: 100%;
-    height: 100vh;
-    background: rgb(0 0 0 / 10%);
+    height: calc(100vh - 500px);
 }
 
-.lds-ring {
+.lds-ellipsis {
     display: inline-block;
     position: relative;
     width: 80px;
     height: 80px;
-    background: white;
-    border-radius: 10px;
 }
-.lds-ring div {
-    box-sizing: border-box;
-    display: block;
+.lds-ellipsis div {
     position: absolute;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border: 8px solid var(--color-blue);
+    top: 33px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
-    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: var(--color-blue) transparent transparent transparent;
+    background: var(--color-blue);
+    box-shadow: -1px 3px 5px rgba(0, 0, 0, 0.121);
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
-.lds-ring div:nth-child(1) {
-    animation-delay: -0.45s;
+.lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
 }
-.lds-ring div:nth-child(2) {
-    animation-delay: -0.3s;
+.lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
 }
-.lds-ring div:nth-child(3) {
-    animation-delay: -0.15s;
+.lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
 }
-@keyframes lds-ring {
+.lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
     0% {
-        transform: rotate(0deg);
+        transform: scale(0);
     }
     100% {
-        transform: rotate(360deg);
+        transform: scale(1);
+    }
+}
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(24px, 0);
     }
 }
 
@@ -688,12 +704,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 table {
-    border-spacing: 0;
+    border-spacing: 15px;
     min-width: 100%;
 }
 
 th {
-    padding: 10px 15px 10px 0;
+    /* padding: 10px 15px 10px 0; */
     font-weight: 400;
     text-align: start;
     white-space: nowrap;
@@ -706,7 +722,7 @@ tbody tr:hover {
 
 td {
     max-width: 250px;
-    padding: 5px 10px 5px 0;
+    /* padding: 5px 10px 5px 0; */
     font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
@@ -757,35 +773,36 @@ tbody td p {
     box-shadow: -1px 0px 4px #1088d5;
 }
 
-.pre-loading_tr {
-    box-shadow: 20px 0px 20px var(--color-white) inset;
-    background: linear-gradient(
-        to right,
-        #e5e5e589,
-        #e5e5e5bb,
-        #a5a5a5,
-        #e5e5e5c7,
-        #e5e5e578,
-        #e5e5e51b
-    );
-    background-size: 400% 400%;
-    animation: preLoadingTr 2s ease infinite;
+.act_btns {
+    margin: auto;
+    height: fit-content;
+    gap: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -15px 0 10px rgba(0, 0, 0, 0.048);
+    border-radius: var(--border-radius-15px);
 }
 
-@keyframes preLoadingTr {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+.act_btns div {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-property: border-radius, background;
+    transition-duration: .3s;
 }
 
-.pre-loading_tr > td {
-    border-radius: none !important;
+.act_btns div:hover {
+    border-radius: 50%;
+    background: rgb(0 0 0 / 15%);
+}
+
+.act_btns div:hover .material-icons-sharp {
+    transform: scale(1.1);
 }
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */
