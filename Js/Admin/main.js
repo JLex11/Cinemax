@@ -11,7 +11,7 @@ window.addEventListener("resize", () => {
     sections.forEach(
         (section, index) => (sectionsX[index] = section.getBoundingClientRect())
     );
-})
+});
 
 options.forEach((op, index) => {
     op.addEventListener("click", () => {
@@ -24,8 +24,8 @@ let indexSectionActiva;
 let fEjecutada = false;
 var loader = document.getElementById("loader");
 const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
+    entries => {
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
                 //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
                 indexSectionActiva = [...sections].indexOf(entry.target);
@@ -36,8 +36,10 @@ const observer = new IntersectionObserver(
                     else op.classList.remove("active_option");
                 });
 
-                
-                if (entry.target.id == "data_section" && indexSectionActiva == 2) {
+                if (
+                    entry.target.id == "data_section" &&
+                    indexSectionActiva == 2
+                ) {
                     /* fEjecutada = false; */
                     /* dejar en true para ejecutar cada que es intersectada */
                     if (!fEjecutada) {
@@ -61,17 +63,15 @@ const observer = new IntersectionObserver(
     }
 );
 
-sections.forEach((section) => observer.observe(section));
+sections.forEach(section => observer.observe(section));
 
 /* ------------------------- Cambiar color a header ------------------------- */
 window.addEventListener("scroll", () => {
     if (document.documentElement.scrollTop >= 40) {
         document.querySelector("header").style.backgroundColor =
-            "rgb(255 255 255 / 70%)";
-        document.querySelector("header").classList.add("bdFilter_Header");
+            "rgb(255 255 255 / 80%)";
     } else {
         document.querySelector("header").style.backgroundColor = "transparent";
-        document.querySelector("header").classList.remove("bdFilter_Header");
     }
 });
 
@@ -109,7 +109,8 @@ class DataTable {
     elementParent;
     container_subsection;
     container_table;
-    actions_buttons;
+    actions_buttons_container;
+    buttons;
     section_subbody;
     section_subtitle;
     titulo;
@@ -123,17 +124,18 @@ class DataTable {
 
     constructor(elementParent, contents) {
         this.elementParent = document.querySelector(elementParent);
-        this.container_subsection = document.createElement('div');
-        this.section_subtitle = document.createElement('div');
-        this.section_subbody = document.createElement('div');
-        this.container_table = document.createElement('div');
-        this.actions_buttons = document.createElement('div');
+        this.container_subsection = document.createElement("div");
+        this.section_subtitle = document.createElement("div");
+        this.section_subbody = document.createElement("div");
+        this.container_table = document.createElement("div");
+        this.actions_buttons_container = document.createElement("div");
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
         this.titulo = this.capitalizarString(contents.titulo);
         this.titleIcon = contents.titleIcon;
         this.headers = contents.headers;
+        this.buttons = contents.actButtons;
         this.trs = contents.trs;
         this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
         this.makeTable();
@@ -149,17 +151,17 @@ class DataTable {
         this.table.appendChild(this.tbody);
 
         this.container_table.appendChild(this.table);
-        this.container_table.classList.add('container_table');
+        this.container_table.classList.add("container_table");
 
-        this.actions_buttons.classList.add('act_btns');
+        this.actions_buttons_container.classList.add("act_btns");
 
-        this.section_subbody.appendChild(this.actions_buttons);
+        this.section_subbody.appendChild(this.actions_buttons_container);
         this.section_subbody.appendChild(this.container_table);
-        this.section_subbody.classList.add('section_subbody');
+        this.section_subbody.classList.add("section_subbody");
 
         this.container_subsection.appendChild(this.section_subtitle);
         this.container_subsection.appendChild(this.section_subbody);
-        this.container_subsection.classList.add('container_subsection');
+        this.container_subsection.classList.add("container_subsection");
 
         this.elementParent.appendChild(this.container_subsection);
     }
@@ -186,7 +188,7 @@ class DataTable {
         let th = document.createElement("th");
         tr.appendChild(th);
 
-        this.headers.forEach((header) => {
+        this.headers.forEach(header => {
             let th = document.createElement("th");
             th.textContent = this.capitalizarString(header);
             dFragment.appendChild(th);
@@ -197,11 +199,13 @@ class DataTable {
 
     renderTrs() {
         let dFragment = document.createDocumentFragment();
-        this.trs.forEach((t) => {
+        this.trs.forEach(t => {
             let tr = document.createElement("tr");
             tr.id = Math.floor(Math.random() * 100);
             let td = document.createElement("td");
-            td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
+            td.innerHTML = `<input type="checkbox" id="${
+                t[Object.keys(t)[0]]
+            }-${this.titulo}" class="table_check">
             <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
                 <div class="custom_checkbox"></div>
             </label>`;
@@ -209,12 +213,12 @@ class DataTable {
 
             for (let i in t) {
                 let td = document.createElement("td");
-                if (typeof t[i] == 'array' || typeof t[i] == 'object') {
+                if (typeof t[i] == "array" || typeof t[i] == "object") {
                     td.innerHTML = `<select></select>`;
-                    let select = td.querySelector('select');
+                    let select = td.querySelector("select");
                     t[i].forEach(i => {
                         select.innerHTML += `<option value="${i}">${i}</option>`;
-                    })
+                    });
                 } else {
                     td.textContent = t[i];
                 }
@@ -226,14 +230,15 @@ class DataTable {
     }
 
     renderActionBtns() {
-        let ics = ["add", "edit", "delete"];
         let fragment = document.createDocumentFragment();
-        ics.forEach((i, index) => {
-            let divBtn = document.createElement('div');
-            divBtn.innerHTML = `<span class="material-icons-sharp">${ics[index]}</span>`;
+        this.buttons.forEach((i, index) => {
+            let divBtn = document.createElement("div");
+            divBtn.innerHTML = `<span class="material-icons-sharp">${this.buttons[index].icon}</span>`;
+            divBtn.id = this.buttons[index].id;
+            divBtn.addEventListener('click', this.buttons[index].action);
             fragment.appendChild(divBtn);
-        })
-        this.actions_buttons.appendChild(fragment);
+        });
+        this.actions_buttons_container.appendChild(fragment);
     }
 
     insertarFilas(datos) {
@@ -241,13 +246,15 @@ class DataTable {
         let tr = document.createElement("tr");
         tr.id = Math.floor(Math.random() * 100);
         let td = document.createElement("td");
-        td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
+        td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${
+            this.titulo
+        }" class="table_check">
         <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
             <div class="custom_checkbox"></div>
         </label>`;
         tr.appendChild(td);
 
-        datos.forEach((fila) => {
+        datos.forEach(fila => {
             let td = document.createElement("td");
             td.textContent = fila;
             tr.appendChild(td);
@@ -255,14 +262,6 @@ class DataTable {
         dFragment.appendChild(tr);
         this.tbody.appendChild(dFragment);
         this.cantRows++;
-        this.renderTitleBar();
-    }
-
-    eliminarFilas(idFila) {
-        let filaEliminar = document.getElementById(idFila);
-        let fElimParent = filaEliminar.parentNode; //parent es el tr contenedor
-        fElimParent.removeChild(filaEliminar);
-        this.cantRows--;
         this.renderTitleBar();
     }
 
@@ -275,29 +274,40 @@ class DataTable {
                 let input = hijo.querySelector("input");
                 input.type = "button";
                 input.value = "aceptar";
-                input.addEventListener("click", () => {
-                    let parent = input.parentNode.parentNode;
-                    let pHijos = parent.querySelectorAll("td");
-                    pHijos.forEach((h, index) => {
-                        if (index == 0) {
-                            input.type = "checkbox";
-                            input.value = "";
-                            input.checked = false;
-                        } else {
-                            h.contentEditable = false;
-                            h.classList.remove("editableOn");
-                            datosEditados.push(h.textContent);
-                        }
-                    });
-                }, {once:true});
+                input.addEventListener(
+                    "click",
+                    () => {
+                        let parent = input.parentNode.parentNode;
+                        let pHijos = parent.querySelectorAll("td");
+                        pHijos.forEach((h, index) => {
+                            if (index == 0) {
+                                input.type = "checkbox";
+                                input.value = "";
+                                input.checked = false;
+                            } else {
+                                h.contentEditable = false;
+                                h.classList.remove("editableOn");
+                                datosEditados.push(h.textContent);
+                            }
+                        });
+                    },
+                    { once: true }
+                );
             } else {
                 hijo.contentEditable = true;
                 hijo.classList.add("editableOn");
             }
         });
     }
-}
 
+    eliminarFilas(idFila) {
+        let filaEliminar = document.getElementById(idFila);
+        let fElimParent = filaEliminar.parentNode; //parent es el tr contenedor
+        fElimParent.removeChild(filaEliminar);
+        this.cantRows--;
+        this.renderTitleBar();
+    }
+}
 
 /* ---------------------------- Fetch ---------------------------- */
 // ?Fetch
@@ -313,14 +323,8 @@ async function peticionFetch(parametros, url) {
     }
 }
 
-/* -------------------------- Activar los checkbox -------------------------- */
-function actCheckBox() {
-    if (check[0].style.display == "none")
-        check.forEach((c) => (c.style.display = "block"));
-    else check.forEach((c) => (c.style.display = "none"));
-}
-
 /* ------------------------------ Ventana modal ----------------------------- */
+// !Modal
 function vModal(title, content) {
     let modal = document.getElementById("modal");
     let tituloModal = modal.querySelector(".header_modal").querySelector("h2");
@@ -334,12 +338,12 @@ function vModal(title, content) {
             .classList.remove("container_modal");
         document.querySelector("body").style.overflow = "unset";
         contentModal.innerHTML = "";
-    }
-    
+    };
+
     tituloModal.textContent = title;
 
     if (content.length > 0) {
-        content.forEach((c) => {
+        content.forEach(c => {
             let subtitle = document.createElement("h3");
             let form = document.createElement("form");
             let td = c.querySelectorAll("td");
@@ -379,7 +383,9 @@ function vModal(title, content) {
     }
     contentModal.appendChild(fragment);
     modal.classList.add("modal");
-    modal.querySelector(".container_modal_hide").classList.add("container_modal");
+    modal
+        .querySelector(".container_modal_hide")
+        .classList.add("container_modal");
     document.querySelector("body").style.overflow = "hidden";
 
     /* ----------------------- Botones de cerrar y aceptar ---------------------- */
@@ -399,21 +405,23 @@ function vModal(title, content) {
         });
         cerrarModal();
         let check = document.querySelectorAll(".table_check");
-        check.forEach((c) => c.checked = false);
-    })
+        check.forEach(c => (c.checked = false));
+    });
 }
 
 /* -------------------------------- Eliminar -------------------------------- */
+// !Eliminar
 let btn_eliminar = document.getElementById("eliminar");
 btn_eliminar.addEventListener("click", () => {
     let check = document.querySelectorAll(".table_check");
-    check.forEach((c) => {
+    check.forEach(c => {
         if (c.checked == true) c.parentNode.parentNode.remove();
         c.checked = false;
     });
 });
 
 /* --------------------------------- Editar --------------------------------- */
+// !Editar
 let btn_editar = document.getElementById("editar");
 btn_editar.addEventListener("click", () => {
     let check = document.querySelectorAll(".table_check");
@@ -439,10 +447,136 @@ let editarDatos = async (tabla, parametros) => {
     let url = `../Model/facade.php?opc=${opc}`;
     parametros.forEach(p => {
         console.log(p);
-    })
+    });
     let response = await peticionFetch(parametros, url);
     console.log(await response);
-}
+};
+
+/* --------------------------- Consultar peliculas -------------------------- */
+// !Consultar peliculas
+const consultarPeliculas = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "1");
+    let url = "../Model/facade.php?opc=1";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "peliculas",
+        titleIcon: "movie",
+        headers: Object.keys(await response[0]),
+        actButtons: [
+            { id: "btn_add", icon: "add", action: function () {
+                console.log("agregar");
+                console.log(tPeliculas.buttons);
+                },
+            },
+            { id: "btn_edit", icon: "edit", action: function () {
+                    console.log("editar");
+                },
+            },
+            { id: "btn_delete", icon: "delete", action: function () {
+                    console.log("eliminar");
+                },
+            },
+        ],
+        trs: await response,
+    };
+    let tPeliculas = new DataTable(".data", await contents);
+    loader.classList.remove("loader");
+};
+/* ---------------------------- Consultar actores --------------------------- */
+// !Consultar actores
+const consultarActores = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "61");
+    let url = "../Model/facade.php?opc=1";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "actores",
+        titleIcon: "person",
+        headers: Object.keys(await response[0]),
+        actButtons: [
+            { id: "btn_add", icon: "add", action: function () {
+                    console.log("agregar");
+                },
+            },
+            { id: "btn_edit", icon: "edit", action: function () {
+                    console.log("editar");
+                },
+            },
+            { id: "btn_delete", icon: "delete", action: function () {
+                    console.log("eliminar");
+                },
+            },
+        ],
+        trs: await response,
+    };
+    let tActores = new DataTable(".data", await contents);
+    loader.classList.remove("loader");
+};
+/* -------------------------- Consultar directores -------------------------- */
+// !Consultar directores
+const consultarDirectores = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "101");
+    let url = "../Model/facade.php?opc=101";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "directores",
+        titleIcon: "person",
+        headers: Object.keys(await response[0]),
+        actButtons: [
+            { id: "btn_add", icon: "add", action: function () {
+                    console.log("agregar");
+                },
+            },
+            { id: "btn_edit", icon: "edit", action: function () {
+                    console.log("editar");
+                },
+            },
+            { id: "btn_delete", icon: "delete", action: function () {
+                    console.log("eliminar");
+                },
+            },
+        ],
+        trs: await response,
+    };
+    let tDirectores = new DataTable(".data", await contents);
+    loader.classList.remove("loader");
+};
+/* ---------------------------- Consultar generos --------------------------- */
+// !Consultar generos
+const consultarGeneros = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "141");
+    let url = "../Model/facade.php";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "generos",
+        titleIcon: "person",
+        headers: Object.keys(await response[0]),
+        actButtons: [
+            { id: "btn_add", icon: "add", action: function () {
+                    console.log("agregar");
+                },
+            },
+            { id: "btn_edit", icon: "edit", action: function () {
+                    console.log("editar");
+                },
+            },
+            { id: "btn_delete", icon: "delete", action: function () {
+                    console.log("eliminar");
+                },
+            },
+        ],
+        trs: await response,
+    };
+    let tGeneros = new DataTable(".data", await contents);
+    loader.classList.remove("loader");
+};
 
 /* -------------------------------- Consultar ------------------------------- */
 /* const consultarPeliculas2 = async () => {
@@ -619,72 +753,3 @@ let editarDatos = async (tabla, parametros) => {
     //desactivar loader
     loader.classList.remove("loader");
 }; */
-
-/* --------------------------- Consultar peliculas -------------------------- */
-
-const consultarPeliculas = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "1");
-    let url = "../Model/facade.php?opc=1";
-    let response = await peticionFetch(parametros, url);
-
-    let contents = {
-        titulo: "peliculas",
-        titleIcon: "movie",
-        headers: Object.keys(response[0]),
-        trs: response,
-    };
-    let tPeliculas = new DataTable(".data", contents);
-    loader.classList.remove("loader");
-}
-/* ---------------------------- Consultar actores --------------------------- */
-
-const consultarActores = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "61");
-    let url = "../Model/facade.php?opc=1";
-    let response = await peticionFetch(parametros, url);
-
-    let contents = {
-        titulo: "actores",
-        titleIcon: "person",
-        headers: Object.keys(response[0]),
-        trs: response,
-    };
-    let tActores = new DataTable(".data", contents);
-    loader.classList.remove("loader");
-}
-/* -------------------------- Consultar directores -------------------------- */
-
-const consultarDirectores = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "101");
-    let url = "../Model/facade.php?opc=101";
-    let response = await peticionFetch(parametros, url);
-
-    let contents = {
-        titulo: "directores",
-        titleIcon: "person",
-        headers: Object.keys(response[0]),
-        trs: response,
-    };
-    let tDirectores = new DataTable(".data", contents);
-    loader.classList.remove("loader");
-}
-/* ---------------------------- Consultar generos --------------------------- */
-
-const consultarGeneros = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "141");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-
-    let contents = {
-        titulo: "generos",
-        titleIcon: "person",
-        headers: Object.keys(response[0]),
-        trs: response,
-    };
-    let tGeneros = new DataTable(".data", contents);
-    loader.classList.remove("loader");
-}

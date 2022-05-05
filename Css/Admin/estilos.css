@@ -261,11 +261,6 @@ header {
     font-family: var(--Font-Principal);
 }
 
-.bdFilter_Header {
-    backdrop-filter: blur(2px);
-    -webtkit-backdrop-filter: blur(2px);
-}
-
 h1 {
     color: var(--color-dark);
     font-weight: 300;
@@ -286,10 +281,8 @@ nav {
     margin: 0 auto;
     padding: 7px;
     border-radius: var(--border-radius-15px);
-    background: #ffffff41;
-    backdrop-filter: blur(5px);
-    -webtkit-backdrop-filter: blur(5px);
-    box-shadow: 0 10px 20px #0000006b;
+    background: #ffffffd1;
+    box-shadow: 0 10px 20px #0000004a;
 }
 
 nav ul {
@@ -451,7 +444,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .p_Noregistered {
-    background: linear-gradient(to right, #530202, #dc3b30);
+    background: linear-gradient(to right, #840505, #dc3b30);
 }
 
 .header_item span.material-icons-sharp {
@@ -788,6 +781,7 @@ tbody td p {
 }
 
 .act_btns div {
+    border-radius: 5%;
     display: flex;
     padding: 10px;
     align-items: center;
@@ -798,15 +792,18 @@ tbody td p {
 }
 
 .act_btns div:hover {
+    box-shadow: 0 5px 15px #00000019;
     border-radius: 50%;
-    background: rgb(0 0 0 / 15%);
 }
 .act_btns div .material-icons-sharp {
     transition: transform .3s;
+    color: #787878;
 }
 .act_btns div:hover .material-icons-sharp {
-    transform: scale(1.3);
+    transform: scale(1.1);
+    color: rgb(0, 0, 0);
 }
+
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */
 @media screen and (max-width: 500px) {
