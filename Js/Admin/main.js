@@ -109,7 +109,8 @@ class DataTable {
     elementParent;
     container_subsection;
     container_table;
-    actions_buttons_container;
+    conatiner_buttons_and_form;
+    sub_container_buttons;
     buttons;
     section_subbody;
     section_subtitle;
@@ -128,7 +129,8 @@ class DataTable {
         this.section_subtitle = document.createElement("div");
         this.section_subbody = document.createElement("div");
         this.container_table = document.createElement("div");
-        this.actions_buttons_container = document.createElement("div");
+        this.conatiner_buttons_and_form = document.createElement("div");
+        this.sub_container_buttons = document.createElement("div");
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
@@ -153,9 +155,9 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add("container_table");
 
-        this.actions_buttons_container.classList.add("act_btns");
+        this.conatiner_buttons_and_form.classList.add("container_buttons_and_form");
 
-        this.section_subbody.appendChild(this.actions_buttons_container);
+        this.section_subbody.appendChild(this.conatiner_buttons_and_form);
         this.section_subbody.appendChild(this.container_table);
         this.section_subbody.classList.add("section_subbody");
 
@@ -197,17 +199,47 @@ class DataTable {
         this.thead.appendChild(tr);
     }
 
+    renderActionBtns() {
+        let fragment = document.createDocumentFragment();
+        this.buttons.forEach(button => {
+            let divBtn = document.createElement("div");
+            divBtn.innerHTML = `<span class="material-icons-sharp">${button.icon}</span>`;
+            divBtn.id = button.id;
+            divBtn.classList.add('btns');
+            divBtn.addEventListener("click", button.action);
+            fragment.appendChild(divBtn);
+        });
+        this.sub_container_buttons.appendChild(fragment);
+        this.sub_container_buttons.classList.add('sub_container_buttons');
+        this.conatiner_buttons_and_form.appendChild(this.sub_container_buttons);
+    }
+
+    renderFormAdd() {
+        let container_form = document.createElement('div');
+        let formulario = document.createElement('form');
+        let fragment = document.createDocumentFragment();
+        formulario.id = 'form' + this.titulo;
+        for (let i = 0; i < this.headers.length; i++) {
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.name = this.headers[i];
+            fragment.appendChild(input);
+        }
+        formulario.appendChild(fragment);
+        container_form.appendChild(formulario);
+    }
+
     renderTrs() {
         let dFragment = document.createDocumentFragment();
         this.trs.forEach(t => {
             let tr = document.createElement("tr");
-            tr.id = Math.floor(Math.random() * 100);
+            tr.id = Math.floor(Math.random() * 1000);
             let td = document.createElement("td");
             td.innerHTML = `<input type="checkbox" id="${
                 t[Object.keys(t)[0]]
             }-${this.titulo}" class="table_check">
             <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
-                <div class="custom_checkbox"></div>
+                <div class="custom_checkbox" id="custom_checkbox"></div>
             </label>`;
             tr.appendChild(td);
 
@@ -227,18 +259,6 @@ class DataTable {
             dFragment.appendChild(tr);
         });
         this.tbody.appendChild(dFragment);
-    }
-
-    renderActionBtns() {
-        let fragment = document.createDocumentFragment();
-        this.buttons.forEach((i, index) => {
-            let divBtn = document.createElement("div");
-            divBtn.innerHTML = `<span class="material-icons-sharp">${this.buttons[index].icon}</span>`;
-            divBtn.id = this.buttons[index].id;
-            divBtn.addEventListener('click', this.buttons[index].action);
-            fragment.appendChild(divBtn);
-        });
-        this.actions_buttons_container.appendChild(fragment);
     }
 
     insertarFilas(datos) {
@@ -272,15 +292,16 @@ class DataTable {
         fEHijos.forEach((hijo, index) => {
             if (index == 0) {
                 let input = hijo.querySelector("input");
+                let checkboxLabel = hijo.querySelector("#custom_checkbox");
+                checkboxLabel.classList.add('checkboxToButton');
                 input.type = "button";
                 input.value = "aceptar";
-                input.addEventListener(
-                    "click",
-                    () => {
+                input.addEventListener("click",() => {
                         let parent = input.parentNode.parentNode;
                         let pHijos = parent.querySelectorAll("td");
                         pHijos.forEach((h, index) => {
                             if (index == 0) {
+                                checkboxLabel.classList.remove('checkboxToButton');
                                 input.type = "checkbox";
                                 input.value = "";
                                 input.checked = false;
@@ -290,8 +311,7 @@ class DataTable {
                                 datosEditados.push(h.textContent);
                             }
                         });
-                    },
-                    { once: true }
+                    },{ once: true }
                 );
             } else {
                 hijo.contentEditable = true;
@@ -323,134 +343,6 @@ async function peticionFetch(parametros, url) {
     }
 }
 
-/* ------------------------------ Ventana modal ----------------------------- */
-// !Modal
-function vModal(title, content) {
-    let modal = document.getElementById("modal");
-    let tituloModal = modal.querySelector(".header_modal").querySelector("h2");
-    let contentModal = modal.querySelector(".content_modal");
-    let fragment = document.createDocumentFragment();
-
-    let cerrarModal = () => {
-        modal.classList.remove("modal");
-        modal
-            .querySelector(".container_modal_hide")
-            .classList.remove("container_modal");
-        document.querySelector("body").style.overflow = "unset";
-        contentModal.innerHTML = "";
-    };
-
-    tituloModal.textContent = title;
-
-    if (content.length > 0) {
-        content.forEach(c => {
-            let subtitle = document.createElement("h3");
-            let form = document.createElement("form");
-            let td = c.querySelectorAll("td");
-            td.forEach((t, index) => {
-                let divLabel = document.createElement("div");
-                let input = document.createElement("input");
-                input.name = t.dataset.label;
-                if (index == 0) {
-                    idInput = t.querySelector("input").id;
-                    posNomTabla = idInput.search("-") + 1;
-                    nomTabla = idInput.slice(posNomTabla, idInput.length);
-                    subtitle.innerHTML = `${nomTabla[0].toUpperCase()}${nomTabla.slice(
-                        1,
-                        nomTabla.length
-                    )}`;
-                    input.type = "hidden";
-                    input.value = nomTabla;
-                    divLabel.style.display = "none";
-                } else {
-                    let nomLabel = document.createElement("p");
-                    nomLabel.innerHTML = t.dataset.label;
-                    divLabel.appendChild(nomLabel);
-                    input.type = "text";
-                    input.value = t.textContent;
-                    divLabel.appendChild(input);
-                }
-                form.appendChild(divLabel);
-            });
-            form.id = nomTabla;
-            fragment.appendChild(subtitle);
-            fragment.appendChild(form);
-        });
-    } else {
-        let msj = document.createElement("h3");
-        msj.innerHTML = "Selecciona una casilla";
-        fragment.appendChild(msj);
-    }
-    contentModal.appendChild(fragment);
-    modal.classList.add("modal");
-    modal
-        .querySelector(".container_modal_hide")
-        .classList.add("container_modal");
-    document.querySelector("body").style.overflow = "hidden";
-
-    /* ----------------------- Botones de cerrar y aceptar ---------------------- */
-    let btn_modal_close = modal.querySelector(".btn_modal_close");
-    btn_modal_close.addEventListener("click", () => {
-        cerrarModal();
-    });
-
-    let btn_modal_aceptar = document.getElementById("btn_modal_aceptar");
-    btn_modal_aceptar.addEventListener("click", () => {
-        let arrFormData = [];
-        let formularios = modal.querySelectorAll("form");
-        formularios.forEach((f, index) => {
-            arrFormData[index] = new FormData(f);
-            tabla = f.id;
-            editarDatos(tabla, arrFormData[index]);
-        });
-        cerrarModal();
-        let check = document.querySelectorAll(".table_check");
-        check.forEach(c => (c.checked = false));
-    });
-}
-
-/* -------------------------------- Eliminar -------------------------------- */
-// !Eliminar
-let btn_eliminar = document.getElementById("eliminar");
-btn_eliminar.addEventListener("click", () => {
-    let check = document.querySelectorAll(".table_check");
-    check.forEach(c => {
-        if (c.checked == true) c.parentNode.parentNode.remove();
-        c.checked = false;
-    });
-});
-
-/* --------------------------------- Editar --------------------------------- */
-// !Editar
-let btn_editar = document.getElementById("editar");
-btn_editar.addEventListener("click", () => {
-    let check = document.querySelectorAll(".table_check");
-    let tr = [];
-    check.forEach((c, index) => {
-        if (c.checked) tr[index] = c.parentNode.parentNode;
-    });
-    vModal("Editar", tr);
-});
-
-let editarDatos = async (tabla, parametros) => {
-    let opc;
-    if (tabla == "pelicula") opc = 2;
-    else if (tabla == "estadisticas") opc = 22;
-    else if (tabla == "estadisticaspelicula") opc = 42;
-    else if (tabla == "actor") opc = 62;
-    else if (tabla == "actorpelicula") opc = 82;
-    else if (tabla == "director") opc = 102;
-    else if (tabla == "directorpelicula") opc = 122;
-    else if (tabla == "genero") opc = 142;
-    else if (tabla == "generopelicula") opc = 162;
-    else alert("Ha ocurrido un error al actualizar la informacion");
-    let url = `../Model/facade.php?opc=${opc}`;
-    parametros.forEach(p => {
-        console.log(p);
-    });
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
-};
 
 /* --------------------------- Consultar peliculas -------------------------- */
 // !Consultar peliculas
@@ -465,17 +357,40 @@ const consultarPeliculas = async () => {
         titleIcon: "movie",
         headers: Object.keys(await response[0]),
         actButtons: [
-            { id: "btn_add", icon: "add", action: function () {
-                console.log("agregar");
-                console.log(tPeliculas.buttons);
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
+                    console.log("agregar");
+                    console.log(tPeliculas.buttons);
                 },
             },
-            { id: "btn_edit", icon: "edit", action: function () {
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
                     console.log("editar");
+                    let checkBox = tPeliculas.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode;
+                            tPeliculas.editarFilas(idFila.id);
+                        }
+                    });
                 },
             },
-            { id: "btn_delete", icon: "delete", action: function () {
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
                     console.log("eliminar");
+                    let checkBox = tPeliculas.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach((check) => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode.id;
+                            tPeliculas.eliminarFilas(idFila);
+                        }
+                    });
                 },
             },
         ],
@@ -494,19 +409,43 @@ const consultarActores = async () => {
 
     let contents = await {
         titulo: "actores",
-        titleIcon: "person",
+        titleIcon: "groups",
         headers: Object.keys(await response[0]),
         actButtons: [
-            { id: "btn_add", icon: "add", action: function () {
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
                     console.log("agregar");
+                    console.log(tActores.buttons);
                 },
             },
-            { id: "btn_edit", icon: "edit", action: function () {
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
                     console.log("editar");
+                    let checkBox = tActores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode;
+                            tActores.editarFilas(idFila.id);
+                        }
+                    });
                 },
             },
-            { id: "btn_delete", icon: "delete", action: function () {
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
                     console.log("eliminar");
+                    let checkBox = tActores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach((check) => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode.id;
+                            tActores.eliminarFilas(idFila);
+                        }
+                    });
                 },
             },
         ],
@@ -525,19 +464,43 @@ const consultarDirectores = async () => {
 
     let contents = await {
         titulo: "directores",
-        titleIcon: "person",
+        titleIcon: "people",
         headers: Object.keys(await response[0]),
         actButtons: [
-            { id: "btn_add", icon: "add", action: function () {
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
                     console.log("agregar");
+                    console.log(tDirectores.buttons);
                 },
             },
-            { id: "btn_edit", icon: "edit", action: function () {
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
                     console.log("editar");
+                    let checkBox = tDirectores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode;
+                            tDirectores.editarFilas(idFila.id);
+                        }
+                    });
                 },
             },
-            { id: "btn_delete", icon: "delete", action: function () {
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
                     console.log("eliminar");
+                    let checkBox = tDirectores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach((check) => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode.id;
+                            tDirectores.eliminarFilas(idFila);
+                        }
+                    });
                 },
             },
         ],
@@ -556,19 +519,43 @@ const consultarGeneros = async () => {
 
     let contents = await {
         titulo: "generos",
-        titleIcon: "person",
+        titleIcon: "theaters",
         headers: Object.keys(await response[0]),
         actButtons: [
-            { id: "btn_add", icon: "add", action: function () {
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
                     console.log("agregar");
+                    console.log(tGeneros.buttons);
                 },
             },
-            { id: "btn_edit", icon: "edit", action: function () {
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
                     console.log("editar");
+                    let checkBox = tGeneros.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode;
+                            tGeneros.editarFilas(idFila.id);
+                        }
+                    });
                 },
             },
-            { id: "btn_delete", icon: "delete", action: function () {
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
                     console.log("eliminar");
+                    let checkBox = tGeneros.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach((check) => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode.id;
+                            tGeneros.eliminarFilas(idFila);
+                        }
+                    });
                 },
             },
         ],
