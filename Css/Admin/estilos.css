@@ -12,8 +12,7 @@
 }
 
 :root {
-    --Font-Principal:
-    "Poppins", sans-serif;
+    --Font-Principal: "Poppins", sans-serif;
     --background-light-color: #eceef9;
     --border-radius-5px: 5px;
     --border-radius-10px: 10px;
@@ -25,15 +24,19 @@
     --color-red: #f44336;
     --color-dark: #37374d;
     --color-hover: #dccec882;
-    --color-white: #fafafe;
+    --color-white-semi-transparent: #fafafede;
     --item-box-shadow: 5px 5px 20px #00000039;
     --item-padding: 10px;
 }
 
 body {
-    background: #eef5ee;
-    background: linear-gradient(90deg, #f3f8f3, #f4f0ef, #f1f5f8);
+    /* background: #eef5ee;
+    background: linear-gradient(90deg, #f4fdf4, #fef8f6, #f6fbfe); */
+    background: url(/Cinemax/Images/yamato___cap_1043_by_mikepxel_df1z53q.png);
     background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
     font-family: var(--Font-Principal);
     min-height: 100vh;
 }
@@ -41,142 +44,15 @@ body {
 .material-icons-sharp {
     user-select: none;
     -webkit-user-select: none;
-    text-shadow: -1px 1px 1.5px #0000004c;
+    text-shadow: -1px 1px 2px #0000005c;
+    transition: transform 0.3s, text-shadow 0.3s;
 }
 
-/* ------------------------------ Ventana modal ----------------------------- */
-.modal_hide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100vh;
-    transition: z-index 0.6s;
+.material-icons-sharp:hover {
+    transform: scale(1.1);
+    text-shadow: -1px 1px 3px #0000006e;
 }
 
-div.modal {
-    z-index: 1001;
-    background: rgb(0 0 0 / 35%);
-}
-
-.container_modal_hide {
-    padding: 0 0 10px 0;
-    border-radius: 0;
-    background: transparent;
-    transform: scale(0);
-    transition: all 0.3s;
-    opacity: 0;
-}
-
-div.container_modal {
-    border-radius: var(--border-radius-20px);
-    background: var(--color-white);
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: var(--item-box-shadow);
-}
-
-.header_modal {
-    gap: 10px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-.header_modal .material-icons-sharp {
-    padding: 5px;
-    cursor: pointer;
-    font-size: 25pt;
-    color: rgb(0, 0, 0);
-    background: transparent;
-    box-shadow: 0 0 0 transparent;
-    border-radius: var(--border-radius-15px);
-    transition: color 0.3s, background 0.3s, box-shadow 0.3s;
-}
-
-.header_modal .material-icons-sharp:hover {
-    color: white;
-    background: var(--color-red);
-    box-shadow: 0 2px 3px #00000040;
-}
-
-.content_modal {
-    width: 100%;
-    max-height: 70vh;
-    padding: 5px 15px;
-    overflow: auto;
-}
-
-.content_modal h3 {
-    padding-left: 5px;
-}
-
-.content_modal > form {
-    padding-bottom: 5px;
-    border-bottom: 1px solid;
-    max-width: 800px;
-    width: 90vw;
-    margin: 5px 0 10px 0;
-}
-
-.content_modal > form > div {
-    gap: 10px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-}
-
-.content_modal > form > div > p {
-    white-space: nowrap;
-    padding: 5px;
-    text-transform: capitalize;
-}
-
-.content_modal > form > div > input {
-    padding: 10px 5px;
-    border: 0;
-    width: 100%;
-    border-radius: var(--border-radius-5px);
-    background: transparent;
-}
-
-.content_modal > form > div > input:focus {
-    outline: 2px solid var(--color-blue);
-}
-
-.container_aceptar_btn {
-    padding: 10px 20px 0 20px;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-}
-
-button#btn_modal_aceptar {
-    transition: transform 0.3s, filter 0.3s, color 0.3s, background 0.3s,
-        box-shadow 0.3s;
-    cursor: pointer;
-    font-size: 14pt;
-    color: black;
-    background: transparent;
-    box-shadow: 0 0 0 transparent;
-    border: 0;
-    border-radius: var(--border-radius-10px);
-    padding: 10px;
-}
-
-button#btn_modal_aceptar:hover {
-    transform: scale(1.05);
-
-    color: var(--color-white);
-    background: var(--color-blue);
-    box-shadow: 0 2px 3px #00000040;
-}
 /* --------------------------------- Loader --------------------------------- */
 div.loader {
     z-index: 100;
@@ -284,8 +160,47 @@ nav {
     border-radius: var(--border-radius-15px);
     background: #ffffffd1;
     box-shadow: 0 10px 20px #0000004a;
+    flex-direction: column;
 }
 
+/* -------------------- Nav Button Up ------------------- */
+nav div.button_up_active {
+    background: var(--color-blue);
+    width: 100%;
+    margin: 2px 0 10px 0;
+    border-radius: 7px;
+    box-shadow: 0 0 3px #00000025;
+}
+
+nav .button_up_active span.material-icons-sharp {
+    font-size: 20pt;
+}
+
+nav .button_up {
+    background: transparent;
+    color: white;
+    width: 0;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: 0 0 0 transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-property: background, width, margin, border-radius, box-shadow;
+    transition-duration: .3s;
+}
+
+nav .button_up .material-icons-sharp {
+    font-size: 0;
+    transition: font-size .3s;
+}
+
+nav .button_up:hover {
+    transform: scale(1.03);
+}
+
+/* ---------------------- Nav Items --------------------- */
 nav ul {
     display: flex;
     color: var(--color-dark);
@@ -409,7 +324,7 @@ body::-webkit-scrollbar-thumb {
 
 .container_header_items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
     width: 100%;
     max-width: 900px;
@@ -430,9 +345,10 @@ body::-webkit-scrollbar-thumb {
 
 .header_item:hover {
     bottom: 5px;
-    transform: scale(1.05);
-    box-shadow: 0px 10px 10px #0000007a, -3px -3px 15px #fefefe2a inset;
+    transform: scale(1.03);
+    box-shadow: 0px 5px 35px #0000006f, -3px -3px 15px #fefefe2a inset;
     z-index: 2;
+    outline: 2px solid white;
 }
 
 .header_item:nth-child(1) {
@@ -466,7 +382,12 @@ body::-webkit-scrollbar-thumb {
 
 /* ------------------------------ Section body ------------------------------ */
 .container_subsection {
+    scroll-margin-top: 40px;
     margin-bottom: 20px;
+}
+
+#container_section_subtitle-Directores {
+    scroll-margin-top: 40px;
 }
 
 .section_subtitle {
@@ -505,9 +426,9 @@ body::-webkit-scrollbar-thumb {
     display: inline-block;
     padding: var(--item-padding);
     border-radius: var(--border-radius-20px);
-    background: var(--color-white);
+    background: var(--color-white-semi-transparent);
     box-shadow: var(--item-box-shadow);
-    transition: box-shadow 0.5s 0.1s ease, transform 0.3s 0.1s;
+    transition: box-shadow 0.5s ease, transform 0.3s;
 }
 
 .item:hover {
@@ -651,19 +572,17 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* ------------------------------ User section ------------------------------ */
-.data_section .header_item,
-.data_section .header_item,
 .data_section .header_item {
     gap: 10px;
     padding: 20px 10px;
     cursor: pointer;
+    color: black;
+    background: white;
 }
 
-.data_section .header_item {
-    background: #0069bd;
-    color: #ffffff;
+.data_section .header_item:hover {
+    outline: 2px solid var(--color-blue);
 }
-
 
 /* --------------------------------- Subbody -------------------------------- */
 .section_subbody {
@@ -672,7 +591,7 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
     padding: var(--item-padding);
     border-radius: var(--border-radius-20px);
-    background: var(--color-white);
+    background: var(--color-white-semi-transparent);
     overflow: hidden;
     box-shadow: var(--item-box-shadow);
     align-items: center;
@@ -712,8 +631,16 @@ tbody tr:hover {
 }
 
 td.editableOn {
-    background: #3da7fa36;
+    background: #3da8fa16;
     outline: 1px solid var(--color-blue);
+    transition: all 0.3s;
+}
+
+td.editableOn:focus {
+    background: var(--color-white-semi-transparent);
+    text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+    box-shadow: 0px 0px 10px var(--color-blue);
+    outline: 1px solid #03a9f4;
 }
 
 td {
@@ -722,7 +649,7 @@ td {
     font-weight: 300;
     overflow: hidden;
     white-space: nowrap;
-    transition: background .3s;
+    transition: background 0.3s;
 }
 td:first-child {
     padding-left: 5px;
@@ -750,7 +677,7 @@ div.checkboxToButton::after {
     width: 100%;
     height: 100%;
     position: relative;
-    color: var(--color-white);
+    color: var(--color-white-semi-transparent);
     font-size: 8pt;
     align-items: center;
     justify-content: center;
@@ -791,6 +718,8 @@ div.checkboxToButton::after {
     box-shadow: -1px 0px 4px var(--color-blue);
 }
 
+/* ------------- Header Table Buttons Y Form ------------ */
+
 .container_buttons_and_form {
     border-bottom: 1px solid;
     width: 100%;
@@ -830,6 +759,85 @@ div.checkboxToButton::after {
 .sub_container_buttons .btns:hover .material-icons-sharp {
     transform: scale(1.1);
     color: rgb(0, 0, 0);
+}
+
+.sub_container_form {
+    width: 100%;
+}
+
+.sub_container_form form {
+    padding: 10px;
+    background: white;
+    box-shadow: 0 0 15px rgb(0 0 0 / 14%) inset;
+    margin: 5px 0;
+    border-radius: var(--border-radius-15px);
+    gap: 15px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.sub_container_form form .container_inputs {
+    gap: 10px;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.content_label {
+    width: calc(50% - 15px);
+    gap: 5px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+input.input_agregar_form {
+    outline: 2px solid #d1d1d1;
+    border: 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: transparent;
+    color: #000000;
+    border-radius: 5px;
+    text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+    transition: outline 0.3s, box-shadow 0.3s;
+}
+
+input.input_agregar_form:hover {
+    outline: 2px solid #2196f3;
+}
+
+input.input_agregar_form::placeholder {
+    color: gray;
+    text-shadow: none;
+}
+
+input.input_agregar_form:focus {
+    outline: 2px solid #03a9f4;
+    box-shadow: 0px 0px 10px var(--color-blue);
+}
+
+input.input_agregar_form:focus ~ .content_label > p {
+    top: -10px;
+    left: 5px;
+    color: var(--color-blue);
+}
+
+.sub_container_form form button {
+    color: white;
+    border-radius: var(--border-radius-10px);
+    padding: 10px;
+    background: #dcdcdd;
+    border: none;
+    cursor: pointer;
+    transition: outline 0.3s, box-shadow 0.3s;
+}
+
+.sub_container_form form button:hover {
+    outline: 2px solid #2196f3;
+    box-shadow: 0 0 10px #888888;
 }
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */
@@ -876,8 +884,6 @@ div.checkboxToButton::after {
         display: none;
     }
 
-    .data_section .header_item,
-    .data_section .header_item,
     .data_section .header_item {
         gap: 0;
         padding: 5px;

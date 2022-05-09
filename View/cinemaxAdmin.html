@@ -7,7 +7,7 @@
     <!-- Css -->
     <link rel="stylesheet" href="../Css/Admin/estilos.css" />
     <!-- Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" rel="prefetch"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" rel="prefetch"></script> -->
     <!-- Google Icons -->
     <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
@@ -16,11 +16,14 @@
     <title>Cinemax | Administrador</title>
 </head>
 <body>
-    <header>
+    <header id="header">
         <h1>Cinemax | Administrador</h1>
     </header>
 
     <nav>
+        <div class="button_up" id="button_up">
+            <span class="material-icons-sharp">expand_less</span>
+        </div>
         <ul>
             <li class="option active_option">
                 <img src="../Images/Home.png" alt="Inicio"/>
@@ -41,6 +44,9 @@
     </nav>
 
     <!-- ---------------------- Ventanas emergentes y etc ---------------------- -->
+    <div class="upButtonContainer">
+        
+    </div>
 
     <!-- -------------------------------- Main --------------------------------- -->
     <main>
@@ -223,34 +229,51 @@
 
             <div class="section_header">
                 <div class="container_header_items" id="chi2">
-                    <div class="header_item">
-                        <span class="material-icons-sharp">movie</span>
-                        <div>
-                            <h5>569</h5>
-                            <h5>Peliculas</h5>
+                    <a href="#Peliculas">
+                        <div class="header_item">
+                            <span class="material-icons-sharp">movie</span>
+                            <div>
+                                <h5>569</h5>
+                                <h5>Peliculas</h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="header_item">
-                        <span class="material-icons-sharp">groups</span>
-                        <div>
-                            <h5>1290</h5>
-                            <h5>Actores</h5>
+                    </a>
+                    <a href="#Actores">
+                        <div class="header_item">
+                            <span class="material-icons-sharp">groups</span>
+                            <div>
+                                <h5>1290</h5>
+                                <h5>Actores</h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="header_item">
-                        <span class="material-icons-sharp">people</span>
-                        <div>
-                            <h5>750</h5>
-                            <h5>Directores</h5>
+                    </a>
+                    <a href="#Directores">
+                        <div class="header_item">
+                            <span class="material-icons-sharp">people</span>
+                            <div>
+                                <h5>750</h5>
+                                <h5>Directores</h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="header_item">
-                        <span class="material-icons-sharp">theaters</span>
-                        <div>
-                            <h5>40</h5>
-                            <h5>Generos</h5>
+                    </a>
+                    <a href="#Generos">
+                        <div class="header_item">
+                            <span class="material-icons-sharp">theaters</span>
+                            <div>
+                                <h5>40</h5>
+                                <h5>Generos</h5>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+                    <a href="#Estadisticas">
+                        <div class="header_item">
+                            <span class="material-icons-sharp">bar_chart</span>
+                            <div>
+                                <h5>400</h5>
+                                <h5>Estadisticas</h5>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
 

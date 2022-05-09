@@ -7,11 +7,11 @@ let sectionsX = [];
 sections.forEach(
     (section, index) => (sectionsX[index] = section.getBoundingClientRect())
 );
-window.addEventListener("resize", () => {
+/* window.addEventListener("resize", () => {
     sections.forEach(
         (section, index) => (sectionsX[index] = section.getBoundingClientRect())
     );
-});
+}); */
 
 options.forEach((op, index) => {
     op.addEventListener("click", () => {
@@ -48,6 +48,7 @@ const observer = new IntersectionObserver(
                         consultarActores();
                         consultarDirectores();
                         consultarGeneros();
+                        consultarEstadisticas();
                         //se desactiva el loader desde una de las funciones
                         fEjecutada = true;
                     }
@@ -59,21 +60,29 @@ const observer = new IntersectionObserver(
     },
     {
         root: main,
-        threshold: 0.7,
+        threshold: 1,
     }
 );
 
 sections.forEach(section => observer.observe(section));
 
-/* ------------------------- Cambiar color a header ------------------------- */
+/* ------------------------- Header y Button Up ------------------------- */
+let buttonUp = document.getElementById('button_up');
+let header = document.getElementById('header');
 window.addEventListener("scroll", () => {
     if (document.documentElement.scrollTop >= 40) {
-        document.querySelector("header").style.backgroundColor =
-            "rgb(255 255 255 / 80%)";
+        header.style.backgroundColor =
+            "rgb(255 255 255 / 90%)";
+        buttonUp.classList.add('button_up_active');
     } else {
-        document.querySelector("header").style.backgroundColor = "transparent";
+        header.style.backgroundColor = "transparent";
+        buttonUp.classList.remove('button_up_active');
     }
 });
+
+buttonUp.addEventListener('click', () => {
+    window.scrollTo({ top: 0 });
+})
 
 /* --------------------------------- Grafico -------------------------------- */
 function crearGrafico(contenedor, labels, parametros, valores) {
@@ -96,11 +105,11 @@ function crearGrafico(contenedor, labels, parametros, valores) {
 }
 
 window.addEventListener("load", () => {
-    contenedor = "grafico";
+    /* contenedor = "grafico";
     labels = ["Total"];
     parametros = ["Total", "Registrados", "No registrados"];
     valores = [[5000, 3500, 1500]];
-    crearGrafico(contenedor, labels, parametros, valores);
+    crearGrafico(contenedor, labels, parametros, valores); */
 });
 
 /* ----------------------- Clases ----------------------- */
@@ -109,11 +118,11 @@ class DataTable {
     elementParent;
     container_subsection;
     container_table;
-    conatiner_buttons_and_form;
+    container_buttons_and_form;
     sub_container_buttons;
     buttons;
     section_subbody;
-    section_subtitle;
+    container_section_subtitle;
     titulo;
     titleIcon;
     headers;
@@ -126,10 +135,10 @@ class DataTable {
     constructor(elementParent, contents) {
         this.elementParent = document.querySelector(elementParent);
         this.container_subsection = document.createElement("div");
-        this.section_subtitle = document.createElement("div");
+        this.container_section_subtitle = document.createElement("div");
         this.section_subbody = document.createElement("div");
         this.container_table = document.createElement("div");
-        this.conatiner_buttons_and_form = document.createElement("div");
+        this.container_buttons_and_form = document.createElement("div");
         this.sub_container_buttons = document.createElement("div");
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
@@ -155,15 +164,16 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add("container_table");
 
-        this.conatiner_buttons_and_form.classList.add("container_buttons_and_form");
+        this.container_buttons_and_form.classList.add("container_buttons_and_form");
 
-        this.section_subbody.appendChild(this.conatiner_buttons_and_form);
+        this.section_subbody.appendChild(this.container_buttons_and_form);
         this.section_subbody.appendChild(this.container_table);
         this.section_subbody.classList.add("section_subbody");
 
-        this.container_subsection.appendChild(this.section_subtitle);
+        this.container_subsection.appendChild(this.container_section_subtitle);
         this.container_subsection.appendChild(this.section_subbody);
         this.container_subsection.classList.add("container_subsection");
+        this.container_subsection.id = this.titulo;
 
         this.elementParent.appendChild(this.container_subsection);
     }
@@ -173,7 +183,7 @@ class DataTable {
     }
 
     renderTitleBar() {
-        this.section_subtitle.innerHTML = `
+        this.container_section_subtitle.innerHTML = `
         <div class="section_subtitle">
             <h2>${this.titulo}</h2>
             <div>
@@ -211,22 +221,42 @@ class DataTable {
         });
         this.sub_container_buttons.appendChild(fragment);
         this.sub_container_buttons.classList.add('sub_container_buttons');
-        this.conatiner_buttons_and_form.appendChild(this.sub_container_buttons);
+        this.container_buttons_and_form.appendChild(this.sub_container_buttons);
     }
 
     renderFormAdd() {
         let container_form = document.createElement('div');
+        let container_inputs = document.createElement('div');
         let formulario = document.createElement('form');
         let fragment = document.createDocumentFragment();
+        let saveButton = document.createElement('button');
+        saveButton.innerHTML = '<span class="material-icons-sharp">send</span>';
         formulario.id = 'form' + this.titulo;
         for (let i = 0; i < this.headers.length; i++) {
+            let divContentLabel = document.createElement('div');
+            divContentLabel.classList.add('content_label')
+
+            let pText = document.createElement('p');
+            pText.textContent = this.capitalizarString(this.headers[i]);
+
             let input = document.createElement('input');
             input.type = 'text';
-            input.name = this.headers[i];
-            fragment.appendChild(input);
+            input.name = this.headers[i].replace(/ /g, "");
+            input.placeholder = this.capitalizarString(this.headers[i]);
+            input.classList.add('input_agregar_form');
+
+            divContentLabel.appendChild(pText);
+            divContentLabel.appendChild(input);
+
+            fragment.appendChild(divContentLabel);
         }
-        formulario.appendChild(fragment);
+        container_inputs.appendChild(fragment);
+        container_inputs.classList.add('container_inputs');
+        formulario.appendChild(container_inputs);
+        formulario.appendChild(saveButton);
         container_form.appendChild(formulario);
+        container_form.classList.add('sub_container_form');
+        this.container_buttons_and_form.appendChild(container_form);
     }
 
     renderTrs() {
@@ -349,7 +379,7 @@ async function peticionFetch(parametros, url) {
 const consultarPeliculas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "1");
-    let url = "../Model/facade.php?opc=1";
+    let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
 
     let contents = await {
@@ -361,8 +391,7 @@ const consultarPeliculas = async () => {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    console.log("agregar");
-                    console.log(tPeliculas.buttons);
+                    tPeliculas.renderFormAdd();
                 },
             },
             {
@@ -399,12 +428,68 @@ const consultarPeliculas = async () => {
     let tPeliculas = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
+
+/* --------------- Consultar Estadisticas --------------- */
+// !Consultar estadisticas
+const consultarEstadisticas = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "21");
+    let url = "../Model/facade.php";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "estadisticas",
+        titleIcon: "bar_chart",
+        headers: Object.keys(await response[0]),
+        actButtons: [
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
+                    tEstadisticas.renderFormAdd();
+                },
+            },
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
+                    console.log("editar");
+                    let checkBox = tEstadisticas.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode;
+                            tEstadisticas.editarFilas(idFila.id);
+                        }
+                    });
+                },
+            },
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
+                    console.log("eliminar");
+                    let checkBox = tEstadisticas.section_subbody.querySelectorAll("input[type=checkbox]");
+                    checkBox.forEach((check) => {
+                        if (check.checked) {
+                            let idFila = check.parentNode.parentNode.id;
+                            tEstadisticas.eliminarFilas(idFila);
+                        }
+                    });
+                },
+            },
+        ],
+        trs: await response,
+    };
+    let tEstadisticas = new DataTable(".data", await contents);
+    loader.classList.remove("loader");
+}
+
 /* ---------------------------- Consultar actores --------------------------- */
 // !Consultar actores
 const consultarActores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "61");
-    let url = "../Model/facade.php?opc=1";
+    let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
 
     let contents = await {
@@ -416,8 +501,7 @@ const consultarActores = async () => {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    console.log("agregar");
-                    console.log(tActores.buttons);
+                    tActores.renderFormAdd();
                 },
             },
             {
@@ -459,7 +543,7 @@ const consultarActores = async () => {
 const consultarDirectores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "101");
-    let url = "../Model/facade.php?opc=101";
+    let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
 
     let contents = await {
@@ -471,8 +555,7 @@ const consultarDirectores = async () => {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    console.log("agregar");
-                    console.log(tDirectores.buttons);
+                    tDirectores.renderFormAdd();
                 },
             },
             {
@@ -526,8 +609,7 @@ const consultarGeneros = async () => {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    console.log("agregar");
-                    console.log(tGeneros.buttons);
+                    tGeneros.renderFormAdd();
                 },
             },
             {

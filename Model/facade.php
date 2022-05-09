@@ -41,7 +41,7 @@ if ($opc == '21') {
     $valor = "";
     
     $estadisticas = Estadisticas::listar($opcion, $campo, $valor);
-    echo json_encode($Estadisticas);
+    echo json_encode($estadisticas);
 }
 
 /* -------------------------- Estadisticas pelicula 41-60 ------------------------- */
