@@ -32,7 +32,7 @@
 body {
     /* background: #eef5ee;
     background: linear-gradient(90deg, #f4fdf4, #fef8f6, #f6fbfe); */
-    background: url(/Cinemax/Images/yamato___cap_1043_by_mikepxel_df1z53q.png);
+    background: url(/Cinemax/Images/yamato.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -44,7 +44,7 @@ body {
 .material-icons-sharp {
     user-select: none;
     -webkit-user-select: none;
-    text-shadow: -1px 1px 2px #0000005c;
+    /* text-shadow: -1px 1px 2px #0000005c; */
     transition: transform 0.3s, text-shadow 0.3s;
 }
 
@@ -165,11 +165,10 @@ nav {
 
 /* -------------------- Nav Button Up ------------------- */
 nav div.button_up_active {
-    background: var(--color-blue);
+    transition: color .3s, background .3s, transform .3s;
+    border-radius: 10px;
+    margin-bottom: 5px;
     width: 100%;
-    margin: 2px 0 10px 0;
-    border-radius: 7px;
-    box-shadow: 0 0 3px #00000025;
 }
 
 nav .button_up_active span.material-icons-sharp {
@@ -178,16 +177,14 @@ nav .button_up_active span.material-icons-sharp {
 
 nav .button_up {
     background: transparent;
-    color: white;
     width: 0;
     margin: 0;
-    border-radius: 0;
     box-shadow: 0 0 0 transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition-property: background, width, margin, border-radius, box-shadow;
+    transition-property: width, margin;
     transition-duration: .3s;
 }
 
@@ -197,7 +194,9 @@ nav .button_up .material-icons-sharp {
 }
 
 nav .button_up:hover {
-    transform: scale(1.03);
+    color: white;
+    background: var(--color-blue);
+    transform: scale(1.01) translateY(-7px);
 }
 
 /* ---------------------- Nav Items --------------------- */
@@ -215,7 +214,6 @@ ul li {
     box-shadow: 0 0 1px #00000009, 0 0 0px #64646404;
     transition: background 0.3s, border-radius 0.3s, transform 0.3s,
         box-shadow 0.3s;
-
     cursor: pointer;
 }
 
@@ -348,7 +346,7 @@ body::-webkit-scrollbar-thumb {
     transform: scale(1.03);
     box-shadow: 0px 5px 35px #0000006f, -3px -3px 15px #fefefe2a inset;
     z-index: 2;
-    outline: 2px solid white;
+    /* outline: 2px solid white; */
 }
 
 .header_item:nth-child(1) {
@@ -576,12 +574,10 @@ body::-webkit-scrollbar-thumb {
     gap: 10px;
     padding: 20px 10px;
     cursor: pointer;
-    color: black;
-    background: white;
 }
 
 .data_section .header_item:hover {
-    outline: 2px solid var(--color-blue);
+    outline: 2px solid #ffffff;
 }
 
 /* --------------------------------- Subbody -------------------------------- */
@@ -659,8 +655,11 @@ td:last-child {
     border-radius: 0 7px 7px 0;
 }
 
-tbody td p {
-    overflow: hidden;
+tbody td img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .table_check {
@@ -766,16 +765,19 @@ div.checkboxToButton::after {
 }
 
 .sub_container_form form {
+    height: 100%;
+    border-top: 1px solid;
     padding: 10px;
-    background: white;
-    box-shadow: 0 0 15px rgb(0 0 0 / 14%) inset;
+    /* background: white; */
+    /* box-shadow: 0 0 15px rgb(0 0 0 / 14%) inset; */
     margin: 5px 0;
-    border-radius: var(--border-radius-15px);
+    /* border-radius: var(--border-radius-15px); */
     gap: 15px;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .sub_container_form form .container_inputs {
@@ -787,26 +789,24 @@ div.checkboxToButton::after {
 
 .content_label {
     width: calc(50% - 15px);
-    gap: 5px;
     display: flex;
     position: relative;
     flex-direction: column;
 }
 
 input.input_agregar_form {
-    outline: 2px solid #d1d1d1;
     border: 0;
-    padding: 5px 10px;
+    border-bottom: 2px solid #b1b1b100;
+    padding: 5px 0;
     font-size: 16px;
     background-color: transparent;
     color: #000000;
-    border-radius: 5px;
     text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
-    transition: outline 0.3s, box-shadow 0.3s;
+    transition: outline 0.3s, box-shadow 0.3s, border-radius 0.3s, transform 0.3s, padding .3s;
 }
 
 input.input_agregar_form:hover {
-    outline: 2px solid #2196f3;
+    border-bottom: 2px solid #2196f3;
 }
 
 input.input_agregar_form::placeholder {
@@ -815,6 +815,9 @@ input.input_agregar_form::placeholder {
 }
 
 input.input_agregar_form:focus {
+    padding-left: 10px;
+    transform: translateY(5px);
+    border-radius: 7px;
     outline: 2px solid #03a9f4;
     box-shadow: 0px 0px 10px var(--color-blue);
 }
@@ -825,19 +828,42 @@ input.input_agregar_form:focus ~ .content_label > p {
     color: var(--color-blue);
 }
 
-.sub_container_form form button {
-    color: white;
-    border-radius: var(--border-radius-10px);
-    padding: 10px;
-    background: #dcdcdd;
-    border: none;
-    cursor: pointer;
-    transition: outline 0.3s, box-shadow 0.3s;
+.container_form_act_btns {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.sub_container_form form button:hover {
+.container_form_act_btns button {
+    border-radius: var(--border-radius-10px);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    transition: outline 0.3s, box-shadow 0.3s, background .3s, color .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container_form_act_btns button:last-child {
+    color: white;
+    background: #dcdcdd;
+}
+.container_form_act_btns button:first-child {
+    background: #dcdcdd00;
+}
+
+.container_form_act_btns button:hover:first-child {
+    outline: 2px solid #ffffff;
+    background: red;
+    color: white;
+    box-shadow: 0 0 15px #7a7a7a;
+}
+.container_form_act_btns button:hover:last-child {
     outline: 2px solid #2196f3;
-    box-shadow: 0 0 10px #888888;
+    box-shadow: 0 0 15px #888888;
 }
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */

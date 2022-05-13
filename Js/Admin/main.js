@@ -1,22 +1,24 @@
-/* ------------------------- Navegacion por sections ------------------------- */
-let options = document.querySelectorAll(".option");
-let sections = document.querySelectorAll("section");
+/* ------------------------- Navegacion por mainSections ------------------------- */
+let navOptions = document.querySelectorAll(".option");
+let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
-let sectionsX = [];
-sections.forEach(
-    (section, index) => (sectionsX[index] = section.getBoundingClientRect())
+let mainSectionsX = [];
+mainSections.forEach(
+    (section, index) => (mainSectionsX[index] = section.getBoundingClientRect())
 );
-/* window.addEventListener("resize", () => {
-    sections.forEach(
-        (section, index) => (sectionsX[index] = section.getBoundingClientRect())
-    );
-}); */
 
-options.forEach((op, index) => {
+window.addEventListener("resize", () => {
+    mainSections.forEach(
+        (section, index) =>
+            (mainSectionsX[index] = section.getBoundingClientRect())
+    );
+});
+
+navOptions.forEach((op, index) => {
     op.addEventListener("click", () => {
-        //indica al scroll a que posicion en el eje x debe ir
-        if (sectionsX[index]) main.scrollLeft = sectionsX[index].x;
+        if (mainSectionsX[index]) main.scrollLeft = mainSectionsX[index].x;
+        window.scrollTo({ top: 0 });
     });
 });
 
@@ -28,20 +30,15 @@ const observer = new IntersectionObserver(
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
-                indexSectionActiva = [...sections].indexOf(entry.target);
-                options.forEach((op, index) => {
+                indexSectionActiva = [...mainSections].indexOf(entry.target);
+                navOptions.forEach((op, index) => {
                     window.scrollTo({ top: 0 });
                     if (index == indexSectionActiva)
                         op.classList.add("active_option");
                     else op.classList.remove("active_option");
                 });
 
-                if (
-                    entry.target.id == "data_section" &&
-                    indexSectionActiva == 2
-                ) {
-                    /* fEjecutada = false; */
-                    /* dejar en true para ejecutar cada que es intersectada */
+                if (entry.target.id == "data_section") {
                     if (!fEjecutada) {
                         loader.classList.add("loader");
                         consultarPeliculas();
@@ -52,37 +49,31 @@ const observer = new IntersectionObserver(
                         //se desactiva el loader desde una de las funciones
                         fEjecutada = true;
                     }
-                } else {
-                    loader.classList.remove("loader");
-                }
+                } else loader.classList.remove("loader");
             }
         });
     },
-    {
-        root: main,
-        threshold: 1,
-    }
+    { root: main, threshold: 1 }
 );
 
-sections.forEach(section => observer.observe(section));
+mainSections.forEach(section => observer.observe(section));
 
 /* ------------------------- Header y Button Up ------------------------- */
-let buttonUp = document.getElementById('button_up');
-let header = document.getElementById('header');
+let buttonUp = document.getElementById("button_up");
+let header = document.getElementById("header");
 window.addEventListener("scroll", () => {
     if (document.documentElement.scrollTop >= 40) {
-        header.style.backgroundColor =
-            "rgb(255 255 255 / 90%)";
-        buttonUp.classList.add('button_up_active');
+        header.style.backgroundColor = "rgb(255 255 255 / 95%)";
+        buttonUp.classList.add("button_up_active");
     } else {
         header.style.backgroundColor = "transparent";
-        buttonUp.classList.remove('button_up_active');
+        buttonUp.classList.remove("button_up_active");
     }
 });
 
-buttonUp.addEventListener('click', () => {
+buttonUp.addEventListener("click", () => {
     window.scrollTo({ top: 0 });
-})
+});
 
 /* --------------------------------- Grafico -------------------------------- */
 function crearGrafico(contenedor, labels, parametros, valores) {
@@ -112,7 +103,6 @@ window.addEventListener("load", () => {
     crearGrafico(contenedor, labels, parametros, valores); */
 });
 
-/* ----------------------- Clases ----------------------- */
 /* ---------------------- Datatable --------------------- */
 class DataTable {
     elementParent;
@@ -146,7 +136,7 @@ class DataTable {
         this.titulo = this.capitalizarString(contents.titulo);
         this.titleIcon = contents.titleIcon;
         this.headers = contents.headers;
-        this.buttons = contents.actButtons;
+        this.buttons = contents.actBtns;
         this.trs = contents.trs;
         this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
         this.makeTable();
@@ -164,7 +154,9 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add("container_table");
 
-        this.container_buttons_and_form.classList.add("container_buttons_and_form");
+        this.container_buttons_and_form.classList.add(
+            "container_buttons_and_form"
+        );
 
         this.section_subbody.appendChild(this.container_buttons_and_form);
         this.section_subbody.appendChild(this.container_table);
@@ -215,35 +207,40 @@ class DataTable {
             let divBtn = document.createElement("div");
             divBtn.innerHTML = `<span class="material-icons-sharp">${button.icon}</span>`;
             divBtn.id = button.id;
-            divBtn.classList.add('btns');
+            divBtn.classList.add("btns");
             divBtn.addEventListener("click", button.action);
             fragment.appendChild(divBtn);
         });
         this.sub_container_buttons.appendChild(fragment);
-        this.sub_container_buttons.classList.add('sub_container_buttons');
+        this.sub_container_buttons.classList.add("sub_container_buttons");
         this.container_buttons_and_form.appendChild(this.sub_container_buttons);
     }
 
-    renderFormAdd() {
-        let container_form = document.createElement('div');
-        let container_inputs = document.createElement('div');
-        let formulario = document.createElement('form');
+    renderForm() {
+        let container_form = document.createElement("div");
+        let container_inputs = document.createElement("div");
+        let formulario = document.createElement("form");
         let fragment = document.createDocumentFragment();
-        let saveButton = document.createElement('button');
-        saveButton.innerHTML = '<span class="material-icons-sharp">send</span>';
-        formulario.id = 'form' + this.titulo;
-        for (let i = 0; i < this.headers.length; i++) {
-            let divContentLabel = document.createElement('div');
-            divContentLabel.classList.add('content_label')
+        let actBtns = document.createElement("div");
+        actBtns.innerHTML = `
+        <button><span class="material-icons-sharp">close</span></button>
+        <button><span class="material-icons-sharp">send</span></button>`;
+        actBtns.classList.add("container_form_act_btns");
 
-            let pText = document.createElement('p');
+        formulario.id = "form" + this.titulo;
+
+        for (let i = 0; i < this.headers.length; i++) {
+            let divContentLabel = document.createElement("div");
+            divContentLabel.classList.add("content_label");
+
+            let pText = document.createElement("p");
             pText.textContent = this.capitalizarString(this.headers[i]);
 
-            let input = document.createElement('input');
-            input.type = 'text';
+            let input = document.createElement("input");
+            input.type = "text";
             input.name = this.headers[i].replace(/ /g, "");
             input.placeholder = this.capitalizarString(this.headers[i]);
-            input.classList.add('input_agregar_form');
+            input.classList.add("input_agregar_form");
 
             divContentLabel.appendChild(pText);
             divContentLabel.appendChild(input);
@@ -251,11 +248,14 @@ class DataTable {
             fragment.appendChild(divContentLabel);
         }
         container_inputs.appendChild(fragment);
-        container_inputs.classList.add('container_inputs');
+        container_inputs.classList.add("container_inputs");
+
         formulario.appendChild(container_inputs);
-        formulario.appendChild(saveButton);
+        formulario.appendChild(actBtns);
+
         container_form.appendChild(formulario);
-        container_form.classList.add('sub_container_form');
+        container_form.classList.add("sub_container_form");
+
         this.container_buttons_and_form.appendChild(container_form);
     }
 
@@ -282,7 +282,11 @@ class DataTable {
                         select.innerHTML += `<option value="${i}">${i}</option>`;
                     });
                 } else {
-                    td.textContent = t[i];
+                    if (t[i].indexOf("../foto") == 0) {
+                        td.innerHTML = `<img src="${t[i]}">`;
+                    } else {
+                        td.textContent = t[i];
+                    }
                 }
                 tr.appendChild(td);
             }
@@ -315,34 +319,42 @@ class DataTable {
         this.renderTitleBar();
     }
 
-    editarFilas(idFila) {
-        let filaEditar = document.getElementById(idFila); //es el tr contenedor
+    editarFilas(fila) {
+        let filaEditar = document.getElementById(fila); //es el tr contenedor
         let fEHijos = filaEditar.querySelectorAll("td");
         let datosEditados = [];
         fEHijos.forEach((hijo, index) => {
             if (index == 0) {
-                let input = hijo.querySelector("input");
                 let checkboxLabel = hijo.querySelector("#custom_checkbox");
-                checkboxLabel.classList.add('checkboxToButton');
+                checkboxLabel.classList.add("checkboxToButton");
+
+                let input = hijo.querySelector("input");
                 input.type = "button";
                 input.value = "aceptar";
-                input.addEventListener("click",() => {
-                        let parent = input.parentNode.parentNode;
-                        let pHijos = parent.querySelectorAll("td");
-                        pHijos.forEach((h, index) => {
-                            if (index == 0) {
-                                checkboxLabel.classList.remove('checkboxToButton');
-                                input.type = "checkbox";
-                                input.value = "";
-                                input.checked = false;
-                            } else {
-                                h.contentEditable = false;
-                                h.classList.remove("editableOn");
-                                datosEditados.push(h.textContent);
-                            }
-                        });
-                    },{ once: true }
-                );
+
+                let execute = false;
+                let waitForEvent = setInterval(() => {
+                    if (!execute) {
+                        input.addEventListener("click",() => {
+                            let trParent = input.parentNode.parentNode;
+                            let tdHijos = trParent.querySelectorAll("td");
+                            tdHijos.forEach((td, index) => {
+                                if (index == 0) {
+                                    checkboxLabel.classList.remove("checkboxToButton");
+                                    input.type = "checkbox";
+                                    input.value = "";
+                                    input.checked = false;
+                                } else {
+                                    td.contentEditable = false;
+                                    td.classList.remove("editableOn");
+                                    datosEditados.push(td.textContent);
+                                }
+                            });
+                            clearInterval(waitForEvent);
+                            upDB(datosEditados);
+                        },{ once: true });
+                    }
+                }, 1000);
             } else {
                 hijo.contentEditable = true;
                 hijo.classList.add("editableOn");
@@ -350,8 +362,8 @@ class DataTable {
         });
     }
 
-    eliminarFilas(idFila) {
-        let filaEliminar = document.getElementById(idFila);
+    eliminarFilas(fila) {
+        let filaEliminar = document.getElementById(fila);
         let fElimParent = filaEliminar.parentNode; //parent es el tr contenedor
         fElimParent.removeChild(filaEliminar);
         this.cantRows--;
@@ -373,8 +385,6 @@ async function peticionFetch(parametros, url) {
     }
 }
 
-
-/* --------------------------- Consultar peliculas -------------------------- */
 // !Consultar peliculas
 const consultarPeliculas = async () => {
     let parametros = new FormData();
@@ -382,16 +392,17 @@ const consultarPeliculas = async () => {
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
 
+    let fEditadas;
     let contents = await {
         titulo: "peliculas",
         titleIcon: "movie",
         headers: Object.keys(await response[0]),
-        actButtons: [
+        actBtns: [
             {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    tPeliculas.renderFormAdd();
+                    tPeliculas.renderForm();
                 },
             },
             {
@@ -399,11 +410,14 @@ const consultarPeliculas = async () => {
                 icon: "edit",
                 action: function () {
                     console.log("editar");
-                    let checkBox = tPeliculas.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach(check => {
+                    let checkBox = tPeliculas.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(async check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode;
-                            tPeliculas.editarFilas(idFila.id);
+                            let fila = check.parentNode.parentNode;
+                            fEditadas = await tPeliculas.editarFilas(fila.id);
+                            console.log(await fEditadas);
                         }
                     });
                 },
@@ -413,11 +427,13 @@ const consultarPeliculas = async () => {
                 icon: "delete",
                 action: function () {
                     console.log("eliminar");
-                    let checkBox = tPeliculas.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach((check) => {
+                    let checkBox = tPeliculas.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode.id;
-                            tPeliculas.eliminarFilas(idFila);
+                            let fila = check.parentNode.parentNode.id;
+                            tPeliculas.eliminarFilas(fila);
                         }
                     });
                 },
@@ -429,7 +445,6 @@ const consultarPeliculas = async () => {
     loader.classList.remove("loader");
 };
 
-/* --------------- Consultar Estadisticas --------------- */
 // !Consultar estadisticas
 const consultarEstadisticas = async () => {
     let parametros = new FormData();
@@ -441,12 +456,12 @@ const consultarEstadisticas = async () => {
         titulo: "estadisticas",
         titleIcon: "bar_chart",
         headers: Object.keys(await response[0]),
-        actButtons: [
+        actBtns: [
             {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    tEstadisticas.renderFormAdd();
+                    tEstadisticas.renderForm();
                 },
             },
             {
@@ -454,11 +469,14 @@ const consultarEstadisticas = async () => {
                 icon: "edit",
                 action: function () {
                     console.log("editar");
-                    let checkBox = tEstadisticas.section_subbody.querySelectorAll("input[type=checkbox]");
+                    let checkBox =
+                        tEstadisticas.section_subbody.querySelectorAll(
+                            "input[type=checkbox]"
+                        );
                     checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode;
-                            tEstadisticas.editarFilas(idFila.id);
+                            let fila = check.parentNode.parentNode;
+                            tEstadisticas.editarFilas(fila.id);
                         }
                     });
                 },
@@ -468,11 +486,14 @@ const consultarEstadisticas = async () => {
                 icon: "delete",
                 action: function () {
                     console.log("eliminar");
-                    let checkBox = tEstadisticas.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach((check) => {
+                    let checkBox =
+                        tEstadisticas.section_subbody.querySelectorAll(
+                            "input[type=checkbox]"
+                        );
+                    checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode.id;
-                            tEstadisticas.eliminarFilas(idFila);
+                            let fila = check.parentNode.parentNode.id;
+                            tEstadisticas.eliminarFilas(fila);
                         }
                     });
                 },
@@ -482,9 +503,8 @@ const consultarEstadisticas = async () => {
     };
     let tEstadisticas = new DataTable(".data", await contents);
     loader.classList.remove("loader");
-}
+};
 
-/* ---------------------------- Consultar actores --------------------------- */
 // !Consultar actores
 const consultarActores = async () => {
     let parametros = new FormData();
@@ -496,12 +516,12 @@ const consultarActores = async () => {
         titulo: "actores",
         titleIcon: "groups",
         headers: Object.keys(await response[0]),
-        actButtons: [
+        actBtns: [
             {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    tActores.renderFormAdd();
+                    tActores.renderForm();
                 },
             },
             {
@@ -509,11 +529,13 @@ const consultarActores = async () => {
                 icon: "edit",
                 action: function () {
                     console.log("editar");
-                    let checkBox = tActores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    let checkBox = tActores.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
                     checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode;
-                            tActores.editarFilas(idFila.id);
+                            let fila = check.parentNode.parentNode;
+                            tActores.editarFilas(fila.id);
                         }
                     });
                 },
@@ -523,11 +545,13 @@ const consultarActores = async () => {
                 icon: "delete",
                 action: function () {
                     console.log("eliminar");
-                    let checkBox = tActores.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach((check) => {
+                    let checkBox = tActores.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode.id;
-                            tActores.eliminarFilas(idFila);
+                            let fila = check.parentNode.parentNode.id;
+                            tActores.eliminarFilas(fila);
                         }
                     });
                 },
@@ -538,7 +562,6 @@ const consultarActores = async () => {
     let tActores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
-/* -------------------------- Consultar directores -------------------------- */
 // !Consultar directores
 const consultarDirectores = async () => {
     let parametros = new FormData();
@@ -550,12 +573,12 @@ const consultarDirectores = async () => {
         titulo: "directores",
         titleIcon: "people",
         headers: Object.keys(await response[0]),
-        actButtons: [
+        actBtns: [
             {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    tDirectores.renderFormAdd();
+                    tDirectores.renderForm();
                 },
             },
             {
@@ -563,11 +586,13 @@ const consultarDirectores = async () => {
                 icon: "edit",
                 action: function () {
                     console.log("editar");
-                    let checkBox = tDirectores.section_subbody.querySelectorAll("input[type=checkbox]");
+                    let checkBox = tDirectores.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
                     checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode;
-                            tDirectores.editarFilas(idFila.id);
+                            let fila = check.parentNode.parentNode;
+                            tDirectores.editarFilas(fila.id);
                         }
                     });
                 },
@@ -577,11 +602,13 @@ const consultarDirectores = async () => {
                 icon: "delete",
                 action: function () {
                     console.log("eliminar");
-                    let checkBox = tDirectores.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach((check) => {
+                    let checkBox = tDirectores.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode.id;
-                            tDirectores.eliminarFilas(idFila);
+                            let fila = check.parentNode.parentNode.id;
+                            tDirectores.eliminarFilas(fila);
                         }
                     });
                 },
@@ -592,7 +619,6 @@ const consultarDirectores = async () => {
     let tDirectores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
-/* ---------------------------- Consultar generos --------------------------- */
 // !Consultar generos
 const consultarGeneros = async () => {
     let parametros = new FormData();
@@ -604,12 +630,12 @@ const consultarGeneros = async () => {
         titulo: "generos",
         titleIcon: "theaters",
         headers: Object.keys(await response[0]),
-        actButtons: [
+        actBtns: [
             {
                 id: "btn_add",
                 icon: "add",
                 action: function () {
-                    tGeneros.renderFormAdd();
+                    tGeneros.renderForm();
                 },
             },
             {
@@ -617,11 +643,13 @@ const consultarGeneros = async () => {
                 icon: "edit",
                 action: function () {
                     console.log("editar");
-                    let checkBox = tGeneros.section_subbody.querySelectorAll("input[type=checkbox]");
+                    let checkBox = tGeneros.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
                     checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode;
-                            tGeneros.editarFilas(idFila.id);
+                            let fila = check.parentNode.parentNode;
+                            tGeneros.editarFilas(fila.id);
                         }
                     });
                 },
@@ -631,11 +659,13 @@ const consultarGeneros = async () => {
                 icon: "delete",
                 action: function () {
                     console.log("eliminar");
-                    let checkBox = tGeneros.section_subbody.querySelectorAll("input[type=checkbox]");
-                    checkBox.forEach((check) => {
+                    let checkBox = tGeneros.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
                         if (check.checked) {
-                            let idFila = check.parentNode.parentNode.id;
-                            tGeneros.eliminarFilas(idFila);
+                            let fila = check.parentNode.parentNode.id;
+                            tGeneros.eliminarFilas(fila);
                         }
                     });
                 },
@@ -646,179 +676,3 @@ const consultarGeneros = async () => {
     let tGeneros = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
-
-/* -------------------------------- Consultar ------------------------------- */
-/* const consultarPeliculas2 = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "1");
-    let url = "../Model/facade.php?opc=1";
-    let response = await peticionFetch(parametros, url);
-
-    document.querySelector(".contPeliculas").textContent = response.length;
-    let tbody = document.getElementById("tPeliculas");
-    let fragment = document.createDocumentFragment();
-
-    for (r of response) {
-        //itera mi array de objetos
-        let tr = document.createElement("tr");
-        let {
-            //destructura mi objeto
-            idpelicula,
-            titulooriginal,
-            titulolatino,
-            lanzamiento,
-            duracion,
-            resena,
-            tipo,
-            pais,
-            estado,
-            cantvistas,
-            cantlikes,
-            cantcomentarios
-        } = r;
-        tr.innerHTML = `
-            <td>
-            <input type="checkbox" id="${idpelicula}-pelicula" class="table_check">
-            <label for="${idpelicula}-pelicula">
-                <div class="custom_checkbox"></div>
-            </label>
-            </td>
-            <td data-label="idpelicula"><p>${idpelicula}</p></td>
-            <td data-label="titulooriginal"><p>${titulooriginal}</p></td>
-            <td data-label="titulolatino"><p>${titulolatino}</p></td>
-            <td data-label="lanzamiento"><p>${lanzamiento}</p></td>
-            <td data-label="duracion"><p>${duracion}</p></td>
-            <td data-label="resena"><p>${resena}</p></td>
-            <td data-label="tipo"><p>${tipo}</p></td>
-            <td data-label="pais"><p>${pais}</p></td>
-            <td data-label="estado"><p>${estado}</p></td>
-            <td data-label="vistas"><p>${cantvistas}</p></td>
-            <td data-label="likes"><p>${cantlikes}</p></td>
-            <td data-label="comentarios"><p>${cantcomentarios}</p></td>
-        `;
-        fragment.appendChild(tr);
-    }
-    tbody.appendChild(fragment);
-
-    //desactivar loader
-    loader.classList.remove("loader");
-}; */
-
-/* const consultarActores2 = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "61");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-
-    document.querySelector(".contActores").textContent = response.length;
-    let tbody = document.getElementById("tActores");
-    let fragment = document.createDocumentFragment();
-
-    for (r of response) {
-        //itera mi array de objetos
-        let tr = document.createElement("tr");
-        let {
-            //destructura mi objeto
-            idactor,
-            nombre,
-            fechanacimiento,
-            descripcion,
-            estado,
-        } = r;
-        tr.innerHTML = `
-            <td>
-            <input type="checkbox" id="${idactor}-actor" class="table_check">
-            <label for="${idactor}-actor">
-                <div class="custom_checkbox"></div>
-            </label>
-            </td>
-            <td data-label="id actor"><p>${idactor}</p></td>
-            <td data-label="nombre"><p>${nombre}</p></td>
-            <td data-label="fecha nacimiento"><p>${fechanacimiento}</p></td>
-            <td data-label="descripcion"><p>${descripcion}</p></td>
-            <td data-label="estado"><p>${estado}</p></td>
-        `;
-        fragment.appendChild(tr);
-    }
-    tbody.appendChild(fragment);
-    //desactivar loader
-    loader.classList.remove("loader");
-}; */
-
-/* const consultarDirectores2 = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "101");
-    let url = "../Model/facade.php?opc=101";
-    let response = await peticionFetch(parametros, url);
-
-    document.querySelector(".contDirectores").textContent = response.length;
-    let tbody = document.getElementById("tDirectores");
-    let fragment = document.createDocumentFragment();
-
-    for (r of response) {
-        //itera mi array de objetos
-        let tr = document.createElement("tr");
-        let {
-            //destructura mi objeto
-            iddirector,
-            nombre,
-            fechanacimiento,
-            descripcion,
-            estado,
-        } = r;
-        tr.innerHTML = `
-            <td>
-            <input type="checkbox" id="${iddirector}-director" class="table_check">
-            <label for="${iddirector}-director">
-                <div class="custom_checkbox"></div>
-            </label>
-            </td>
-            <td data-label="id director"><p>${iddirector}</p></td>
-            <td data-label="nombre"><p>${nombre}</p></td>
-            <td data-label="fecha nacimiento"><p>${fechanacimiento}</p></td>
-            <td data-label="descripcion"><p>${descripcion}</p></td>
-            <td data-label="estado"><p>${estado}</p></td>
-        `;
-        fragment.appendChild(tr);
-    }
-    tbody.appendChild(fragment);
-    //desactivar loader
-    loader.classList.remove("loader");
-}; */
-
-/* const consultarGeneros2 = async () => {
-    let parametros = new FormData();
-    parametros.append("opc", "141");
-    let url = "../Model/facade.php?opc=141";
-    let response = await peticionFetch(parametros, url);
-
-    document.querySelector(".contGeneros").textContent = response.length;
-    let tbody = document.getElementById("tGeneros");
-    let fragment = document.createDocumentFragment();
-
-    for (r of response) {
-        //itera mi array de objetos
-        let tr = document.createElement("tr");
-        let {
-            //destructura mi objeto
-            idgenero,
-            nombre,
-            estado,
-        } = r;
-        tr.innerHTML = `
-            <td>
-            <input type="checkbox" id="${idgenero}-genero" class="table_check">
-            <label for="${idgenero}-genero">
-                <div class="custom_checkbox"></div>
-            </label>
-            </td>
-            <td data-label="id genero"><p>${idgenero}</p></td>
-            <td data-label="nombre"><p>${nombre}</p></td>
-            <td data-label="estado"><p>${estado}</p></td>
-        `;
-        fragment.appendChild(tr);
-    }
-    tbody.appendChild(fragment);
-    //desactivar loader
-    loader.classList.remove("loader");
-}; */
