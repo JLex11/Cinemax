@@ -117,6 +117,7 @@ class DataTable {
     titleIcon;
     headers;
     trs;
+    dbParametros;
     cantRows;
     table;
     thead;
@@ -138,15 +139,16 @@ class DataTable {
         this.headers = contents.headers;
         this.buttons = contents.actBtns;
         this.trs = contents.trs;
+        this.dbParametros = contents.dbParametros;
         this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
         this.makeTable();
     }
 
     makeTable() {
-        this.renderHeaders();
-        this.renderTrs();
         this.renderTitleBar();
         this.renderActionBtns();
+        this.renderHeaders();
+        this.renderTrs();
 
         this.table.appendChild(this.thead);
         this.table.appendChild(this.tbody);
@@ -154,9 +156,7 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add("container_table");
 
-        this.container_buttons_and_form.classList.add(
-            "container_buttons_and_form"
-        );
+        this.container_buttons_and_form.classList.add("container_buttons_and_form");
 
         this.section_subbody.appendChild(this.container_buttons_and_form);
         this.section_subbody.appendChild(this.container_table);
@@ -295,6 +295,32 @@ class DataTable {
         this.tbody.appendChild(dFragment);
     }
 
+    async peticionFetch(parametros, url) {
+        let peticion = await fetch(url, {
+            method: "POST",
+            body: parametros,
+        });
+        try {
+            return await peticion.json();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async seeRow(dato) {
+
+    }
+
+    async addRow(datos) {
+        
+    }
+    async updateRow(datos) {
+        
+    }
+    async deleteRow(id) {
+        
+    }
+
     insertarFilas(datos) {
         let dFragment = document.createDocumentFragment();
         let tr = document.createElement("tr");
@@ -322,7 +348,7 @@ class DataTable {
     editarFilas(fila) {
         let filaEditar = document.getElementById(fila); //es el tr contenedor
         let fEHijos = filaEditar.querySelectorAll("td");
-        let datosEditados = [];
+        let datosEditados = {};
         fEHijos.forEach((hijo, index) => {
             if (index == 0) {
                 let checkboxLabel = hijo.querySelector("#custom_checkbox");
@@ -347,11 +373,16 @@ class DataTable {
                                 } else {
                                     td.contentEditable = false;
                                     td.classList.remove("editableOn");
-                                    datosEditados.push(td.textContent);
+                                    if (td.querySelector('img')) {
+                                        datosEditados[`${this.headers[index - 1]}`] = td.querySelector('img').src;
+                                    } else {
+                                        datosEditados[`${this.headers[index - 1]}`] = td.textContent;
+                                    }
                                 }
                             });
+                            execute = true;
                             clearInterval(waitForEvent);
-                            upDB(datosEditados);
+                            this.updateRow(datosEditados);
                         },{ once: true });
                     }
                 }, 1000);
@@ -392,7 +423,6 @@ const consultarPeliculas = async () => {
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
 
-    let fEditadas;
     let contents = await {
         titulo: "peliculas",
         titleIcon: "movie",
@@ -416,8 +446,7 @@ const consultarPeliculas = async () => {
                     checkBox.forEach(async check => {
                         if (check.checked) {
                             let fila = check.parentNode.parentNode;
-                            fEditadas = await tPeliculas.editarFilas(fila.id);
-                            console.log(await fEditadas);
+                            tPeliculas.editarFilas(fila.id);
                         }
                     });
                 },
@@ -440,6 +469,12 @@ const consultarPeliculas = async () => {
             },
         ],
         trs: await response,
+        dbParametros: {
+            opcConsultar: "1",
+            opcEditar: "2",
+            opcEliminar: "3",
+            url: "../Model/facade.php"
+        }
     };
     let tPeliculas = new DataTable(".data", await contents);
     loader.classList.remove("loader");
@@ -500,6 +535,12 @@ const consultarEstadisticas = async () => {
             },
         ],
         trs: await response,
+        dbParametros: {
+            opcConsultar: "21",
+            opcEditar: "22",
+            opcEliminar: "23",
+            url: "../Model/facade.php"
+        }
     };
     let tEstadisticas = new DataTable(".data", await contents);
     loader.classList.remove("loader");
@@ -558,6 +599,12 @@ const consultarActores = async () => {
             },
         ],
         trs: await response,
+        dbParametros: {
+            opcConsultar: "61",
+            opcEditar: "62",
+            opcEliminar: "63",
+            url: "../Model/facade.php"
+        }
     };
     let tActores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
@@ -615,6 +662,12 @@ const consultarDirectores = async () => {
             },
         ],
         trs: await response,
+        dbParametros: {
+            opcConsultar: "101",
+            opcEditar: "102",
+            opcEliminar: "103",
+            url: "../Model/facade.php"
+        }
     };
     let tDirectores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
@@ -672,6 +725,12 @@ const consultarGeneros = async () => {
             },
         ],
         trs: await response,
+        dbParametros: {
+            opcConsultar: "141",
+            opcEditar: "142",
+            opcEliminar: "143",
+            url: "../Model/facade.php"
+        }
     };
     let tGeneros = new DataTable(".data", await contents);
     loader.classList.remove("loader");
