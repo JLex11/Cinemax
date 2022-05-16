@@ -183,39 +183,14 @@
                 <h1>Control de usuarios</h1>
             </div>
 
-            <div class="section_body">
-                <div class="container_subsection">
-                    <div class="section_subtitle">
-                        <h2>Usuarios registrados</h2>
-                        <div>
-                            <span class="material-icons-sharp">people</span>
-                            <h2>579</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="section_subbody">
-                        <div class="container_table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Id usuario</th>
-                                        <th>Usuario</th>
-                                        <th>Nivel</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>00001</td>
-                                        <td>John_Lenon</td>
-                                        <td>1</td>
-                                        <td>Activo</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="section_body user_data">
+                <!-- --------------------- Loader ---------------------- -->
+                <div class="loader_hide" id="loader_users">
+                    <div class="container_loader">
+                        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                     </div>
                 </div>
+                <!-- -------- Se renderizan mis tablas desde js -------- -->
             </div>
         </section>
 

@@ -22,14 +22,16 @@ if ($opc == '2') {
     $titulooriginal = $_POST["titulooriginal"];
     $titulolatino = $_POST["titulolatino"];
     $foto = "foto";
-    $idtipo = $_POST["tipo"];
-    $idpais = $_POST["pais"];
     $lanzamiento = $_POST["lanzamiento"];
     $duracion = $_POST["duracion"];
     $resena = $_POST["resena"];
     $estado = $_POST["estado"];
+    $idtipo = 02;
+    $idpais = 00001;
+    /* $idtipo = $_POST["tipo"];
+    $idpais = $_POST["pais"]; */
     
-    $pelicula = Pelicula::editar($idpelicula, $titulooriginal, $titulolatino, $foto, $idtipo, $idpais, $lanzamiento, $duracion, $resena, $estado);
+    $pelicula = Pelicula::editar($idpelicula, $titulooriginal, $titulolatino, $foto, $lanzamiento, $duracion, $resena, $estado, $idtipo, $idpais);
     echo json_encode($pelicula);
 }
 
@@ -51,7 +53,7 @@ if ($opc == '41') {
     $valor = "";
     
     $estadisticaspelicula = EstadisticasPelicula::listar($opcion, $campo, $valor);
-    echo json_encode($Estadisticas);
+    echo json_encode($estadisticaspelicula);
 }
 
 // !Actor
@@ -189,5 +191,13 @@ if ($opc == '162') {
 
 // !Usuario
 /* --------------------------------- Usuario 181-200 -------------------------------- */
+if ($opc == '181') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $usuario = Usuario::listar($opcion, $campo, $valor);
+    echo json_encode($usuario);
+}
 
 ?>

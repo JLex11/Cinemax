@@ -38,19 +38,19 @@ class Pelicula {
         return $datos;
     }
 
-    public static function editar($idpelicula, $titulooriginal, $titulolatino, $foto, $idtipo, $idpais, $lanzamiento, $duracion, $resena, $estado) {
+    public static function editar($idpelicula, $titulooriginal, $titulolatino, $foto, $lanzamiento, $duracion, $resena, $estado, $idtipo, $idpais) {
         include "../Connection/conexion.php";
         
         $sql = "UPDATE pelicula SET\n"
         . "titulooriginal = '$titulooriginal',\n"
         . "titulolatino = '$titulolatino',\n"
         . "foto = '$foto',\n"
-        . "idtipo = '$idtipo',\n"
-        . "idpais = '$idpais',\n"
         . "lanzamiento = '$lanzamiento',\n"
         . "duracion = '$duracion',\n"
         . "resena = '$resena',\n"
         . "estado = '$estado'\n"
+        . "idtipo = '$idtipo',\n"
+        . "idpais = '$idpais',\n"
         . "WHERE idpelicula = '$idpelicula'";
 
         $datos = array();
@@ -331,7 +331,7 @@ class Genero {
     }
 }
 
-/* --------------------------------- Genero --------------------------------- */
+/* --------------------------------- GeneroPelicula --------------------------------- */
 class GeneroPelicula {
     public static function listar($opc, $campo, $valor) {
         include "../Connection/conexion.php";
@@ -369,6 +369,27 @@ class GeneroPelicula {
         }
         return $datos;
     }
+}
+
+/* --------------------------------- Usuario --------------------------------- */
+class Usuario {
+    public static function listar($opc, $campo, $valor) {
+        include "../Connection/conexion.php";
+        
+        if ($opc == '181') {
+            $sql = "SELECT * FROM usuario";
+        }
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+
+        for ($i = 0; $i < $rows; $i++) {
+            $datos[$i] = $consulta->fetch_assoc();
+        }
+        return $datos;
+    }
+
 }
 
 ?>

@@ -24,7 +24,10 @@ navOptions.forEach((op, index) => {
 
 let indexSectionActiva;
 let fEjecutada = false;
+let fEjecutadaUsers = false;
 var loader = document.getElementById("loader");
+var loader_users = document.getElementById("loader_users");
+
 const observer = new IntersectionObserver(
     entries => {
         entries.forEach(entry => {
@@ -38,6 +41,14 @@ const observer = new IntersectionObserver(
                     else op.classList.remove("active_option");
                 });
 
+                if (entry.target.id == "users_section") {
+                    if (!fEjecutadaUsers) {
+                        loader_users.classList.add("loader");
+                        consultarUsuarios();
+                        fEjecutadaUsers = true;
+                    }
+                } else loader_users.classList.remove("loader");
+
                 if (entry.target.id == "data_section") {
                     if (!fEjecutada) {
                         loader.classList.add("loader");
@@ -50,6 +61,7 @@ const observer = new IntersectionObserver(
                         fEjecutada = true;
                     }
                 } else loader.classList.remove("loader");
+
             }
         });
     },
@@ -186,21 +198,6 @@ class DataTable {
         `;
     }
 
-    renderHeaders() {
-        let tr = document.createElement("tr");
-        let dFragment = document.createDocumentFragment();
-        let th = document.createElement("th");
-        tr.appendChild(th);
-
-        this.headers.forEach(header => {
-            let th = document.createElement("th");
-            th.textContent = this.capitalizarString(header);
-            dFragment.appendChild(th);
-        });
-        tr.appendChild(dFragment);
-        this.thead.appendChild(tr);
-    }
-
     renderActionBtns() {
         let fragment = document.createDocumentFragment();
         this.buttons.forEach(button => {
@@ -259,6 +256,21 @@ class DataTable {
         this.container_buttons_and_form.appendChild(container_form);
     }
 
+    renderHeaders() {
+        let tr = document.createElement("tr");
+        let dFragment = document.createDocumentFragment();
+        let th = document.createElement("th");
+        tr.appendChild(th);
+
+        this.headers.forEach(header => {
+            let th = document.createElement("th");
+            th.textContent = this.capitalizarString(header);
+            dFragment.appendChild(th);
+        });
+        tr.appendChild(dFragment);
+        this.thead.appendChild(tr);
+    }
+
     renderTrs() {
         let dFragment = document.createDocumentFragment();
         this.trs.forEach(t => {
@@ -283,7 +295,8 @@ class DataTable {
                     });
                 } else {
                     if (t[i].indexOf("../foto") == 0) {
-                        td.innerHTML = `<img src="${t[i]}">`;
+                        td.innerHTML = `
+                        <a target="_blank" href="${t[i]}"><img src="${t[i]}"></a>`;
                     } else {
                         td.textContent = t[i];
                     }
@@ -315,7 +328,12 @@ class DataTable {
         
     }
     async updateRow(datos) {
-        
+        let parametros = new FormData();
+        for (let dato in datos) {
+            parametros.append(dato, datos[dato]);
+        }
+        let url = this.dbParametros.url + "?opc=" + this.dbParametros.opcEditar;
+        let response = this.peticionFetch(parametros, url);
     }
     async deleteRow(id) {
         
@@ -345,7 +363,7 @@ class DataTable {
         this.renderTitleBar();
     }
 
-    editarFilas(fila) {
+    async editarFilas(fila) {
         let filaEditar = document.getElementById(fila); //es el tr contenedor
         let fEHijos = filaEditar.querySelectorAll("td");
         let datosEditados = {};
@@ -374,9 +392,9 @@ class DataTable {
                                     td.contentEditable = false;
                                     td.classList.remove("editableOn");
                                     if (td.querySelector('img')) {
-                                        datosEditados[`${this.headers[index - 1]}`] = td.querySelector('img').src;
+                                        datosEditados[`${this.headers[index - 1].replace(/ /g, "")}`] = td.querySelector('img').src;
                                     } else {
-                                        datosEditados[`${this.headers[index - 1]}`] = td.textContent;
+                                        datosEditados[`${this.headers[index - 1].replace(/ /g, "")}`] = td.textContent;
                                     }
                                 }
                             });
@@ -415,6 +433,8 @@ async function peticionFetch(parametros, url) {
         console.log(error);
     }
 }
+
+/* -------------Consultas a db-------------- */
 
 // !Consultar peliculas
 const consultarPeliculas = async () => {
@@ -734,4 +754,68 @@ const consultarGeneros = async () => {
     };
     let tGeneros = new DataTable(".data", await contents);
     loader.classList.remove("loader");
+};
+
+// !Consultar Usuarios
+const consultarUsuarios = async () => {
+    let parametros = new FormData();
+    parametros.append("opc", "181");
+    let url = "../Model/facade.php";
+    let response = await peticionFetch(parametros, url);
+
+    let contents = await {
+        titulo: "usuarios",
+        titleIcon: "theaters",
+        headers: Object.keys(await response[0]),
+        actBtns: [
+            {
+                id: "btn_add",
+                icon: "add",
+                action: function () {
+                    tUsuarios.renderForm();
+                },
+            },
+            {
+                id: "btn_edit",
+                icon: "edit",
+                action: function () {
+                    console.log("editar");
+                    let checkBox = tUsuarios.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let fila = check.parentNode.parentNode;
+                            tUsuarios.editarFilas(fila.id);
+                        }
+                    });
+                },
+            },
+            {
+                id: "btn_delete",
+                icon: "delete",
+                action: function () {
+                    console.log("eliminar");
+                    let checkBox = tUsuario.section_subbody.querySelectorAll(
+                        "input[type=checkbox]"
+                    );
+                    checkBox.forEach(check => {
+                        if (check.checked) {
+                            let fila = check.parentNode.parentNode.id;
+                            tUsuarios.eliminarFilas(fila);
+                        }
+                    });
+                },
+            },
+        ],
+        trs: await response,
+        dbParametros: {
+            opcConsultar: "181",
+            opcEditar: "182",
+            opcEliminar: "183",
+            url: "../Model/facade.php"
+        }
+    };
+    let tUsuarios = new DataTable(".user_data", await contents);
+    loader_users.classList.remove("loader");
 };
