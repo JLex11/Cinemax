@@ -14,10 +14,6 @@
 :root {
     --Font-Principal: "Poppins", sans-serif;
     --background-light-color: #eceef9;
-    --border-radius-5px: 5px;
-    --border-radius-10px: 10px;
-    --border-radius-15px: 15px;
-    --border-radius-20px: 20px;
     --color-active: #ffffffb3;
     --color-blue: #0069bd;
     --color-green: #51be55;
@@ -156,9 +152,9 @@ nav {
     width: fit-content;
     width: -moz-fit-content;
     margin: 0 auto;
-    padding: 7px;
-    border-radius: var(--border-radius-15px);
-    background: #ffffffd1;
+    padding: 10px;
+    border-radius: 15px;
+    background: #ffffffe3;
     box-shadow: 0 10px 20px #0000004a;
     flex-direction: column;
 }
@@ -196,7 +192,7 @@ nav .button_up .material-icons-sharp {
 nav .button_up:hover {
     color: white;
     background: var(--color-blue);
-    transform: scale(1.01) translateY(-7px);
+    transform: scale(1.01) translateY(-10px);
 }
 
 /* ---------------------- Nav Items --------------------- */
@@ -227,7 +223,7 @@ li:hover {
 
 .active_option {
     transform: scale(1.1);
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     background: var(--color-active);
     box-shadow: 0 2px 3px #0000002d, 0 -2px 3px #6464640d;
 }
@@ -238,7 +234,7 @@ li:hover {
     bottom: 0px;
     width: 40%;
     height: 4px;
-    border-radius: var(--border-radius-5px);
+    border-radius: 5px;
     background: var(--color-blue);
 }
 
@@ -291,7 +287,7 @@ section {
 
 body::-webkit-scrollbar {
     height: 8px;
-    width: 7px;
+    width: 10px;
     border-radius: 10px;
     background: transparent;
 }
@@ -337,9 +333,15 @@ body::-webkit-scrollbar-thumb {
     border-radius: 20px;
     color: white;
     transition: bottom 0.3s ease-in-out, box-shadow 0.5s ease, transform 0.2s;
-    box-shadow: 3px 5px 7px #00000030, -10px -10px 15px #00000017 inset;
+    box-shadow: 3px 5px 10px #00000030, -10px -10px 15px #00000017 inset;
     justify-content: flex-start;
+    overflow-x: auto;
 }
+
+.header_item::-webkit-scrollbar {
+    display: none;
+}
+
 
 .header_item:hover {
     bottom: 5px;
@@ -366,12 +368,30 @@ body::-webkit-scrollbar-thumb {
     font-size: 40pt;
 }
 
-.header_item h5 {
+.header_item .container_body {
+    display: flex;
+    gap: 10px;
+}
+
+.header_item .body_element {
+    display: flex;
+    border: 0;
+    border-right: 1px solid;
+    padding-right: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header_item .body_element:last-child {
+    border-right: 0;
+}
+
+.header_item .body_element h5 {
     font-weight: 300;
     transition: font-size 0.3s;
 }
 
-.header_item h5:first-child {
+.header_item .body_element h5:first-child {
     font-size: 16pt;
 }
 .header_item h5:last-child {
@@ -422,8 +442,8 @@ body::-webkit-scrollbar-thumb {
 /* ---------------------------------- Item ---------------------------------- */
 .item {
     display: inline-block;
-    padding: var(--item-padding);
-    border-radius: var(--border-radius-20px);
+    padding: 10px;
+    border-radius: 20px;
     background: var(--color-white-semi-transparent);
     box-shadow: var(--item-box-shadow);
     transition: box-shadow 0.5s ease, transform 0.3s;
@@ -467,7 +487,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .foto img {
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     height: 160px;
     width: 130px;
 }
@@ -571,6 +591,7 @@ body::-webkit-scrollbar-thumb {
 
 /* ------------------------------ User section ------------------------------ */
 .data_section .header_item {
+    height: 95px;
     gap: 10px;
     padding: 20px 10px;
     cursor: pointer;
@@ -585,8 +606,8 @@ body::-webkit-scrollbar-thumb {
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: var(--item-padding);
-    border-radius: var(--border-radius-20px);
+    padding: 10px;
+    border-radius: 20px;
     background: var(--color-white-semi-transparent);
     overflow: hidden;
     box-shadow: var(--item-box-shadow);
@@ -598,16 +619,8 @@ body::-webkit-scrollbar-thumb {
     max-height: 500px;
     width: 100%;
     padding-bottom: 5px;
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     overflow: auto;
-}
-.container_table::-webkit-scrollbar {
-    background: transparent;
-    height: 7px;
-}
-.container_table::-webkit-scrollbar-thumb {
-    border-radius: var(--border-radius-15px);
-    background: var(--color-blue);
 }
 
 table {
@@ -650,10 +663,10 @@ td {
 }
 td:first-child {
     padding-left: 5px;
-    border-radius: 7px 0 0 7px;
+    border-radius: 10px 0 0 10px;
 }
 td:last-child {
-    border-radius: 0 7px 7px 0;
+    border-radius: 0 10px 10px 0;
 }
 
 tbody td img {
@@ -684,7 +697,7 @@ div.checkboxToButton::after {
 }
 
 .table_check:checked + label > div.checkboxToButton::after {
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     background: var(--color-blue);
     box-shadow: none;
 }
@@ -692,7 +705,7 @@ div.checkboxToButton::after {
 .custom_checkbox {
     width: 50px;
     height: 25px;
-    border-radius: var(--border-radius-15px);
+    border-radius: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.397) inset;
     position: relative;
     padding: 2px;
@@ -704,7 +717,7 @@ div.checkboxToButton::after {
     width: calc(50% - 4px);
     height: calc(100% - 4px);
     position: absolute;
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     left: 2px;
     background: rgb(191, 191, 191);
     box-shadow: 1px 0px 4px rgba(104, 104, 104, 0.726);
@@ -712,7 +725,7 @@ div.checkboxToButton::after {
 }
 
 .table_check:checked + label > .custom_checkbox::after {
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     left: calc(50% + 2px);
     background: var(--color-blue);
     box-shadow: -1px 0px 4px var(--color-blue);
@@ -772,7 +785,7 @@ div.checkboxToButton::after {
     /* background: white; */
     /* box-shadow: 0 0 15px rgb(0 0 0 / 14%) inset; */
     margin: 5px 0;
-    /* border-radius: var(--border-radius-15px); */
+    /* border-radius: 15px; */
     gap: 15px;
     display: flex;
     flex-wrap: nowrap;
@@ -818,7 +831,7 @@ input.input_agregar_form::placeholder {
 input.input_agregar_form:focus {
     padding-left: 10px;
     transform: translateY(5px);
-    border-radius: 7px;
+    border-radius: 10px;
     outline: 2px solid #03a9f4;
     box-shadow: 0px 0px 10px var(--color-blue);
 }
@@ -838,7 +851,7 @@ input.input_agregar_form:focus ~ .content_label > p {
 }
 
 .container_form_act_btns button {
-    border-radius: var(--border-radius-10px);
+    border-radius: 10px;
     padding: 10px;
     border: none;
     cursor: pointer;
@@ -892,7 +905,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     div#chi2 .header_item {
         flex-direction: column;
         justify-content: center;
-        padding: 7px;
+        padding: 10px;
     }
 
     div#chi2 .header_item span.material-icons-sharp {

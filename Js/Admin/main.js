@@ -115,6 +115,65 @@ window.addEventListener("load", () => {
     crearGrafico(contenedor, labels, parametros, valores); */
 });
 
+/* ---------------------- HeaderCards --------------------- */
+class HeaderCards {
+    principalContainer;
+    hrefElement;
+    headerItem;
+    spanMaterialIcons;
+    containerBody;
+    id;
+    icon;
+    bodyElements;
+
+    constructor(principalContainer, contents) {
+        this.principalContainer = document.getElementById(principalContainer);
+        this.hrefElement = document.createElement('a');
+        this.headerItem = document.createElement('div');
+        this.containerBody = document.createElement('div');
+        this.id = contents.id;
+        this.icon = contents.icon;
+        this.bodyElements = contents.bodyElements;
+        this.makeCard();
+    }
+
+    makeCard() {
+        this.renderIcon();
+        this.renderBody();
+
+        this.headerItem.classList.add('header_item');
+        this.hrefElement.appendChild(this.headerItem);
+        this.hrefElement.href = "#" + this.id;
+        this.principalContainer.appendChild(this.hrefElement);
+    }
+
+    renderIcon() {
+        let spanIcon = document.createElement('span');
+        spanIcon.classList.add('material-icons-sharp');
+        spanIcon.innerText = this.icon;
+        this.headerItem.appendChild(spanIcon);
+    }
+
+    renderBody() {
+        this.containerBody.classList.add('container_body');
+        let fragment = document.createDocumentFragment();
+
+        this.bodyElements.forEach((bElement, i) => {
+            let bodyElement = document.createElement('div');
+            bodyElement.classList.add('body_element');
+            bodyElement.innerHTML = `
+            <h5>${this.bodyElements[i].number}</h5>
+            <h5>${this.bodyElements[i].name}</h5>`;
+
+            fragment.appendChild(bodyElement);
+        })
+
+        this.containerBody.appendChild(fragment);
+        this.headerItem.appendChild(this.containerBody);
+    }
+}
+
+
 /* ---------------------- Datatable --------------------- */
 class DataTable {
     elementParent;
@@ -219,10 +278,33 @@ class DataTable {
         let formulario = document.createElement("form");
         let fragment = document.createDocumentFragment();
         let actBtns = document.createElement("div");
-        actBtns.innerHTML = `
-        <button><span class="material-icons-sharp">close</span></button>
-        <button><span class="material-icons-sharp">send</span></button>`;
         actBtns.classList.add("container_form_act_btns");
+        function crearBtnCerrar() {
+            let btnCerrarForm = document.createElement('button');
+            btnCerrarForm.classList.add('btn_form_cerrar');
+            btnCerrarForm.innerHTML = `<span class="material-icons-sharp">close</span>`;
+            btnCerrarForm.addEventListener('click', e => {
+                e.preventDefault();
+                let form = actBtns.parentNode;
+                form.remove();
+            })
+            actBtns.appendChild(btnCerrarForm);
+        }
+        function crearBtnEnviar() {
+            let btnEnviarForm = document.createElement('button');
+            btnEnviarForm.classList.add('btn_form_enviar');
+            btnEnviarForm.innerHTML = `<span class="material-icons-sharp">send</span>`;
+            btnEnviarForm.addEventListener('click', e => {
+                e.preventDefault();
+                let form = actBtns.parentNode;
+                console.log(form);
+                let parametros = new FormData(form);
+                console.log(parametros.get('idactor'));
+            })
+            actBtns.appendChild(btnEnviarForm);
+        }
+        crearBtnCerrar();
+        crearBtnEnviar();
 
         formulario.id = "form" + this.titulo;
 
@@ -412,9 +494,7 @@ class DataTable {
     }
 
     eliminarFilas(fila) {
-        let filaEliminar = document.getElementById(fila);
-        let fElimParent = filaEliminar.parentNode; //parent es el tr contenedor
-        fElimParent.removeChild(filaEliminar);
+        document.getElementById(fila).remove();
         this.cantRows--;
         this.renderTitleBar();
     }
@@ -496,7 +576,21 @@ const consultarPeliculas = async () => {
             url: "../Model/facade.php"
         }
     };
+
+    let contentsCard = await {
+        id: "Peliculas",
+        icon: "movie",
+        bodyElements: [
+            {
+                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Peliculas"
+            }
+        ]
+    }
+
+    let peliculasCard = new HeaderCards("chi2", contentsCard);
     let tPeliculas = new DataTable(".data", await contents);
+
     loader.classList.remove("loader");
 };
 
@@ -562,6 +656,19 @@ const consultarEstadisticas = async () => {
             url: "../Model/facade.php"
         }
     };
+
+    let contentsCard = await {
+        id: "Estadisticas",
+        icon: "bar_chart",
+        bodyElements: [
+            {
+                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Estadisticas"
+            }
+        ]
+    }
+
+    let estadisticasCard = new HeaderCards("chi2", contentsCard);
     let tEstadisticas = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
@@ -626,9 +733,23 @@ const consultarActores = async () => {
             url: "../Model/facade.php"
         }
     };
+
+    let contentsCard = await {
+        id: "Actores",
+        icon: "groups",
+        bodyElements: [
+            {
+                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Actores"
+            }
+        ]
+    }
+
+    let actoresCard = new HeaderCards("chi2", contentsCard);
     let tActores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
+
 // !Consultar directores
 const consultarDirectores = async () => {
     let parametros = new FormData();
@@ -689,6 +810,19 @@ const consultarDirectores = async () => {
             url: "../Model/facade.php"
         }
     };
+
+    let contentsCard = await {
+        id: "Directores",
+        icon: "people",
+        bodyElements: [
+            {
+                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Directores"
+            }
+        ]
+    }
+
+    let directoresCard = new HeaderCards("chi2", contentsCard);
     let tDirectores = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
@@ -752,6 +886,19 @@ const consultarGeneros = async () => {
             url: "../Model/facade.php"
         }
     };
+
+    let contentsCard = await {
+        id: "Generos",
+        icon: "theaters",
+        bodyElements: [
+            {
+                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Generos"
+            }
+        ]
+    }
+
+    let generosCard = new HeaderCards("chi2", contentsCard);
     let tGeneros = new DataTable(".data", await contents);
     loader.classList.remove("loader");
 };
@@ -816,6 +963,7 @@ const consultarUsuarios = async () => {
             url: "../Model/facade.php"
         }
     };
+
     let tUsuarios = new DataTable(".user_data", await contents);
     loader_users.classList.remove("loader");
 };
