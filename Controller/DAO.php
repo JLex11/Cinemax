@@ -26,16 +26,40 @@ class Pelicula {
             . "LEFT JOIN estadisticaspelicula ON pelicula.idpelicula = estadisticaspelicula.idpelicula\n"
             . "LEFT JOIN estadisticas ON estadisticaspelicula.idestadisticas = estadisticas.idestadisticas\n"
             . "ORDER BY pelicula.estado ASC;";
-        }
+        } 
 
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+            /* $info_campos[1] = [$valor->name, "casilla"];
+            $info_campos[2] = [$valor->max_length, "max-length"];
+            $info_campos[3] = [$valor->length, "length"];
+            $info_campos[4] = [$valor->charsetnr, "charsetnr"];
+            $info_campos[5] = [$valor->flags, "flags"];
+            $info_campos[6] = [$valor->type, "type"]; */
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($idpelicula, $titulooriginal, $titulolatino, $foto, $lanzamiento, $duracion, $resena, $estado, $idtipo, $idpais) {
@@ -82,11 +106,29 @@ class Estadisticas {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 }
 
@@ -102,11 +144,29 @@ class EstadisticasPelicula {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 }
 
@@ -128,11 +188,29 @@ class Actor {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($idactor, $nombre, $fechanacimiento, $descripcion, $foto, $estado) {
@@ -170,11 +248,28 @@ class ActorPelicula {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+        return $datosAndInfo;
     }
 
     public static function editar($idactorpelicula, $idactor, $idpelicula, $personaje, $estado) {
@@ -218,11 +313,29 @@ class Director {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($iddirector, $nombre, $fechanacimiento, $descripcion, $foto, $estado) {
@@ -260,11 +373,29 @@ class DirectorPelicula {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($iddirectorpelicula, $iddirector, $idpelicula, $estado) {
@@ -304,11 +435,29 @@ class Genero {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($idgenero, $nombre, $estado) {
@@ -343,11 +492,29 @@ class GeneroPelicula {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
     public static function editar($idgeneropelicula, $idgenero, $idpelicula, $estado) {
@@ -383,11 +550,29 @@ class Usuario {
         $datos = array();
         $consulta = mysqli_query($cnn, $sql);
         $rows = mysqli_num_rows($consulta);
-
         for ($i = 0; $i < $rows; $i++) {
             $datos[$i] = $consulta->fetch_assoc();
         }
-        return $datos;
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
     }
 
 }

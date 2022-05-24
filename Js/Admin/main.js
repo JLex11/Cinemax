@@ -173,7 +173,6 @@ class HeaderCards {
     }
 }
 
-
 /* ---------------------- Datatable --------------------- */
 class DataTable {
     elementParent;
@@ -355,6 +354,7 @@ class DataTable {
 
     renderTrs() {
         let dFragment = document.createDocumentFragment();
+        console.log(this.trs)
         this.trs.forEach(t => {
             let tr = document.createElement("tr");
             tr.id = Math.floor(Math.random() * 1000);
@@ -378,7 +378,7 @@ class DataTable {
                 } else {
                     if (t[i].indexOf("../foto") == 0) {
                         td.innerHTML = `
-                        <a target="_blank" href="${t[i]}"><img src="${t[i]}"></a>`;
+                        <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
                     } else {
                         td.textContent = t[i];
                     }
@@ -510,7 +510,7 @@ async function peticionFetch(parametros, url) {
     try {
         return await peticion.json();
     } catch (error) {
-        console.log(error);
+        return "Ha ocurrido un error";
     }
 }
 
@@ -522,11 +522,13 @@ const consultarPeliculas = async () => {
     parametros.append("opc", "1");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
-
+    console.log(await response);
+    
     let contents = await {
         titulo: "peliculas",
         titleIcon: "movie",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -568,7 +570,7 @@ const consultarPeliculas = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "1",
             opcEditar: "2",
@@ -600,11 +602,13 @@ const consultarEstadisticas = async () => {
     parametros.append("opc", "21");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
+    console.log(await response);
 
     let contents = await {
         titulo: "estadisticas",
         titleIcon: "bar_chart",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -648,7 +652,7 @@ const consultarEstadisticas = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "21",
             opcEditar: "22",
@@ -679,11 +683,13 @@ const consultarActores = async () => {
     parametros.append("opc", "61");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
+    console.log(await response);
 
     let contents = await {
         titulo: "actores",
         titleIcon: "groups",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -725,7 +731,7 @@ const consultarActores = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "61",
             opcEditar: "62",
@@ -756,11 +762,13 @@ const consultarDirectores = async () => {
     parametros.append("opc", "101");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
+    console.log(await response);
 
     let contents = await {
         titulo: "directores",
         titleIcon: "people",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -802,7 +810,7 @@ const consultarDirectores = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "101",
             opcEditar: "102",
@@ -832,11 +840,13 @@ const consultarGeneros = async () => {
     parametros.append("opc", "141");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
+    console.log(await response);
 
     let contents = await {
         titulo: "generos",
         titleIcon: "theaters",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -878,7 +888,7 @@ const consultarGeneros = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "141",
             opcEditar: "142",
@@ -909,11 +919,13 @@ const consultarUsuarios = async () => {
     parametros.append("opc", "181");
     let url = "../Model/facade.php";
     let response = await peticionFetch(parametros, url);
+    console.log(await response);
 
     let contents = await {
         titulo: "usuarios",
         titleIcon: "theaters",
-        headers: Object.keys(await response[0]),
+        headers: Object.keys(await response.datos[0]),
+        info_campos: response.info_campos,
         actBtns: [
             {
                 id: "btn_add",
@@ -955,7 +967,7 @@ const consultarUsuarios = async () => {
                 },
             },
         ],
-        trs: await response,
+        trs: await response.datos,
         dbParametros: {
             opcConsultar: "181",
             opcEditar: "182",
