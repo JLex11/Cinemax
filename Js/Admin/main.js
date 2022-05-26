@@ -183,11 +183,14 @@ class DataTable {
     buttons;
     section_subbody;
     container_section_subtitle;
+    tableName;
     titulo;
     titleIcon;
     headers;
+    info_campos;
     trs;
     dbParametros;
+    dbTables;
     cantRows;
     table;
     thead;
@@ -204,12 +207,15 @@ class DataTable {
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
+        this.tableName = contents.name;
         this.titulo = this.capitalizarString(contents.titulo);
         this.titleIcon = contents.titleIcon;
         this.headers = contents.headers;
+        this.info_campos = contents.info_campos;
         this.buttons = contents.actBtns;
         this.trs = contents.trs;
         this.dbParametros = contents.dbParametros;
+        this.dbTables = contents.dbTables;
         this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
         this.makeTable();
     }
@@ -296,9 +302,9 @@ class DataTable {
             btnEnviarForm.addEventListener('click', e => {
                 e.preventDefault();
                 let form = actBtns.parentNode;
-                console.log(form);
+                /* console.log(form); */
                 let parametros = new FormData(form);
-                console.log(parametros.get('idactor'));
+                /* console.log(parametros.get('idactor')); */
             })
             actBtns.appendChild(btnEnviarForm);
         }
@@ -354,7 +360,6 @@ class DataTable {
 
     renderTrs() {
         let dFragment = document.createDocumentFragment();
-        console.log(this.trs)
         this.trs.forEach(t => {
             let tr = document.createElement("tr");
             tr.id = Math.floor(Math.random() * 1000);
@@ -402,13 +407,34 @@ class DataTable {
         }
     }
 
-    async seeRow(dato) {
-
+    async seeRow(table) {
+        console.log(this.dbTables); //se debe entregar desde el contents de una consulta a la db
+        this.dbTables = {
+            pelicula: '1',
+            estadisticas: '21',
+            estadisticaspelicula: '41',
+            actor: '61'
+        }
+        let opcKeys = Object.getOwnPropertyNames(this.dbTables);
+        let opc = "";
+        /* for (let table of this.dbTables) {
+            console.log(this.dbTables[table]);
+            if (opcKeys[i] == table) opc = t;
+        } */
+        /* this.dbTables.forEach((t, i) => {
+            if (opcKeys[i] == table) opc = t;
+        }) */
+        let url = this.dbParametros.url;
+        console.log(opc);
+        let parametros = new FormData();
+        parametros.append("opc", opc);
+        return "Melo";
     }
 
     async addRow(datos) {
         
     }
+
     async updateRow(datos) {
         let parametros = new FormData();
         for (let dato in datos) {
@@ -417,6 +443,7 @@ class DataTable {
         let url = this.dbParametros.url + "?opc=" + this.dbParametros.opcEditar;
         let response = this.peticionFetch(parametros, url);
     }
+
     async deleteRow(id) {
         
     }
@@ -461,7 +488,7 @@ class DataTable {
                 let execute = false;
                 let waitForEvent = setInterval(() => {
                     if (!execute) {
-                        input.addEventListener("click",() => {
+                        input.addEventListener("click", () => {
                             let trParent = input.parentNode.parentNode;
                             let tdHijos = trParent.querySelectorAll("td");
                             tdHijos.forEach((td, index) => {
@@ -487,8 +514,19 @@ class DataTable {
                     }
                 }, 1000);
             } else {
-                hijo.contentEditable = true;
-                hijo.classList.add("editableOn");
+                if (this.tableName != this.info_campos[index-1].table) {
+                    console.log(this.tableName, this.info_campos[index - 1].table);
+                    hijo.innerHTML = `<select></select>`;
+                    let crearOptions = async () => {
+                        let datos = await this.seeRow();
+                        console.log("datos");
+                        console.log(await datos);
+                    }
+                    crearOptions();
+                } else {
+                    hijo.contentEditable = true;
+                    hijo.classList.add("editableOn");
+                }
             }
         });
     }
@@ -515,33 +553,36 @@ async function peticionFetch(parametros, url) {
 }
 
 /* -------------Consultas a db-------------- */
+//variables
+const mFacadeUrl = "../Model/facade.php";
+const btn_add = { id: "btn_add", icon: "add" };
+const btn_edit = { id: "btn_edit", icon: "edit" };
+const btn_delete = { id: "btn_edit", icon: "delete" };
 
 // !Consultar peliculas
 const consultarPeliculas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "1");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
     
     let contents = await {
+        name: "pelicula",
         titulo: "peliculas",
         titleIcon: "movie",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tPeliculas.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox = tPeliculas.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -554,10 +595,9 @@ const consultarPeliculas = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox = tPeliculas.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -575,7 +615,7 @@ const consultarPeliculas = async () => {
             opcConsultar: "1",
             opcEditar: "2",
             opcEliminar: "3",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 
@@ -592,7 +632,6 @@ const consultarPeliculas = async () => {
 
     let peliculasCard = new HeaderCards("chi2", contentsCard);
     let tPeliculas = new DataTable(".data", await contents);
-
     loader.classList.remove("loader");
 };
 
@@ -600,28 +639,26 @@ const consultarPeliculas = async () => {
 const consultarEstadisticas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "21");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
+        name: "estadisticas",
         titulo: "estadisticas",
         titleIcon: "bar_chart",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tEstadisticas.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox =
                         tEstadisticas.section_subbody.querySelectorAll(
                             "input[type=checkbox]"
@@ -635,10 +672,9 @@ const consultarEstadisticas = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox =
                         tEstadisticas.section_subbody.querySelectorAll(
                             "input[type=checkbox]"
@@ -657,7 +693,7 @@ const consultarEstadisticas = async () => {
             opcConsultar: "21",
             opcEditar: "22",
             opcEliminar: "23",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 
@@ -681,28 +717,26 @@ const consultarEstadisticas = async () => {
 const consultarActores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "61");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
+        name: "actor",
         titulo: "actores",
         titleIcon: "groups",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tActores.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox = tActores.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -715,10 +749,9 @@ const consultarActores = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox = tActores.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -736,7 +769,7 @@ const consultarActores = async () => {
             opcConsultar: "61",
             opcEditar: "62",
             opcEliminar: "63",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 
@@ -760,28 +793,26 @@ const consultarActores = async () => {
 const consultarDirectores = async () => {
     let parametros = new FormData();
     parametros.append("opc", "101");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
+        name: "director",
         titulo: "directores",
         titleIcon: "people",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tDirectores.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox = tDirectores.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -794,10 +825,9 @@ const consultarDirectores = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox = tDirectores.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -815,7 +845,7 @@ const consultarDirectores = async () => {
             opcConsultar: "101",
             opcEditar: "102",
             opcEliminar: "103",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 
@@ -838,28 +868,26 @@ const consultarDirectores = async () => {
 const consultarGeneros = async () => {
     let parametros = new FormData();
     parametros.append("opc", "141");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
+        name: "genero",
         titulo: "generos",
         titleIcon: "theaters",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tGeneros.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox = tGeneros.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -872,10 +900,9 @@ const consultarGeneros = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox = tGeneros.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -893,7 +920,7 @@ const consultarGeneros = async () => {
             opcConsultar: "141",
             opcEditar: "142",
             opcEliminar: "143",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 
@@ -917,28 +944,26 @@ const consultarGeneros = async () => {
 const consultarUsuarios = async () => {
     let parametros = new FormData();
     parametros.append("opc", "181");
-    let url = "../Model/facade.php";
-    let response = await peticionFetch(parametros, url);
-    console.log(await response);
+    let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
+        name: "usuario",
         titulo: "usuarios",
         titleIcon: "theaters",
         headers: Object.keys(await response.datos[0]),
         info_campos: response.info_campos,
         actBtns: [
             {
-                id: "btn_add",
-                icon: "add",
+                id: btn_add.id,
+                icon: btn_add.icon,
                 action: function () {
                     tUsuarios.renderForm();
                 },
             },
             {
-                id: "btn_edit",
-                icon: "edit",
+                id: btn_edit.id,
+                icon: btn_edit.icon,
                 action: function () {
-                    console.log("editar");
                     let checkBox = tUsuarios.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -951,10 +976,9 @@ const consultarUsuarios = async () => {
                 },
             },
             {
-                id: "btn_delete",
-                icon: "delete",
+                id: btn_delete.id,
+                icon: btn_delete.icon,
                 action: function () {
-                    console.log("eliminar");
                     let checkBox = tUsuario.section_subbody.querySelectorAll(
                         "input[type=checkbox]"
                     );
@@ -972,7 +996,7 @@ const consultarUsuarios = async () => {
             opcConsultar: "181",
             opcEditar: "182",
             opcEliminar: "183",
-            url: "../Model/facade.php"
+            url: mFacadeUrl
         }
     };
 

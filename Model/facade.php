@@ -6,6 +6,13 @@ include $_SERVER["DOCUMENT_ROOT"] . '/Cinemax/Controller/DAO.php';
 /* $opcion = $_REQUEST['opc']; */
 $opc = $_REQUEST['opc'];
 
+// !Tables
+/* -------------------------------- DbTables  0 -------------------------------- */
+if ($opc == '0') {
+    $tables = DbTables::listar();
+    echo json_encode($tables);
+}
+
 // !Pelicula
 /* -------------------------------- Pelicula  1-20 -------------------------------- */
 if ($opc == '1') {

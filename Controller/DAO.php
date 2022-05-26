@@ -1,4 +1,21 @@
 <?php
+class DbTables {
+    public static function listar() {
+        include "../Connection/conexion.php";
+
+        $sql = "SELECT * FROM tables_opc";
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+        for ($i = 0; $i < $rows; $i++) {
+            $datos[$i] = $consulta->fetch_assoc();
+        }
+        
+        return $datos;
+    }
+}
+
 /* -------------------------------- Pelicula -------------------------------- */
 class Pelicula {
     public static function listar($opc, $campo, $valor) {
