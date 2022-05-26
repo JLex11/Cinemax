@@ -61,7 +61,6 @@ const observer = new IntersectionObserver(
                         fEjecutada = true;
                     }
                 } else loader.classList.remove("loader");
-
             }
         });
     },
@@ -128,9 +127,9 @@ class HeaderCards {
 
     constructor(principalContainer, contents) {
         this.principalContainer = document.getElementById(principalContainer);
-        this.hrefElement = document.createElement('a');
-        this.headerItem = document.createElement('div');
-        this.containerBody = document.createElement('div');
+        this.hrefElement = document.createElement("a");
+        this.headerItem = document.createElement("div");
+        this.containerBody = document.createElement("div");
         this.id = contents.id;
         this.icon = contents.icon;
         this.bodyElements = contents.bodyElements;
@@ -141,32 +140,32 @@ class HeaderCards {
         this.renderIcon();
         this.renderBody();
 
-        this.headerItem.classList.add('header_item');
+        this.headerItem.classList.add("header_item");
         this.hrefElement.appendChild(this.headerItem);
         this.hrefElement.href = "#" + this.id;
         this.principalContainer.appendChild(this.hrefElement);
     }
 
     renderIcon() {
-        let spanIcon = document.createElement('span');
-        spanIcon.classList.add('material-icons-sharp');
+        let spanIcon = document.createElement("span");
+        spanIcon.classList.add("material-icons-sharp");
         spanIcon.innerText = this.icon;
         this.headerItem.appendChild(spanIcon);
     }
 
     renderBody() {
-        this.containerBody.classList.add('container_body');
+        this.containerBody.classList.add("container_body");
         let fragment = document.createDocumentFragment();
 
         this.bodyElements.forEach((bElement, i) => {
-            let bodyElement = document.createElement('div');
-            bodyElement.classList.add('body_element');
+            let bodyElement = document.createElement("div");
+            bodyElement.classList.add("body_element");
             bodyElement.innerHTML = `
             <h5>${this.bodyElements[i].number}</h5>
             <h5>${this.bodyElements[i].name}</h5>`;
 
             fragment.appendChild(bodyElement);
-        })
+        });
 
         this.containerBody.appendChild(fragment);
         this.headerItem.appendChild(this.containerBody);
@@ -232,7 +231,9 @@ class DataTable {
         this.container_table.appendChild(this.table);
         this.container_table.classList.add("container_table");
 
-        this.container_buttons_and_form.classList.add("container_buttons_and_form");
+        this.container_buttons_and_form.classList.add(
+            "container_buttons_and_form"
+        );
 
         this.section_subbody.appendChild(this.container_buttons_and_form);
         this.section_subbody.appendChild(this.container_table);
@@ -285,27 +286,27 @@ class DataTable {
         let actBtns = document.createElement("div");
         actBtns.classList.add("container_form_act_btns");
         function crearBtnCerrar() {
-            let btnCerrarForm = document.createElement('button');
-            btnCerrarForm.classList.add('btn_form_cerrar');
+            let btnCerrarForm = document.createElement("button");
+            btnCerrarForm.classList.add("btn_form_cerrar");
             btnCerrarForm.innerHTML = `<span class="material-icons-sharp">close</span>`;
-            btnCerrarForm.addEventListener('click', e => {
+            btnCerrarForm.addEventListener("click", e => {
                 e.preventDefault();
                 let form = actBtns.parentNode;
                 form.remove();
-            })
+            });
             actBtns.appendChild(btnCerrarForm);
         }
         function crearBtnEnviar() {
-            let btnEnviarForm = document.createElement('button');
-            btnEnviarForm.classList.add('btn_form_enviar');
+            let btnEnviarForm = document.createElement("button");
+            btnEnviarForm.classList.add("btn_form_enviar");
             btnEnviarForm.innerHTML = `<span class="material-icons-sharp">send</span>`;
-            btnEnviarForm.addEventListener('click', e => {
+            btnEnviarForm.addEventListener("click", e => {
                 e.preventDefault();
                 let form = actBtns.parentNode;
                 /* console.log(form); */
                 let parametros = new FormData(form);
                 /* console.log(parametros.get('idactor')); */
-            })
+            });
             actBtns.appendChild(btnEnviarForm);
         }
         crearBtnCerrar();
@@ -408,13 +409,13 @@ class DataTable {
     }
 
     async seeRow(table) {
-        console.log(this.dbTables); //se debe entregar desde el contents de una consulta a la db
+        /* console.log(this.dbTables);  */ //se debe entregar desde el contents de una consulta a la db
         this.dbTables = {
-            pelicula: '1',
-            estadisticas: '21',
-            estadisticaspelicula: '41',
-            actor: '61'
-        }
+            pelicula: "1",
+            estadisticas: "21",
+            estadisticaspelicula: "41",
+            actor: "61",
+        };
         let opcKeys = Object.getOwnPropertyNames(this.dbTables);
         let opc = "";
         /* for (let table of this.dbTables) {
@@ -431,9 +432,7 @@ class DataTable {
         return "Melo";
     }
 
-    async addRow(datos) {
-        
-    }
+    async addRow(datos) {}
 
     async updateRow(datos) {
         let parametros = new FormData();
@@ -444,9 +443,7 @@ class DataTable {
         let response = this.peticionFetch(parametros, url);
     }
 
-    async deleteRow(id) {
-        
-    }
+    async deleteRow(id) {}
 
     insertarFilas(datos) {
         let dFragment = document.createDocumentFragment();
@@ -488,40 +485,54 @@ class DataTable {
                 let execute = false;
                 let waitForEvent = setInterval(() => {
                     if (!execute) {
-                        input.addEventListener("click", () => {
-                            let trParent = input.parentNode.parentNode;
-                            let tdHijos = trParent.querySelectorAll("td");
-                            tdHijos.forEach((td, index) => {
-                                if (index == 0) {
-                                    checkboxLabel.classList.remove("checkboxToButton");
-                                    input.type = "checkbox";
-                                    input.value = "";
-                                    input.checked = false;
-                                } else {
-                                    td.contentEditable = false;
-                                    td.classList.remove("editableOn");
-                                    if (td.querySelector('img')) {
-                                        datosEditados[`${this.headers[index - 1].replace(/ /g, "")}`] = td.querySelector('img').src;
+                        input.addEventListener(
+                            "click",
+                            () => {
+                                let trParent = input.parentNode.parentNode;
+                                let tdHijos = trParent.querySelectorAll("td");
+                                tdHijos.forEach((td, index) => {
+                                    if (index == 0) {
+                                        checkboxLabel.classList.remove(
+                                            "checkboxToButton"
+                                        );
+                                        input.type = "checkbox";
+                                        input.value = "";
+                                        input.checked = false;
                                     } else {
-                                        datosEditados[`${this.headers[index - 1].replace(/ /g, "")}`] = td.textContent;
+                                        let nameCampo = this.headers[index - 1].replace(/ /,"");
+                                        td.contentEditable = false;
+                                        td.classList.remove("editableOn");
+                                        if (td.querySelector("img")) {
+                                            let fotoSrc = td.querySelector('img').src.replace('http://localhost/Cinemax', '..');
+                                            datosEditados[nameCampo] = fotoSrc;
+                                        } else if (td.querySelector("select")) {
+                                            let valueSelect = td.querySelector("select").value;
+                                            datosEditados[nameCampo] = valueSelect;
+                                            td.innerHTML = valueSelect;
+                                        } else {
+                                            datosEditados[nameCampo] = td.textContent;
+                                        }
                                     }
-                                }
-                            });
-                            execute = true;
-                            clearInterval(waitForEvent);
-                            this.updateRow(datosEditados);
-                        },{ once: true });
+                                });
+                                execute = true;
+                                clearInterval(waitForEvent);
+                                this.updateRow(datosEditados);
+                            },
+                            { once: true }
+                        );
                     }
                 }, 1000);
             } else {
-                if (this.tableName != this.info_campos[index-1].table) {
-                    console.log(this.tableName, this.info_campos[index - 1].table);
+                if (
+                    this.tableName != this.info_campos[index - 1].table &&
+                    this.info_campos[index - 1].table != "estadisticas"
+                ) {
                     hijo.innerHTML = `<select></select>`;
                     let crearOptions = async () => {
-                        let datos = await this.seeRow();
-                        console.log("datos");
-                        console.log(await datos);
-                    }
+                        let datos = await this.seeRow(
+                            this.info_campos[index - 1].table
+                        );
+                    };
                     crearOptions();
                 } else {
                     hijo.contentEditable = true;
@@ -564,7 +575,7 @@ const consultarPeliculas = async () => {
     let parametros = new FormData();
     parametros.append("opc", "1");
     let response = await peticionFetch(parametros, mFacadeUrl);
-    
+
     let contents = await {
         name: "pelicula",
         titulo: "peliculas",
@@ -615,8 +626,8 @@ const consultarPeliculas = async () => {
             opcConsultar: "1",
             opcEditar: "2",
             opcEliminar: "3",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let contentsCard = await {
@@ -624,11 +635,12 @@ const consultarPeliculas = async () => {
         icon: "movie",
         bodyElements: [
             {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Peliculas"
-            }
-        ]
-    }
+                number:
+                    Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Peliculas",
+            },
+        ],
+    };
 
     let peliculasCard = new HeaderCards("chi2", contentsCard);
     let tPeliculas = new DataTable(".data", await contents);
@@ -693,8 +705,8 @@ const consultarEstadisticas = async () => {
             opcConsultar: "21",
             opcEditar: "22",
             opcEliminar: "23",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let contentsCard = await {
@@ -702,11 +714,12 @@ const consultarEstadisticas = async () => {
         icon: "bar_chart",
         bodyElements: [
             {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Estadisticas"
-            }
-        ]
-    }
+                number:
+                    Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Estadisticas",
+            },
+        ],
+    };
 
     let estadisticasCard = new HeaderCards("chi2", contentsCard);
     let tEstadisticas = new DataTable(".data", await contents);
@@ -769,8 +782,8 @@ const consultarActores = async () => {
             opcConsultar: "61",
             opcEditar: "62",
             opcEliminar: "63",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let contentsCard = await {
@@ -778,11 +791,12 @@ const consultarActores = async () => {
         icon: "groups",
         bodyElements: [
             {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Actores"
-            }
-        ]
-    }
+                number:
+                    Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Actores",
+            },
+        ],
+    };
 
     let actoresCard = new HeaderCards("chi2", contentsCard);
     let tActores = new DataTable(".data", await contents);
@@ -845,8 +859,8 @@ const consultarDirectores = async () => {
             opcConsultar: "101",
             opcEditar: "102",
             opcEliminar: "103",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let contentsCard = await {
@@ -854,11 +868,12 @@ const consultarDirectores = async () => {
         icon: "people",
         bodyElements: [
             {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Directores"
-            }
-        ]
-    }
+                number:
+                    Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Directores",
+            },
+        ],
+    };
 
     let directoresCard = new HeaderCards("chi2", contentsCard);
     let tDirectores = new DataTable(".data", await contents);
@@ -920,8 +935,8 @@ const consultarGeneros = async () => {
             opcConsultar: "141",
             opcEditar: "142",
             opcEliminar: "143",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let contentsCard = await {
@@ -929,11 +944,12 @@ const consultarGeneros = async () => {
         icon: "theaters",
         bodyElements: [
             {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Generos"
-            }
-        ]
-    }
+                number:
+                    Object.getOwnPropertyNames(await contents.trs).length - 1,
+                name: "Generos",
+            },
+        ],
+    };
 
     let generosCard = new HeaderCards("chi2", contentsCard);
     let tGeneros = new DataTable(".data", await contents);
@@ -996,8 +1012,8 @@ const consultarUsuarios = async () => {
             opcConsultar: "181",
             opcEditar: "182",
             opcEliminar: "183",
-            url: mFacadeUrl
-        }
+            url: mFacadeUrl,
+        },
     };
 
     let tUsuarios = new DataTable(".user_data", await contents);
