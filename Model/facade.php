@@ -196,9 +196,51 @@ if ($opc == '162') {
     echo json_encode($generopelicula);
 }
 
-// !Usuario
-/* --------------------------------- Usuario 181-200 -------------------------------- */
+
+/* ----------------------------- Tipo 181-200 ---------------------------- */
 if ($opc == '181') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $tipo = Tipo::listar($opcion, $campo, $valor);
+    echo json_encode($tipo);
+}
+
+if ($opc == '182') {
+    $opcion = $opc;
+    $idtipo = $_POST["idtipo"];
+    $tipo = $_POST["tipo"];
+    $estado = $_POST["estado"];
+    
+    $tipo = Tipo::editar($idtipo, $tipo, $estado);
+    echo json_encode($tipo);
+}
+
+
+/* ----------------------------- Pais 201-220 ---------------------------- */
+if ($opc == '201') {
+    $opcion = $opc;
+    $campo = "";
+    $valor = "";
+    
+    $pais = Pais::listar($opcion, $campo, $valor);
+    echo json_encode($pais);
+}
+
+if ($opc == '202') {
+    $opcion = $opc;
+    $idpais = $_POST["idpais"];
+    $nombre = $_POST["nombre"];
+    $estado = $_POST["estado"];
+    
+    $pais = Pais::editar($idpais, $nombre, $estado);
+    echo json_encode($pais);
+}
+
+// !Usuario
+/* --------------------------------- Usuario 141-260 -------------------------------- */
+if ($opc == '241') {
     $opcion = $opc;
     $campo = "";
     $valor = "";

@@ -555,12 +555,126 @@ class GeneroPelicula {
     }
 }
 
+/* --------------------------------- Tipo --------------------------------- */
+class Tipo {
+    public static function listar($opc, $campo, $valor) {
+        include "../Connection/conexion.php";
+        
+        if ($opc == '181') {
+            $sql = "SELECT idtipo, tipo FROM tipo WHERE estado = 'T'";
+        }
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+        for ($i = 0; $i < $rows; $i++) {
+            $datos[$i] = $consulta->fetch_assoc();
+        }
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
+    }
+
+    public static function editar($idtipo, $tipo, $estado) {
+        include "../Connection/conexion.php";
+        
+        $sql = "UPDATE generopelicula SET\n"
+        . "tipo = '$tipo',\n"
+        . "estado = '$estado\n"
+        . "WHERE idtipo = '$idtipo'";
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "no se actualizaron los datos";
+        } else {
+            $datos[0] = "se actualizo correctamente";
+        }
+        return $datos;
+    }
+}
+
+/* --------------------------------- Pais --------------------------------- */
+class Pais {
+    public static function listar($opc, $campo, $valor) {
+        include "../Connection/conexion.php";
+        
+        if ($opc == '181') {
+            $sql = "SELECT idpais, nombre FROM pais WHERE estado = 'T'";
+        }
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_num_rows($consulta);
+        for ($i = 0; $i < $rows; $i++) {
+            $datos[$i] = $consulta->fetch_assoc();
+        }
+
+        $info_campos = array();
+        $infocampos = $consulta->fetch_fields();
+        $i = 0;
+        foreach ($infocampos as $valor) {
+            $info_campos[$i] = array(
+                "table"=>$valor->table,
+                "name"=>$valor->name,
+                "max_length"=>$valor->max_length,
+                "length"=>$valor->length,
+                "charsetnr"=>$valor->charsetnr,
+                "flags"=>$valor->flags,
+                "type"=>$valor->type
+            );
+            $i++;
+        }
+
+        $datosAndInfo = array("datos"=>$datos, "info_campos"=>$info_campos);
+
+        return $datosAndInfo;
+    }
+
+    public static function editar($idpais, $nombre, $estado) {
+        include "../Connection/conexion.php";
+        
+        $sql = "UPDATE generopelicula SET\n"
+        . "nombre = '$nombre',\n"
+        . "estado = '$estado\n"
+        . "WHERE idpais = '$idpais'";
+
+        $datos = array();
+        $consulta = mysqli_query($cnn, $sql);
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "no se actualizaron los datos";
+        } else {
+            $datos[0] = "se actualizo correctamente";
+        }
+        return $datos;
+    }
+}
+
 /* --------------------------------- Usuario --------------------------------- */
 class Usuario {
     public static function listar($opc, $campo, $valor) {
         include "../Connection/conexion.php";
         
-        if ($opc == '181') {
+        if ($opc == '241') {
             $sql = "SELECT * FROM usuario";
         }
 

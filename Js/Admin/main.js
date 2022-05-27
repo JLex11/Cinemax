@@ -22,24 +22,20 @@ navOptions.forEach((op, index) => {
     });
 });
 
+
 let indexSectionActiva;
 let fEjecutada = false;
 let fEjecutadaUsers = false;
 var loader = document.getElementById("loader");
 var loader_users = document.getElementById("loader_users");
 
-const observer = new IntersectionObserver(
-    entries => {
+const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                //convierte nodelist a array y obtiene su posicion dependiendo de la entry insersectada
-                indexSectionActiva = [...mainSections].indexOf(entry.target);
-                navOptions.forEach((op, index) => {
-                    window.scrollTo({ top: 0 });
-                    if (index == indexSectionActiva)
-                        op.classList.add("active_option");
-                    else op.classList.remove("active_option");
-                });
+                main.classList.add('section_focus_change');
+                setTimeout(() => { main.classList.remove('section_focus_change') }, 800);
+                
+                stylizedNavOption();
 
                 if (entry.target.id == "users_section") {
                     if (!fEjecutadaUsers) {
@@ -62,9 +58,20 @@ const observer = new IntersectionObserver(
                     }
                 } else loader.classList.remove("loader");
             }
+
+            function stylizedNavOption() {
+                indexSectionActiva = [...mainSections].indexOf(entry.target);
+                navOptions.forEach((op, index) => {
+                    window.scrollTo({ top: 0 });
+                    if (index == indexSectionActiva)
+                        op.classList.add("active_option");
+                    else
+                        op.classList.remove("active_option");
+                });
+            }
         });
     },
-    { root: main, threshold: 1 }
+    { root: main, threshold: 0.1 }
 );
 
 mainSections.forEach(section => observer.observe(section));
@@ -485,61 +492,60 @@ class DataTable {
                 let execute = false;
                 let waitForEvent = setInterval(() => {
                     if (!execute) {
-                        input.addEventListener(
-                            "click",
-                            () => {
-                                let trParent = input.parentNode.parentNode;
-                                let tdHijos = trParent.querySelectorAll("td");
-                                tdHijos.forEach((td, index) => {
-                                    if (index == 0) {
-                                        checkboxLabel.classList.remove(
-                                            "checkboxToButton"
-                                        );
-                                        input.type = "checkbox";
-                                        input.value = "";
-                                        input.checked = false;
-                                    } else {
-                                        let nameCampo = this.headers[index - 1].replace(/ /,"");
-                                        td.contentEditable = false;
-                                        td.classList.remove("editableOn");
-                                        if (td.querySelector("img")) {
-                                            let fotoSrc = td.querySelector('img').src.replace('http://localhost/Cinemax', '..');
-                                            datosEditados[nameCampo] = fotoSrc;
-                                        } else if (td.querySelector("select")) {
-                                            let valueSelect = td.querySelector("select").value;
-                                            datosEditados[nameCampo] = valueSelect;
-                                            td.innerHTML = valueSelect;
-                                        } else {
-                                            datosEditados[nameCampo] = td.textContent;
-                                        }
-                                    }
-                                });
-                                execute = true;
-                                clearInterval(waitForEvent);
-                                this.updateRow(datosEditados);
-                            },
-                            { once: true }
-                        );
+                        execute = this.capturarDatosEditados(input, checkboxLabel, datosEditados, execute, waitForEvent);
                     }
                 }, 1000);
             } else {
-                if (
-                    this.tableName != this.info_campos[index - 1].table &&
+                if (this.tableName != this.info_campos[index - 1].table &&
                     this.info_campos[index - 1].table != "estadisticas"
                 ) {
-                    hijo.innerHTML = `<select></select>`;
+                    hijo.innerHTML = `<select>`;
                     let crearOptions = async () => {
-                        let datos = await this.seeRow(
-                            this.info_campos[index - 1].table
-                        );
+                        let datos = await this.seeRow(this.info_campos[index - 1].table);
+                        console.log(datos);
                     };
                     crearOptions();
+                    hijo.innerHTML += `</select>`;
                 } else {
                     hijo.contentEditable = true;
                     hijo.classList.add("editableOn");
                 }
             }
         });
+    }
+
+    capturarDatosEditados(input, checkboxLabel, datosEditados, execute, waitForEvent) {
+        input.addEventListener("click", () => {
+            let trParent = input.parentNode.parentNode;
+            let tdHijos = trParent.querySelectorAll("td");
+            tdHijos.forEach((td, index) => {
+                if (index == 0) {
+                    checkboxLabel.classList.remove("checkboxToButton");
+                    input.type = "checkbox";
+                    input.value = "";
+                    input.checked = false;
+                } else {
+                    let nameCampo = this.headers[index - 1].replace(/ /, "");
+                    td.contentEditable = false;
+                    td.classList.remove("editableOn");
+                    if (td.querySelector("img")) {
+                        let fotoSrc = td.querySelector('img').src.replace('http://localhost/Cinemax', '..');
+                        datosEditados[nameCampo] = fotoSrc;
+                    } else if (td.querySelector("select")) {
+                        let valueSelect = td.querySelector("select").value;
+                        datosEditados[nameCampo] = valueSelect;
+                        td.innerHTML = valueSelect;
+                    } else {
+                        datosEditados[nameCampo] = td.textContent;
+                    }
+                }
+            });
+            execute = true;
+            clearInterval(waitForEvent);
+            this.updateRow(datosEditados);
+        }, { once: true }
+        );
+        return execute;
     }
 
     eliminarFilas(fila) {
@@ -569,9 +575,25 @@ const mFacadeUrl = "../Model/facade.php";
 const btn_add = { id: "btn_add", icon: "add" };
 const btn_edit = { id: "btn_edit", icon: "edit" };
 const btn_delete = { id: "btn_edit", icon: "delete" };
+let tableDatos;
+async function consultarDbTables() {
+    if (!tableDatos) {
+        let parametros = new FormData();
+        parametros.append("opc", "0");
+        tableDatos = await peticionFetch(parametros, mFacadeUrl);
+    }
+    return await tableDatos;
+}
 
 // !Consultar peliculas
 const consultarPeliculas = async () => {
+    let dbTables = await consultarDbTables();
+    dbTables.forEach((table) => {
+        if (table.table == "pelicula") {
+            console.log(table);
+        }
+    })
+
     let parametros = new FormData();
     parametros.append("opc", "1");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -628,6 +650,7 @@ const consultarPeliculas = async () => {
             opcEliminar: "3",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let contentsCard = await {
@@ -649,6 +672,9 @@ const consultarPeliculas = async () => {
 
 // !Consultar estadisticas
 const consultarEstadisticas = async () => {
+    let dbTables = await consultarDbTables();
+    console.log(dbTables);
+
     let parametros = new FormData();
     parametros.append("opc", "21");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -707,6 +733,7 @@ const consultarEstadisticas = async () => {
             opcEliminar: "23",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let contentsCard = await {
@@ -728,6 +755,8 @@ const consultarEstadisticas = async () => {
 
 // !Consultar actores
 const consultarActores = async () => {
+    let dbTables = await consultarDbTables();
+
     let parametros = new FormData();
     parametros.append("opc", "61");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -784,6 +813,7 @@ const consultarActores = async () => {
             opcEliminar: "63",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let contentsCard = await {
@@ -805,6 +835,8 @@ const consultarActores = async () => {
 
 // !Consultar directores
 const consultarDirectores = async () => {
+    let dbTables = await consultarDbTables();
+
     let parametros = new FormData();
     parametros.append("opc", "101");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -861,6 +893,7 @@ const consultarDirectores = async () => {
             opcEliminar: "103",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let contentsCard = await {
@@ -881,6 +914,8 @@ const consultarDirectores = async () => {
 };
 // !Consultar generos
 const consultarGeneros = async () => {
+    let dbTables = await consultarDbTables();
+
     let parametros = new FormData();
     parametros.append("opc", "141");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -937,6 +972,7 @@ const consultarGeneros = async () => {
             opcEliminar: "143",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let contentsCard = await {
@@ -958,6 +994,8 @@ const consultarGeneros = async () => {
 
 // !Consultar Usuarios
 const consultarUsuarios = async () => {
+    let dbTables = await consultarDbTables();
+
     let parametros = new FormData();
     parametros.append("opc", "181");
     let response = await peticionFetch(parametros, mFacadeUrl);
@@ -1014,6 +1052,7 @@ const consultarUsuarios = async () => {
             opcEliminar: "183",
             url: mFacadeUrl,
         },
+        dbTables: dbTables
     };
 
     let tUsuarios = new DataTable(".user_data", await contents);
