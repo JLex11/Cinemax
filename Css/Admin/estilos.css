@@ -28,7 +28,7 @@
 body {
     /* background: #eef5ee;
     background: linear-gradient(90deg, #f4fdf4, #fef8f6, #f6fbfe); */
-    background: url(/Cinemax/Images/yamato.png);
+    background: url(/Cinemax/Images/yamato.webp);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -260,12 +260,12 @@ main {
 }
 
 main.section_focus_change {
-    animation: section_focus_change .8s ease;
+    animation: section_focus_change .5s;
 }
 
 @keyframes section_focus_change {
     0% {transform: scale(1);}
-    50% {transform: scale(0.90) translateY(-5%);}
+    50% {transform: scale(0.95);}
     100% {transform: scale(1);}
 }
 
@@ -784,14 +784,12 @@ div.checkboxToButton::after {
 }
 
 .sub_container_form form {
-    height: 100%;
-    border-top: 2px solid var(--color-blue);
     padding: 10px;
-    box-shadow: 0 0 15px
-    rgb(0 0 0 / 14%) inset;
-    margin: 5px 0;
-    border-radius: 15px;
-    gap: 15px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 10%) inset;
+    background: white;
+    margin: 10px 0;
+    border-radius: 10px;
+    gap: 10px;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
@@ -813,10 +811,14 @@ div.checkboxToButton::after {
     flex-direction: column;
 }
 
+.content_label p {
+    font-size: 10pt;
+}
+
 input.input_agregar_form {
     border: 0;
-    border-bottom: 2px solid #b1b1b100;
-    padding: 5px 0;
+    border-bottom: 2px solid #d5d5d5;
+    padding: 5px 10px;
     font-size: 16px;
     background-color: transparent;
     color: #000000;
@@ -860,7 +862,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     padding: 10px;
     border: none;
     cursor: pointer;
-    transition: outline 0.3s, box-shadow 0.3s, background .3s, color .3s;
+    transition: outline 0.1s, box-shadow 0.3s, background .3s, color .3s;
     display: flex;
     align-items: center;
     justify-content: center;
