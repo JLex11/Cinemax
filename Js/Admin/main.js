@@ -1,46 +1,10 @@
-/* ------------------------- Navegacion por mainSections ------------------------- */
+/* ------------ Navegacion por mainSections ------------- */
 let navOptions = document.querySelectorAll(".option");
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
 var { loader, loader_users } = navInSections();
-
-/* ------------------------- Header y Button Up ------------------------- */
-headerAndButtonUp();
-
-function headerAndButtonUp() {
-    let buttonUp = document.getElementById("button_up");
-    let header = document.getElementById("header");
-    window.addEventListener("scroll", () => {
-        if (document.documentElement.scrollTop >= 40) {
-            header.style.backgroundColor = "rgb(255 255 255 / 95%)";
-            buttonUp.classList.add("button_up_active");
-        } else {
-            header.style.backgroundColor = "transparent";
-            buttonUp.classList.remove("button_up_active");
-        }
-    });
-
-    buttonUp.addEventListener("click", () => {
-        window.scrollTo({ top: 0 });
-    });
-}
-
 function navInSections() {
-    let mainSectionsX = [];
-    mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect()));
-
-    window.addEventListener("resize", () => {
-        mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect()));
-    });
-
-    navOptions.forEach((op, index) => {
-        op.addEventListener("click", () => {
-            if (mainSectionsX[index]) main.scrollLeft = mainSectionsX[index].x;
-            window.scrollTo({ top: 0 });
-        });
-    });
-
     let indexSectionActiva;
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
@@ -48,10 +12,25 @@ function navInSections() {
     var loader = document.getElementById("loader");
     var loader_users = document.getElementById("loader_users");
 
+    GoToSection();
     const observer = new IntersectionObserver(sectionIsFocused(), { root: main, threshold: 0.1 });
-
     mainSections.forEach((section) => observer.observe(section));
-    return { loader, loader_users };
+    
+    function GoToSection() {
+        let mainSectionsX = [];
+        mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
+        window.addEventListener("resize", () => {
+            mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
+        });
+
+        navOptions.forEach((op, index) => {
+            op.addEventListener("click", () => {
+                if (mainSectionsX[index] !== undefined) {
+                    main.scrollLeft = mainSectionsX[index];
+                }
+            });
+        });
+    }
 
     function sectionIsFocused() {
         return (entries) => {
@@ -99,9 +78,32 @@ function navInSections() {
             });
         };
     }
+
+    return { loader, loader_users };
 }
 
-/* --------------------------------- Grafico -------------------------------- */
+/* ------------ Header y Button Up ------------- */
+headerAndButtonUp();
+
+function headerAndButtonUp() {
+    let buttonUp = document.getElementById("button_up");
+    let header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+        if (document.documentElement.scrollTop >= 40) {
+            header.style.backgroundColor = "white";
+            buttonUp.classList.add("button_up_active");
+        } else {
+            header.style.backgroundColor = "transparent";
+            buttonUp.classList.remove("button_up_active");
+        }
+    });
+
+    buttonUp.addEventListener("click", () => {
+        window.scrollTo({ top: 0 });
+    });
+}
+
+/* -------------------- Grafico --------------- */
 /* function crearGrafico(contenedor, labels, parametros, valores) {
     let canvasGrafico = document.getElementById(`${contenedor}`);
 
@@ -154,7 +156,7 @@ class HeaderCards {
     makeCard() {
         this.renderIcon();
         this.renderBody();
-
+        
         this.headerItem.classList.add("header_item");
         this.hrefElement.appendChild(this.headerItem);
         this.hrefElement.href = "#" + this.id;
@@ -201,7 +203,8 @@ class DataTable {
     titulo;
     titleIcon;
     headers;
-    info_campos;
+    tableFields;
+    describe;
     trs;
     dbParametros;
     dbTables;
@@ -225,7 +228,8 @@ class DataTable {
         this.titulo = this.capitalizarString(contents.titulo);
         this.titleIcon = contents.titleIcon;
         this.headers = contents.headers;
-        this.info_campos = contents.info_campos;
+        this.tableFields = contents.tableFields;
+        this.describe = contents.describe;
         this.buttons = contents.actBtns;
         this.trs = contents.trs;
         this.dbParametros = contents.dbParametros;
@@ -258,6 +262,7 @@ class DataTable {
         this.container_subsection.id = this.titulo;
 
         this.elementParent.appendChild(this.container_subsection);
+        console.log(this.titulo, this.describe);
     }
 
     capitalizarString(string) {
@@ -316,9 +321,7 @@ class DataTable {
             btnEnviarForm.addEventListener("click", (e) => {
                 e.preventDefault();
                 let form = actBtns.parentNode;
-                /* console.log(form); */
                 let parametros = new FormData(form);
-                /* console.log(parametros.get('idactor')); */
             });
             actBtns.appendChild(btnEnviarForm);
         }
@@ -375,17 +378,25 @@ class DataTable {
     renderTrs() {
         let dFragment = document.createDocumentFragment();
         this.trs.forEach((t) => {
+            let rowId = `${t[Object.keys(t)[0]]}-${this.tableName}`;
+            let checkBoxId = `${t[Object.keys(t)[0]]}-${this.titulo}`;
+
             let tr = document.createElement("tr");
-            tr.id = Math.floor(Math.random() * 1000);
+            tr.id = rowId;
+
             let td = document.createElement("td");
-            td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
-            <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
+            td.innerHTML = `
+            <input type="checkbox" id="${checkBoxId}" class="table_check">
+            <label for="${checkBoxId}">
                 <div class="custom_checkbox" id="custom_checkbox"></div>
             </label>`;
-            tr.appendChild(td);
 
+            tr.appendChild(td);
+            let cont = 0;
             for (let i in t) {
                 let td = document.createElement("td");
+                td.setAttribute('data-label', `${this.capitalizarString(this.headers[cont])}`);
+
                 if (typeof t[i] == "array" || typeof t[i] == "object") {
                     td.innerHTML = `<select></select>`;
                     let select = td.querySelector("select");
@@ -400,6 +411,7 @@ class DataTable {
                         td.textContent = t[i];
                     }
                 }
+                cont++;
                 tr.appendChild(td);
             }
             dFragment.appendChild(tr);
@@ -434,7 +446,6 @@ class DataTable {
     async addRow(datos) {}
 
     async updateRow(datos) {
-        console.log("datos",datos);
         let parametros = new FormData();
         parametros.append("opc", this.dbParametros.opcEditar);
         for (let dato in datos) {
@@ -442,7 +453,7 @@ class DataTable {
         }
         let response = this.peticionF(parametros, this.dbParametros.url);
         response.then(r => {
-            console.log(r);
+            alert(r);
         })
     }
 
@@ -503,7 +514,6 @@ class DataTable {
                                 let select = td.querySelector("select");
                                 let selectOption = select.options[select.selectedIndex];
                                 datosEditados[nameCampo] = selectOption.value;
-                                console.log(`datosEditados[${nameCampo}]`, datosEditados[nameCampo]);
                                 td.innerHTML = selectOption.text;
                             } else {
                                 datosEditados[nameCampo] = td.textContent;
@@ -515,12 +525,11 @@ class DataTable {
                     this.updateRow(datosEditados);
                 },{ once: true });
             } else {
-                let tableOfTd = this.info_campos[index - 1].table;
+                let tableOfTd = this.tableFields[index - 1].table;
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
                     let renderSelect = async () => {
                         hijo.innerHTML = "<select></select>";
                         let select = hijo.querySelector("select");
-                        console.log(tableOfTd);
                         let datos = await this.seeRow(tableOfTd);
                         datos = await datos.datos;
 
@@ -550,7 +559,7 @@ class DataTable {
     }
 }
 
-/* ---------------------------- Fetch ---------------------------- */
+/* --------------- Fetch ---------------- */
 // ?Fetch
 async function peticionFetch(parametros, url) {
     try {
@@ -570,8 +579,8 @@ const mFacadeUrl = "../Model/facade.php";
 const btn_add = { id: "btn_add", icon: "add" };
 const btn_edit = { id: "btn_edit", icon: "edit" };
 const btn_delete = { id: "btn_edit", icon: "delete" };
-let tableDatos;
 async function consultarDbTables() {
+    let tableDatos;
     if (!tableDatos) {
         let parametros = new FormData();
         parametros.append("opc", "0");
@@ -600,7 +609,8 @@ async function consultarPeliculas() {
         titulo: "peliculas",
         titleIcon: "movie",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,
@@ -674,7 +684,7 @@ async function consultarEstadisticas() {
     });
 
     let parametros = new FormData();
-    parametros.append("opc", "21");
+    parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
@@ -682,7 +692,8 @@ async function consultarEstadisticas() {
         titulo: "estadisticas",
         titleIcon: "bar_chart",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,
@@ -756,7 +767,7 @@ async function consultarActores() {
     });
 
     let parametros = new FormData();
-    parametros.append("opc", "61");
+    parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
@@ -764,7 +775,8 @@ async function consultarActores() {
         titulo: "actores",
         titleIcon: "groups",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,
@@ -838,7 +850,7 @@ async function consultarDirectores() {
     });
 
     let parametros = new FormData();
-    parametros.append("opc", "101");
+    parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
@@ -846,7 +858,8 @@ async function consultarDirectores() {
         titulo: "directores",
         titleIcon: "people",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,
@@ -920,7 +933,7 @@ async function consultarGeneros() {
     });
 
     let parametros = new FormData();
-    parametros.append("opc", "141");
+    parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
@@ -928,7 +941,8 @@ async function consultarGeneros() {
         titulo: "generos",
         titleIcon: "theaters",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,
@@ -1002,7 +1016,7 @@ async function consultarUsuarios() {
     });
 
     let parametros = new FormData();
-    parametros.append("opc", "181");
+    parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
     let contents = await {
@@ -1010,7 +1024,8 @@ async function consultarUsuarios() {
         titulo: "usuarios",
         titleIcon: "theaters",
         headers: Object.keys(await response.datos[0]),
-        info_campos: response.info_campos,
+        tableFields: await response.table_Fields,
+        describe: await response.describe,
         actBtns: [
             {
                 id: btn_add.id,

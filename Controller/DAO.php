@@ -56,29 +56,21 @@ class Pelicula
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
-        /* $info_campos[1] = [$valor->name, "casilla"];
-         $info_campos[2] = [$valor->max_length, "max-length"];
-         $info_campos[3] = [$valor->length, "length"];
-         $info_campos[4] = [$valor->charsetnr, "charsetnr"];
-         $info_campos[5] = [$valor->flags, "flags"];
-         $info_campos[6] = [$valor->type, "type"]; */
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE pelicula");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -93,7 +85,7 @@ class Pelicula
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -125,23 +117,21 @@ class Estadisticas
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE estadisticas");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -165,23 +155,21 @@ class EstadisticasPelicula
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE estadisticaspelicula");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -211,23 +199,21 @@ class Actor
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE actor");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -242,7 +228,7 @@ class Actor
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -269,23 +255,21 @@ class ActorPelicula
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE actorpelicula");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
         return $datosAndInfo;
     }
 
@@ -299,7 +283,7 @@ class ActorPelicula
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -333,23 +317,21 @@ class Director
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE director");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -364,7 +346,7 @@ class Director
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -373,7 +355,7 @@ class Director
     }
 }
 
-/* -------------------------------- Director -------------------------------- */
+/* -------------------------------- DirectorPelicula -------------------------------- */
 class DirectorPelicula
 {
     public static function listar($opc, $campo, $valor)
@@ -391,24 +373,21 @@ class DirectorPelicula
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
-
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE directorpelicula");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
         return $datosAndInfo;
     }
 
@@ -422,7 +401,7 @@ class DirectorPelicula
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -453,23 +432,21 @@ class Genero
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE genero");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -484,7 +461,7 @@ class Genero
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -511,23 +488,21 @@ class GeneroPelicula
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE generopelicula");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -542,7 +517,7 @@ class GeneroPelicula
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -569,23 +544,21 @@ class Tipo
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE tipo");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -600,7 +573,7 @@ class Tipo
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -627,23 +600,21 @@ class Pais
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE pais");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
@@ -658,7 +629,7 @@ class Pais
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
-            $datos[0] = "no se actualizaron los datos";
+            $datos[0] = "No hubo cambios";
         }
         else {
             $datos[0] = "se actualizo correctamente";
@@ -685,23 +656,21 @@ class Usuario
             $datos[$i] = $sql->fetch_assoc();
         }
 
-        $info_campos = array();
-        $infocampos = $sql->fetch_fields();
+        $table_Fields = array();
+        $tableFields = $sql->fetch_fields();
         $i = 0;
-        foreach ($infocampos as $valor) {
-            $info_campos[$i] = array(
-                "table" => $valor->table,
-                "name" => $valor->name,
-                "max_length" => $valor->max_length,
-                "length" => $valor->length,
-                "charsetnr" => $valor->charsetnr,
-                "flags" => $valor->flags,
-                "type" => $valor->type
-            );
+        foreach ($tableFields as $valor) {
+            $table_Fields[$i] = array("table" => $valor->table);
             $i++;
         }
 
-        $datosAndInfo = array("datos" => $datos, "info_campos" => $info_campos);
+        $describe = array();
+        $sql = mysqli_query($cnn, "DESCRIBE usuario");
+        $rows = mysqli_num_rows($sql);
+        for ($i = 0; $i < $rows; $i++) {
+            $describe[$i] = $sql->fetch_assoc();
+        }
+        $datosAndInfo = array("datos" => $datos, "table_Fields" => $table_Fields, "describe" => $describe);
 
         return $datosAndInfo;
     }
