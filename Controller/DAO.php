@@ -79,14 +79,7 @@ class Pelicula
     {
         include "../Connection/conexion.php";
         $datos = array();
-
-        $sql = mysqli_query($cnn, "SELECT foto FROM pelicula WHERE idpelicula = '$idpelicula'");
-        $datos = mysqli_fetch_array($sql);
-        $issetFoto = $datos["foto"];
-        if (!empty($issetFoto)) {
-            unlink($issetFoto);
-        }
-
+        
         $titulooriginal = ucfirst(strtolower($titulooriginal));
         $titulolatino = ucfirst(strtolower($titulolatino));
         $resena = ucfirst(strtolower($resena));
@@ -101,7 +94,7 @@ class Pelicula
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         }
 
-        $sql = mysqli_query($cnn, $query);
+        mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
@@ -241,13 +234,6 @@ class Actor
     {
         include "../Connection/conexion.php";
         $datos = array();
-        
-        $sql = mysqli_query($cnn, "SELECT foto FROM actor WHERE idactor = '$idactor'");
-        $datos = mysqli_fetch_array($sql);
-        $issetFoto = $datos["foto"];
-        if (!empty($issetFoto)) {
-            unlink($issetFoto);
-        }
 
         $nombre = ucfirst(strtolower($nombre));
         $descripcion = ucfirst(strtolower($descripcion));
@@ -259,7 +245,7 @@ class Actor
             $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE idactor = '$idactor'";
         }
 
-        $sql = mysqli_query($cnn, $query);
+        mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
@@ -310,11 +296,12 @@ class ActorPelicula
     public static function editar($idactorpelicula, $idactor, $idpelicula, $personaje, $estado)
     {
         include "../Connection/conexion.php";
-
-        $query = "UPDATE actorpelicula SET idactor = '$idactor', idpelicula = '$idpelicula', personaje = '$personaje', estado = '$estado' WHERE idactorpelicula = '$idactorpelicula'";
-
         $datos = array();
-        $sql = mysqli_query($cnn, $query);
+        
+        $personaje = ucfirst(strtolower($personaje));
+        
+        $query = "UPDATE actorpelicula SET idactor = '$idactor', idpelicula = '$idpelicula', personaje = '$personaje', estado = '$estado' WHERE idactorpelicula = '$idactorpelicula'";
+        mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
@@ -373,11 +360,16 @@ class Director
     public static function editar($iddirector, $nombre, $fechanacimiento, $descripcion, $foto, $estado)
     {
         include "../Connection/conexion.php";
-
-        $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE iddirector = '$iddirector'";
-
         $datos = array();
-        $sql = mysqli_query($cnn, $query);
+
+        if (empty($foto)) {
+            $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE iddirector = '$iddirector'";
+        } else {
+            $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE iddirector = '$iddirector'";
+        }
+
+
+        mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
@@ -428,11 +420,10 @@ class DirectorPelicula
     public static function editar($iddirectorpelicula, $iddirector, $idpelicula, $estado)
     {
         include "../Connection/conexion.php";
+        $datos = array();
 
         $query = "UPDATE directorpelicula SET iddirector = '$iddirector', idpelicula = '$idpelicula', estado = '$estado' WHERE iddirectorpelicula = '$iddirectorpelicula'";
-
-        $datos = array();
-        $sql = mysqli_query($cnn, $query);
+        mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
