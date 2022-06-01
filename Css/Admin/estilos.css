@@ -637,12 +637,15 @@ td.editableOn:focus {
 }
 
 td {
+    vertical-align: middle;
+    display: table-cell;
     max-width: 250px;
     font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
     white-space: nowrap;
     transition: background 0.3s;
+    flex-direction: column-reverse;
 }
 td:first-child {
     position: relative;
@@ -653,7 +656,20 @@ td:last-child {
     border-radius: 0 10px 10px 0;
 }
 
+td input {
+    border: 0;
+    background: transparent;
+}
+
+tbody td div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
 tbody td img {
+    min-width: 35px;
+    min-height: 35px;
     width: 35px;
     height: 35px;
     object-fit: cover;
@@ -935,8 +951,8 @@ input.input_agregar_form:focus ~ .content_label > p {
     }
 
     table tr {
+        box-shadow: 0 0 10px #00000021;
         gap: 5px;
-        outline: 1px solid gray;
         padding: 5px;
         border-radius: 10px;
         width: 350px;

@@ -392,26 +392,18 @@ class DataTable {
             </label>`;
 
             tr.appendChild(td);
-            let cont = 0;
+            let headersCont = 0;
             for (let i in t) {
                 let td = document.createElement("td");
-                td.setAttribute('data-label', `${this.capitalizarString(this.headers[cont])}`);
+                td.setAttribute('data-label', `${this.capitalizarString(this.headers[headersCont])}`);
 
-                if (typeof t[i] == "array" || typeof t[i] == "object") {
-                    td.innerHTML = `<select></select>`;
-                    let select = td.querySelector("select");
-                    t[i].forEach((i) => {
-                        select.innerHTML += `<option value="${i}">${i}</option>`;
-                    });
+                if (t[i].indexOf("../foto") == 0) {
+                    td.innerHTML = `
+                    <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
                 } else {
-                    if (t[i].indexOf("../foto") == 0) {
-                        td.innerHTML = `
-                        <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
-                    } else {
-                        td.textContent = t[i];
-                    }
+                    td.textContent = t[i];
                 }
-                cont++;
+                headersCont++;
                 tr.appendChild(td);
             }
             dFragment.appendChild(tr);
@@ -446,12 +438,8 @@ class DataTable {
     async addRow(datos) {}
 
     async updateRow(datos) {
-        let parametros = new FormData();
-        parametros.append("opc", this.dbParametros.opcEditar);
-        for (let dato in datos) {
-            parametros.append(dato, datos[dato]);
-        }
-        let response = this.peticionF(parametros, this.dbParametros.url);
+        datos.append("opc", this.dbParametros.opcEditar);
+        let response = this.peticionF(datos, this.dbParametros.url);
         response.then(r => {
             alert(r);
         })
@@ -465,9 +453,10 @@ class DataTable {
         let tr = document.createElement("tr");
         tr.id = Math.floor(Math.random() * 100);
 
+        let checkBoxId = `${t[Object.keys(t)[0]]}-${this.titulo}`;
         let td = document.createElement("td");
-        td.innerHTML = `<input type="checkbox" id="${t[Object.keys(t)[0]]}-${this.titulo}" class="table_check">
-        <label for="${t[Object.keys(t)[0]]}-${this.titulo}">
+        td.innerHTML = `<input type="checkbox" id="${checkBoxId}" class="table_check">
+        <label for="${checkBoxId}">
             <div class="custom_checkbox"></div>
         </label>`;
         tr.appendChild(td);
@@ -486,7 +475,7 @@ class DataTable {
     async editarFilas(fila) {
         let filaEditar = document.getElementById(fila); //es el tr contenedor
         let fEHijos = filaEditar.querySelectorAll("td");
-        let datosEditados = {};
+        let formDataEditados = new FormData();
         fEHijos.forEach((hijo, index) => {
             if (index == 0) {
                 let checkboxLabel = hijo.querySelector("#custom_checkbox");
@@ -499,51 +488,74 @@ class DataTable {
                 input.addEventListener("click",() => {
                     let trParent = input.parentNode.parentNode;
                     let tdHijos = trParent.querySelectorAll("td");
+
                     tdHijos.forEach((td, index) => {
                         if (index == 0) {
                             checkboxLabel.classList.remove("checkboxToButton");
                             input.type = "checkbox";
                             input.value = "";
                             input.checked = false;
+
                         } else {
                             let nameCampo = this.headers[index - 1].replace(/ /, "");
-                            if (td.querySelector("img")) {
-                                let fotoSrc = td.querySelector("img").src.replace("http://localhost/Cinemax", "..");
-                                datosEditados[nameCampo] = fotoSrc;
+                            if (td.querySelector("input[type=file]" || nameCampo == 'foto')) {
+                                let inputFileImg = td.querySelector("input[type=file]");
+                                let blobImg = new Blob(inputFileImg.files);
+                                formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
                             } else if (td.querySelector("select")) {
                                 let select = td.querySelector("select");
                                 let selectOption = select.options[select.selectedIndex];
-                                datosEditados[nameCampo] = selectOption.value;
+                                formDataEditados.append(nameCampo, selectOption.value);
                                 td.innerHTML = selectOption.text;
+
                             } else {
-                                datosEditados[nameCampo] = td.textContent;
+                                formDataEditados.append(nameCampo, td.textContent);
                             }
+                            console.log(formDataEditados.get(nameCampo));
                             td.contentEditable = false;
                             td.classList.remove("editableOn");
                         }
                     });
-                    this.updateRow(datosEditados);
+                    this.updateRow(formDataEditados);
+
                 },{ once: true });
             } else {
+                let nameCampo = this.headers[index - 1].replace(/ /, "");
                 let tableOfTd = this.tableFields[index - 1].table;
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
                     let renderSelect = async () => {
+                        let textSelected = hijo.textContent;
                         hijo.innerHTML = "<select></select>";
                         let select = hijo.querySelector("select");
+
+                        let fragment = document.createDocumentFragment();
                         let datos = await this.seeRow(tableOfTd);
                         datos = await datos.datos;
 
-                        let fragment = document.createDocumentFragment();
                         for (let dato of datos) {
                             let values = Object.values(dato);
                             let option = document.createElement("option");
-                            option.value = values[0];
-                            option.innerText = values[1];
+                            option.value = values[0]; //[0] = id
+                            option.innerText = values[1]; //[1] = text
+                            console.log(textSelected);
+                            if (values[1] == textSelected) {
+                                option.selected = true;
+                            }
                             fragment.appendChild(option);
                         }
                         select.appendChild(fragment);
                     };
                     renderSelect();
+
+                } else if (hijo.querySelector('img') || nameCampo == 'foto') {
+                    let image = hijo.querySelector('a img') ? hijo.querySelector('a') : hijo.querySelector('img');
+                    let div = document.createElement('div');
+                    /* div.appendChild(image); */
+                    div.innerHTML += `
+                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
+                    hijo.append(div);
+                    hijo.classList.add("editableOn");
+
                 } else {
                     hijo.contentEditable = true;
                     hijo.classList.add("editableOn");

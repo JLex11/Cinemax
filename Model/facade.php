@@ -28,7 +28,7 @@ if ($opc == '2') {
   $idpelicula = $_POST["idpelicula"];
   $titulooriginal = $_POST["titulooriginal"];
   $titulolatino = $_POST["titulolatino"];
-  $foto = "foto";
+  $foto = $_FILES["foto"]["name"];
   $lanzamiento = $_POST["lanzamiento"];
   $duracion = $_POST["duracion"];
   $resena = $_POST["resena"];
@@ -78,7 +78,7 @@ if ($opc == '62') {
   $nombre = $_POST["nombre"];
   $fechanacimiento = $_POST["fechanacimiento"];
   $descripcion = $_POST["descripcion"];
-  $foto = $_POST["foto"];
+  $foto = $_FILES["foto"]["name"];
   $estado = $_POST["estado"];
   
   $actor = Actor::editar($idactor, $nombre, $fechanacimiento, $descripcion, $foto, $estado);
@@ -124,7 +124,7 @@ if ($opc == '102') {
   $nombre = $_POST["nombre"];
   $fechanacimiento = $_POST["fechanacimiento"];
   $descripcion = $_POST["descripcion"];
-  $foto = $_POST["foto"];
+  $foto = $_FILES["foto"]["name"];
   $estado = $_POST["estado"];
 
   $director = Director::editar($iddirector, $nombre, $fechanacimiento, $descripcion, $foto, $estado);
