@@ -31,6 +31,7 @@ body {
     font-family: var(--Font-Principal);
     text-rendering: optimizeSpeed;
     min-height: 100vh;
+    padding-bottom: 60px;
     overflow-x: hidden;
 }
 
@@ -275,7 +276,7 @@ section {
     position: relative;
     width: 100%;
     min-width: 100%;
-    padding: 0 20px 100px 20px;
+    padding: 0 20px 0 20px;
     scroll-snap-align: start;
     scroll-padding-top: 40px;
 }
@@ -607,7 +608,7 @@ section {
 }
 
 table {
-    border-spacing: 15px;
+    border-spacing: 10px;
     min-width: 100%;
 }
 

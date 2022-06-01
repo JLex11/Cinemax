@@ -78,10 +78,29 @@ class Pelicula
     public static function editar($idpelicula, $titulooriginal, $titulolatino, $foto, $lanzamiento, $duracion, $resena, $estado, $idtipo, $idpais)
     {
         include "../Connection/conexion.php";
-
-        $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
-
         $datos = array();
+
+        $sql = mysqli_query($cnn, "SELECT foto FROM pelicula WHERE idpelicula = '$idpelicula'");
+        $datos = mysqli_fetch_array($sql);
+        $issetFoto = $datos["foto"];
+        if (!empty($issetFoto)) {
+            unlink($issetFoto);
+        }
+
+        $titulooriginal = ucfirst(strtolower($titulooriginal));
+        $titulolatino = ucfirst(strtolower($titulolatino));
+        $resena = ucfirst(strtolower($resena));
+        $estado = ucfirst(strtolower($estado));
+
+        if (empty($foto)) {
+            $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
+        } else {
+            $codigo = date("His");
+            $foto = "../foto/pelicula/" . $codigo.$foto;
+            copy($_FILES["foto"]["tmp_name"], $foto);
+            $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
+        }
+
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
@@ -103,11 +122,11 @@ class Estadisticas
 
         if ($opc == '21') {
             $query = "SELECT\n"
-                . "idestadisticas AS 'id estadisticas',\n"
-                . "cantvistas AS vistas,\n"
-                . "cantlikes AS likes,\n"
-                . "cantcomentarios AS comentarios\n"
-                . "FROM estadisticas ORDER BY estado ASC";
+            . "idestadisticas AS 'id estadisticas',\n"
+            . "cantvistas AS vistas,\n"
+            . "cantlikes AS likes,\n"
+            . "cantcomentarios AS comentarios\n"
+            . "FROM estadisticas ORDER BY estado ASC";
         }
 
         $datos = array();
@@ -221,10 +240,25 @@ class Actor
     public static function editar($idactor, $nombre, $fechanacimiento, $descripcion, $foto, $estado)
     {
         include "../Connection/conexion.php";
-
-        $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE idactor = '$idactor'";
-
         $datos = array();
+        
+        $sql = mysqli_query($cnn, "SELECT foto FROM actor WHERE idactor = '$idactor'");
+        $datos = mysqli_fetch_array($sql);
+        $issetFoto = $datos["foto"];
+        if (!empty($issetFoto)) {
+            unlink($issetFoto);
+        }
+
+        $nombre = ucfirst(strtolower($nombre));
+        $descripcion = ucfirst(strtolower($descripcion));
+        $estado = ucfirst(strtolower($estado));
+
+        if (empty($foto)) {
+            $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE idactor = '$idactor'";
+        } else {
+            $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE idactor = '$idactor'";
+        }
+
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {

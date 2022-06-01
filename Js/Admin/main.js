@@ -34,6 +34,7 @@ function navInSections() {
 
     function sectionIsFocused() {
         return (entries) => {
+            console.log(entries);
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     if (firstExecute) {
@@ -408,6 +409,7 @@ class DataTable {
             }
             dFragment.appendChild(tr);
         });
+        this.tbody.innerHTML = "";
         this.tbody.appendChild(dFragment);
     }
 
@@ -498,20 +500,30 @@ class DataTable {
 
                         } else {
                             let nameCampo = this.headers[index - 1].replace(/ /, "");
-                            if (td.querySelector("input[type=file]" || nameCampo == 'foto')) {
+                            if (nameCampo == "foto") {
                                 let inputFileImg = td.querySelector("input[type=file]");
                                 let blobImg = new Blob(inputFileImg.files);
+
+                                let reader = new FileReader();
+                                reader.readAsDataURL(inputFileImg.files[0]);
+                                reader.addEventListener('load', (e) => {
+                                    td.innerHTML = `<img src="${e.currentTarget.result}">`;
+                                })
+
                                 formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
+
                             } else if (td.querySelector("select")) {
+
                                 let select = td.querySelector("select");
                                 let selectOption = select.options[select.selectedIndex];
                                 formDataEditados.append(nameCampo, selectOption.value);
                                 td.innerHTML = selectOption.text;
 
                             } else {
+
                                 formDataEditados.append(nameCampo, td.textContent);
                             }
-                            console.log(formDataEditados.get(nameCampo));
+
                             td.contentEditable = false;
                             td.classList.remove("editableOn");
                         }
