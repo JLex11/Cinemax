@@ -242,6 +242,9 @@ class Actor
         if (empty($foto)) {
             $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE idactor = '$idactor'";
         } else {
+            $codigo = date("His");
+            $foto = "../foto/actor/" . $codigo.$foto;
+            copy($_FILES["foto"]["tmp_name"], $foto);
             $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE idactor = '$idactor'";
         }
 
@@ -365,6 +368,9 @@ class Director
         if (empty($foto)) {
             $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE iddirector = '$iddirector'";
         } else {
+            $codigo = date("His");
+            $foto = "../foto/director/" . $codigo.$foto;
+            copy($_FILES["foto"]["tmp_name"], $foto);
             $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE iddirector = '$iddirector'";
         }
 

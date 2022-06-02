@@ -9,7 +9,8 @@
 }
 
 :root {
-    --Font-Principal: "Poppins", sans-serif;
+    --Font-Principal:
+        "Poppins", sans-serif;
     --background-light-color: #eceef9;
     --color-active: #ffffffb3;
     --color-blue: #0069bd;
@@ -17,7 +18,7 @@
     --color-red: #f44336;
     --color-dark: #37374d;
     --color-hover: #dccec882;
-    --color-white-semi-transparent: #fafafef7;
+    --color-white-semi-transparent: #fafafef5;
     --item-box-shadow: 0 5px 20px #00000039;
     --item-padding: 10px;
 }
@@ -45,6 +46,7 @@ div.loader {
     z-index: 100;
     display: flex;
 }
+
 .loader_hide {
     display: none;
     align-items: center;
@@ -62,6 +64,7 @@ div.loader {
     width: 80px;
     height: 80px;
 }
+
 .lds-ellipsis div {
     position: absolute;
     top: 33px;
@@ -72,42 +75,52 @@ div.loader {
     box-shadow: -1px 3px 5px rgba(0, 0, 0, 0.121);
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
 .lds-ellipsis div:nth-child(1) {
     left: 8px;
     animation: lds-ellipsis1 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(2) {
     left: 8px;
     animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(3) {
     left: 32px;
     animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(4) {
     left: 56px;
     animation: lds-ellipsis3 0.6s infinite;
 }
+
 @keyframes lds-ellipsis1 {
     0% {
         transform: scale(0);
     }
+
     100% {
         transform: scale(1);
     }
 }
+
 @keyframes lds-ellipsis3 {
     0% {
         transform: scale(1);
     }
+
     100% {
         transform: scale(0);
     }
 }
+
 @keyframes lds-ellipsis2 {
     0% {
         transform: translate(0, 0);
     }
+
     100% {
         transform: translate(24px, 0);
     }
@@ -171,8 +184,8 @@ nav {
     margin: 0 auto;
     padding: 6px;
     border-radius: 15px;
-    background: #ffffffe3;
-    box-shadow: 0 10px 20px #0000004a;
+    background: #ffffffa8;
+    box-shadow: 0 0 20px #0000004a;
     flex-direction: column;
 }
 
@@ -183,6 +196,7 @@ nav ul {
 }
 
 ul li {
+    padding: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,17 +216,16 @@ li:hover {
 .active_option {
     position: relative;
     border-radius: 10px;
-    padding: 2px;
-    background: #ffffff49;
-    box-shadow: 0 1px 5px #00000045, 0 0 3px #ffffff3a inset;
+    background: #ffffff;
+    box-shadow: 0 0 10px #00000047;
 }
 
 .active_option::before {
     content: "";
     position: absolute;
     bottom: -3px;
-    width: 40%;
-    height: 6px;
+    width: 50%;
+    height: 5px;
     border-radius: 5px;
     background: var(--color-blue);
 }
@@ -220,17 +233,21 @@ li:hover {
 .active_option img {
     animation: active_option 0.3s ease-in-out;
 }
+
 @keyframes active_option {
     0% {
         transform: scale(1.1);
     }
+
     50% {
         transform: scale(0.9);
     }
+
     100% {
         transform: scale(1);
     }
 }
+
 /* ---------------------------------- Main ---------------------------------- */
 main {
     display: flex;
@@ -252,9 +269,11 @@ main.section_focus_change {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(0.95);
     }
+
     100% {
         transform: scale(1);
     }
@@ -267,9 +286,11 @@ main::-webkit-scrollbar {
 h2 {
     font-weight: 300;
 }
+
 h3 {
     font-weight: 300;
 }
+
 /* -------------------------------- Sections -------------------------------- */
 
 section {
@@ -303,10 +324,9 @@ section {
 
 .container_header_items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 10px;
     width: 100%;
-    max-width: 900px;
 }
 
 .header_item {
@@ -328,11 +348,8 @@ section {
 }
 
 .header_item:hover {
-    bottom: 5px;
-    transform: scale(1.03);
     box-shadow: 0px 5px 35px #0000006f, -3px -3px 15px #fefefe2a inset;
     z-index: 2;
-    /* outline: 2px solid white; */
 }
 
 .header_item:nth-child(1) {
@@ -378,6 +395,7 @@ section {
 .header_item .body_element h5:first-child {
     font-size: 16pt;
 }
+
 .header_item h5:last-child {
     font-size: 9pt;
 }
@@ -423,6 +441,7 @@ section {
 
     gap: 10px;
 }
+
 /* ---------------------------------- Item ---------------------------------- */
 .item {
     display: inline-block;
@@ -431,10 +450,12 @@ section {
     background: var(--color-white-semi-transparent);
     box-shadow: var(--item-box-shadow);
     transition: box-shadow 0.5s ease, transform 0.3s;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
 }
 
 .item:hover {
-    transform: scale(1.03);
     box-shadow: 0px 10px 10px #0000004d;
     z-index: 2;
 }
@@ -538,11 +559,13 @@ section {
     height: 15px;
     animation: progressBar 0.9s forwards;
 }
+
 @keyframes progressBar {
     0% {
         width: 0%;
         opacity: 0;
     }
+
     100% {
         width: 100%;
         opacity: 1;
@@ -648,11 +671,13 @@ td {
     transition: background 0.3s;
     flex-direction: column-reverse;
 }
+
 td:first-child {
     position: relative;
     padding-left: 5px;
     border-radius: 10px 0 0 10px;
 }
+
 td:last-child {
     border-radius: 0 10px 10px 0;
 }
@@ -766,10 +791,12 @@ div.checkboxToButton::after {
     box-shadow: 0 5px 15px #00000019;
     border-radius: 50%;
 }
+
 .sub_container_buttons .btns .material-icons-sharp {
     transition: transform 0.3s;
     color: #202020;
 }
+
 .sub_container_buttons .btns:hover .material-icons-sharp {
     transform: scale(1.1);
     color: rgb(0, 0, 0);
@@ -784,6 +811,7 @@ div.checkboxToButton::after {
         transform: scale(0);
         filter: opacity(0);
     }
+
     100% {
         transform: scale(1);
         filter: opacity(1);
@@ -879,6 +907,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     color: white;
     background: #dcdcdd;
 }
+
 .container_form_act_btns button:first-child {
     background: #dcdcdd00;
 }
@@ -889,6 +918,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     color: white;
     box-shadow: 0 0 15px #7a7a7a;
 }
+
 .container_form_act_btns button:hover:last-child {
     outline: 2px solid #2196f3;
     box-shadow: 0 0 15px #888888;
@@ -942,6 +972,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     .section_subbody {
         padding: 5px;
     }
+
     /* ------------- Responsive Table ------------- */
     table thead {
         display: none;
@@ -974,7 +1005,8 @@ input.input_agregar_form:focus ~ .content_label > p {
     }
 
 
-    table tr td:first-child, table tr td:first-child::before {
+    table tr td:first-child,
+    table tr td:first-child::before {
         width: fit-content;
         border: 0;
     }

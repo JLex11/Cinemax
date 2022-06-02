@@ -1,5 +1,6 @@
 /* ------------ Navegacion por mainSections ------------- */
-let navOptions = document.querySelectorAll(".option");
+let navBar = document.querySelector("nav");
+let navOptions = document.querySelectorAll(".option img");
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
@@ -15,7 +16,7 @@ function navInSections() {
     GoToSection();
     const observer = new IntersectionObserver(sectionIsFocused(), { root: main, threshold: 0.1 });
     mainSections.forEach((section) => observer.observe(section));
-    
+
     function GoToSection() {
         let mainSectionsX = [];
         mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
@@ -23,18 +24,16 @@ function navInSections() {
             mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
         });
 
-        navOptions.forEach((op, index) => {
-            op.addEventListener("click", () => {
-                if (mainSectionsX[index] !== undefined) {
-                    main.scrollLeft = mainSectionsX[index];
-                }
-            });
+        let posElementClicked = [...navOptions];
+        navBar.addEventListener("click", (e) => {
+            if (mainSectionsX[posElementClicked.indexOf(e.target)] !== undefined) {
+                main.scrollLeft = mainSectionsX[posElementClicked.indexOf(e.target)];
+            }
         });
     }
 
     function sectionIsFocused() {
         return (entries) => {
-            console.log(entries);
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     if (firstExecute) {
@@ -72,8 +71,8 @@ function navInSections() {
                     indexSectionActiva = [...mainSections].indexOf(entry.target);
                     navOptions.forEach((op, index) => {
                         window.scrollTo({ top: 0 });
-                        if (index == indexSectionActiva) op.classList.add("active_option");
-                        else op.classList.remove("active_option");
+                        if (index == indexSectionActiva) op.parentNode.classList.add("active_option");
+                        else op.parentNode.classList.remove("active_option");
                     });
                 }
             });
@@ -157,7 +156,7 @@ class HeaderCards {
     makeCard() {
         this.renderIcon();
         this.renderBody();
-        
+
         this.headerItem.classList.add("header_item");
         this.hrefElement.appendChild(this.headerItem);
         this.hrefElement.href = "#" + this.id;
@@ -263,7 +262,7 @@ class DataTable {
         this.container_subsection.id = this.titulo;
 
         this.elementParent.appendChild(this.container_subsection);
-        console.log(this.titulo, this.describe);
+        /* console.log(this.titulo, this.describe); */
     }
 
     capitalizarString(string) {
@@ -396,7 +395,7 @@ class DataTable {
             let headersCont = 0;
             for (let i in t) {
                 let td = document.createElement("td");
-                td.setAttribute('data-label', `${this.capitalizarString(this.headers[headersCont])}`);
+                td.setAttribute("data-label", `${this.capitalizarString(this.headers[headersCont])}`);
 
                 if (t[i].indexOf("../foto") == 0) {
                     td.innerHTML = `
@@ -442,9 +441,9 @@ class DataTable {
     async updateRow(datos) {
         datos.append("opc", this.dbParametros.opcEditar);
         let response = this.peticionF(datos, this.dbParametros.url);
-        response.then(r => {
-            alert(r);
-        })
+        response.then((r) => {
+            /* alert(r); */
+        });
     }
 
     async deleteRow(id) {}
@@ -475,9 +474,11 @@ class DataTable {
     }
 
     async editarFilas(fila) {
+        let formDataEditados = new FormData();
+
         let filaEditar = document.getElementById(fila); //es el tr contenedor
         let fEHijos = filaEditar.querySelectorAll("td");
-        let formDataEditados = new FormData();
+
         fEHijos.forEach((hijo, index) => {
             if (index == 0) {
                 let checkboxLabel = hijo.querySelector("#custom_checkbox");
@@ -488,49 +489,50 @@ class DataTable {
                 input.value = "aceptar";
 
                 input.addEventListener("click",() => {
-                    let trParent = input.parentNode.parentNode;
-                    let tdHijos = trParent.querySelectorAll("td");
+                        let trParent = input.parentNode.parentNode;
+                        let tdHijos = trParent.querySelectorAll("td");
 
-                    tdHijos.forEach((td, index) => {
-                        if (index == 0) {
-                            checkboxLabel.classList.remove("checkboxToButton");
-                            input.type = "checkbox";
-                            input.value = "";
-                            input.checked = false;
-
-                        } else {
-                            let nameCampo = this.headers[index - 1].replace(/ /, "");
-                            if (nameCampo == "foto") {
-                                let inputFileImg = td.querySelector("input[type=file]");
-                                let blobImg = new Blob(inputFileImg.files);
-
-                                let reader = new FileReader();
-                                reader.readAsDataURL(inputFileImg.files[0]);
-                                reader.addEventListener('load', (e) => {
-                                    td.innerHTML = `<img src="${e.currentTarget.result}">`;
-                                })
-
-                                formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
-
-                            } else if (td.querySelector("select")) {
-
-                                let select = td.querySelector("select");
-                                let selectOption = select.options[select.selectedIndex];
-                                formDataEditados.append(nameCampo, selectOption.value);
-                                td.innerHTML = selectOption.text;
-
+                        tdHijos.forEach((td, index) => {
+                            if (index == 0) {
+                                checkboxLabel.classList.remove("checkboxToButton");
+                                input.type = "checkbox";
+                                input.value = "";
+                                input.checked = false;
                             } else {
+                                let nameCampo = this.headers[index - 1].replace(/ /, "");
+                                if (nameCampo == "foto") {
+                                    let inputFileImg = td.querySelector("input[type=file]");
+                                    if (inputFileImg.files[0]) {
 
-                                formDataEditados.append(nameCampo, td.textContent);
+                                        let blobImg = new Blob(inputFileImg.files);
+
+                                        let reader = new FileReader();
+                                        reader.readAsDataURL(inputFileImg.files[0]);
+                                        reader.addEventListener("load", (e) => {
+                                            td.innerHTML = `<img src="${e.currentTarget.result}">`;
+                                        });
+
+                                        formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
+                                    }
+
+                                    inputFileImg.remove();
+                                } else if (td.querySelector("select")) {
+                                    let select = td.querySelector("select");
+                                    let selectOption = select.options[select.selectedIndex];
+                                    formDataEditados.append(nameCampo, selectOption.value);
+                                    td.innerHTML = selectOption.text;
+                                } else {
+                                    formDataEditados.append(nameCampo, td.textContent);
+                                }
+
+                                td.contentEditable = false;
+                                td.classList.remove("editableOn");
                             }
-
-                            td.contentEditable = false;
-                            td.classList.remove("editableOn");
-                        }
-                    });
-                    this.updateRow(formDataEditados);
-
-                },{ once: true });
+                        });
+                        this.updateRow(formDataEditados);
+                    },
+                    { once: true }
+                );
             } else {
                 let nameCampo = this.headers[index - 1].replace(/ /, "");
                 let tableOfTd = this.tableFields[index - 1].table;
@@ -558,16 +560,14 @@ class DataTable {
                         select.appendChild(fragment);
                     };
                     renderSelect();
-
-                } else if (hijo.querySelector('img') || nameCampo == 'foto') {
-                    let image = hijo.querySelector('a img') ? hijo.querySelector('a') : hijo.querySelector('img');
-                    let div = document.createElement('div');
+                } else if (hijo.querySelector("img") || nameCampo == "foto") {
+                    let image = hijo.querySelector("a img") ? hijo.querySelector("a") : hijo.querySelector("img");
+                    let div = document.createElement("div");
                     /* div.appendChild(image); */
                     div.innerHTML += `
                     <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
                     hijo.append(div);
                     hijo.classList.add("editableOn");
-
                 } else {
                     hijo.contentEditable = true;
                     hijo.classList.add("editableOn");
