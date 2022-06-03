@@ -9,28 +9,27 @@
 }
 
 :root {
-    --Font-Principal:
-        "Poppins", sans-serif;
+    --item-border: 1px solid #cdcdcd;--Font-Principal:
+    "Poppins", sans-serif;
     --background-light-color: #eceef9;
     --color-active: #ffffffb3;
     --color-blue: #0069bd;
     --color-green: #51be55;
     --color-red: #f44336;
-    --color-dark: #37374d;
+    --color-dark: #3d3d50;
     --color-hover: #dccec882;
     --color-white-semi-transparent: #fafafef5;
-    --item-box-shadow: 0 5px 20px #00000039;
+    --item-box-shadow: 0 0 30px #00000014;
     --item-padding: 10px;
 }
 
 body {
-    background: url(/Cinemax/Images/yamato.webp);
+    /* background: rgb(252 252 252);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    background-position: center center;
+    background-position: center center; */
     font-family: var(--Font-Principal);
-    min-height: 100vh;
     padding-bottom: 60px;
     overflow-x: hidden;
 }
@@ -131,27 +130,17 @@ header {
     display: flex;
     position: sticky;
     top: 0;
-    top: 5px;
     z-index: 1000;
     font-family: var(--Font-Principal);
     flex-direction: row;
     align-items: center;
     background: transparent;
     justify-content: space-between;
-    border-radius: 10px;
-    transition: color, box-shadow, margin, background;
-    transition-duration: .3s;
-}
-
-header.header_fixedStyles {
-    color: white;
-    box-shadow: 0 0 10px #000000ab;
-    margin: 5px;
-    background: var(--color-blue);
+    background: white;
 }
 
 header h1 {
-    font-size: 16pt;
+    font-size: 18pt;
 }
 
 h1 {
@@ -193,8 +182,6 @@ nav {
     margin: 0 auto;
     padding: 6px;
     border-radius: 15px;
-    background: #ffffffbf;
-    box-shadow: 0 0 20px #0000004a;
     flex-direction: column;
 }
 
@@ -210,32 +197,40 @@ ul li {
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 1px #00000009, 0 0 0px #64646404;
-    transition: background 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    transition: transform .3s;
     cursor: pointer;
+    z-index: 1;
 }
 
 li img {
     width: 50px;
 }
 
+
 li:hover {
     filter: brightness(0.9);
+}
+
+li.option_active {
+    transform: scale(1.1) translateY(-3px);
+    z-index: 2;
 }
 
 .targetStyles {
     position: absolute;
     border-radius: 10px;
     background: #ffffff;
-    box-shadow: 0 0 9px #00000066;
+    box-shadow: 0 5px 15px #0000004a;
     padding: 3px;
-    transition: left .3s .2s;
+    transition: left .3s .2s, transform .5s cubic-bezier(0, 0.75, 1, 0.38);
     width: 50px;
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: content-box;
-    z-index: -1;
+    z-index: 1;
+    transform: scale(1.2) translateY(-4px);
 }
 
 .targetStyles::before {
@@ -249,6 +244,10 @@ li:hover {
     transition: width .3s .1s, margin .4s;
 }
 
+.targetOnMove {
+    transform: scale(0.9) translate(0);
+}
+
 .targetOnMove::before {
     width: 80%;
     margin: -100%;
@@ -256,6 +255,7 @@ li:hover {
 
 /* ---------------------------------- Main ---------------------------------- */
 main {
+    min-height: 100vh;
     display: flex;
     width: 100%;
     max-width: 1500px;
@@ -263,8 +263,8 @@ main {
     overflow-x: auto;
     flex-direction: row;
     flex-wrap: nowrap;
+    scroll-margin-top: 60px;
     scroll-snap-type: x mandatory;
-    scroll-margin-top: 0;
 }
 
 main.section_focus_change {
@@ -300,12 +300,12 @@ h3 {
 /* -------------------------------- Sections -------------------------------- */
 
 section {
-    position: relative;
+    /* position: relative; */
     max-width: 100%;
     min-width: 100%;
     padding: 0 20px 0 20px;
     scroll-snap-align: start;
-    scroll-padding-top: 40px;
+    scroll-padding-top: 60px;
 }
 
 .section_title {
@@ -326,6 +326,7 @@ section {
     display: flex;
     margin-bottom: 20px;
     justify-content: flex-start;
+    top: 40px;
 }
 
 .container_header_items {
@@ -354,7 +355,7 @@ section {
 }
 
 .header_item:hover {
-    box-shadow: 0px 5px 35px #0000006f, -3px -3px 15px #fefefe2a inset;
+    box-shadow: 0px 5px 15px #0000004a, -3px -3px 15px #fefefe42 inset;
     z-index: 2;
 }
 
@@ -421,9 +422,9 @@ section {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding-bottom: 5px;
-    border-bottom: 1px solid;
+    border-bottom: var(--item-border);
 }
 
 .section_subtitle div {
@@ -443,8 +444,7 @@ section {
 .container_items {
     display: grid;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 10px;
 }
 
@@ -462,7 +462,7 @@ section {
 }
 
 .item:hover {
-    box-shadow: 0px 10px 10px #0000004d;
+    box-shadow: 0px 10px 10px #00000030;
     z-index: 2;
 }
 
@@ -492,7 +492,7 @@ section {
 .foto_and_title {
     width: 100%;
     display: flex;
-    border-bottom: 1px solid;
+    border-bottom: var(--item-border);
     margin-bottom: 10px;
     justify-content: flex-start;
 }
@@ -507,7 +507,7 @@ section {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding-left: 10px;
+    /* padding-left: 10px; */
 }
 
 .info_item div:first-child {
@@ -515,7 +515,7 @@ section {
     align-items: center;
     justify-content: start;
     gap: 5px;
-    border-bottom: 1px solid;
+    border-bottom: var(--item-border);
 }
 
 .info_item > div:last-child {
@@ -623,6 +623,7 @@ section {
     border-radius: 20px;
     background: var(--color-white-semi-transparent);
     overflow: hidden;
+    border: var(--item-border);
     box-shadow: var(--item-box-shadow);
     align-items: center;
     flex-direction: column;
@@ -637,7 +638,7 @@ section {
 }
 
 table {
-    border-spacing: 5px 5px;
+    border-spacing: 20px 5px;
     min-width: 100%;
 }
 
@@ -776,16 +777,15 @@ div.checkboxToButton::after {
 /* ------------- Header Table Buttons Y Form ------------ */
 
 .container_buttons_and_form {
-    border-bottom: 1px solid;
+    border-bottom: var(--item-border);
     width: 100%;
-    margin: auto;
     height: fit-content;
     gap: 5px;
-    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
+    padding-bottom: 5px;
 }
 
 .sub_container_buttons {
@@ -795,7 +795,7 @@ div.checkboxToButton::after {
 .sub_container_buttons .btns {
     border-radius: 0;
     display: flex;
-    padding: 10px;
+    padding: 5px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -803,14 +803,9 @@ div.checkboxToButton::after {
     transition-duration: 0.3s;
 }
 
-.sub_container_buttons .btns:hover {
-    box-shadow: 0 5px 15px #00000019;
-    border-radius: 50%;
-}
-
 .sub_container_buttons .btns .material-icons-round {
-    transition: transform 0.3s;
-    color: #202020;
+    padding: 5px;
+    color: #bfbfbf;
 }
 
 .sub_container_buttons .btns:hover .material-icons-round {

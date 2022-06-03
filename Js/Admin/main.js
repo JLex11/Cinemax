@@ -27,11 +27,11 @@ function navInSections() {
 
         navBar.addEventListener("click", (e) => {
             let posElementClicked = [...navOptions].indexOf(e.target);
-            if (mainSectionsX[posElementClicked] !== undefined) {
+            if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
                 main.scrollLeft = mainSectionsX[posElementClicked];
+                moverTargetSpan(posElementClicked);
             }
             /* console.log((main.scrollLeft / targetSpan.clientWidth) * 4); */
-            moverTargetSpan(posElementClicked);
         });
     }
 
@@ -80,6 +80,11 @@ function navInSections() {
 }
 
 function moverTargetSpan(posicion) {
+    navOptions.forEach((option, index) => {
+        if (index == posicion) option.parentNode.classList.add('option_active');
+        else option.parentNode.classList.remove('option_active');
+    })
+
     targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
     targetSpan.classList.add('targetOnMove');
     setTimeout(() => {
@@ -92,14 +97,11 @@ headerAndButtonUp();
 
 function headerAndButtonUp() {
     let buttonUp = document.getElementById("button_up");
-    let header = document.getElementById("header");
     window.addEventListener("scroll", () => {
         if (document.documentElement.scrollTop >= 40) {
             buttonUp.classList.add("button_up_active");
-            header.classList.add("header_fixedStyles");
         } else {
             buttonUp.classList.remove("button_up_active");
-            header.classList.remove("header_fixedStyles");
         }
     });
 
@@ -521,6 +523,8 @@ class DataTable {
                                         formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
                                     }
 
+                                    let label = td.querySelector('label');
+                                    label.remove();
                                     inputFileImg.remove();
                                 } else if (td.querySelector("select")) {
                                     let select = td.querySelector("select");
@@ -647,7 +651,7 @@ async function consultarPeliculas() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "peliculas",
         titleIcon: "movie",
@@ -699,7 +703,7 @@ async function consultarPeliculas() {
         dbTables: dbTables,
     };
 
-    let contentsCard = await {
+    let contentsCard = {
         id: "Peliculas",
         icon: "movie",
         bodyElements: [
@@ -711,7 +715,7 @@ async function consultarPeliculas() {
     };
 
     let peliculasCard = new HeaderCards("chi2", contentsCard);
-    let tPeliculas = new DataTable(".data", await contents);
+    let tPeliculas = new DataTable(".data", contents);
     loader.classList.remove("loader");
 }
 
@@ -730,7 +734,7 @@ async function consultarEstadisticas() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "estadisticas",
         titleIcon: "bar_chart",
@@ -782,7 +786,7 @@ async function consultarEstadisticas() {
         dbTables: dbTables,
     };
 
-    let contentsCard = await {
+    let contentsCard = {
         id: "Estadisticas",
         icon: "bar_chart",
         bodyElements: [
@@ -794,7 +798,7 @@ async function consultarEstadisticas() {
     };
 
     let estadisticasCard = new HeaderCards("chi2", contentsCard);
-    let tEstadisticas = new DataTable(".data", await contents);
+    let tEstadisticas = new DataTable(".data", contents);
     loader.classList.remove("loader");
 }
 
@@ -813,7 +817,7 @@ async function consultarActores() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "actores",
         titleIcon: "groups",
@@ -865,7 +869,7 @@ async function consultarActores() {
         dbTables: dbTables,
     };
 
-    let contentsCard = await {
+    let contentsCard = {
         id: "Actores",
         icon: "groups",
         bodyElements: [
@@ -877,7 +881,7 @@ async function consultarActores() {
     };
 
     let actoresCard = new HeaderCards("chi2", contentsCard);
-    let tActores = new DataTable(".data", await contents);
+    let tActores = new DataTable(".data", contents);
     loader.classList.remove("loader");
 }
 
@@ -896,7 +900,7 @@ async function consultarDirectores() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "directores",
         titleIcon: "people",
@@ -948,7 +952,7 @@ async function consultarDirectores() {
         dbTables: dbTables,
     };
 
-    let contentsCard = await {
+    let contentsCard = {
         id: "Directores",
         icon: "people",
         bodyElements: [
@@ -960,7 +964,7 @@ async function consultarDirectores() {
     };
 
     let directoresCard = new HeaderCards("chi2", contentsCard);
-    let tDirectores = new DataTable(".data", await contents);
+    let tDirectores = new DataTable(".data", contents);
     loader.classList.remove("loader");
 }
 
@@ -979,7 +983,7 @@ async function consultarGeneros() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "generos",
         titleIcon: "theaters",
@@ -1031,7 +1035,7 @@ async function consultarGeneros() {
         dbTables: dbTables,
     };
 
-    let contentsCard = await {
+    let contentsCard = {
         id: "Generos",
         icon: "theaters",
         bodyElements: [
@@ -1043,7 +1047,7 @@ async function consultarGeneros() {
     };
 
     let generosCard = new HeaderCards("chi2", contentsCard);
-    let tGeneros = new DataTable(".data", await contents);
+    let tGeneros = new DataTable(".data", contents);
     loader.classList.remove("loader");
 }
 
@@ -1062,7 +1066,7 @@ async function consultarUsuarios() {
     parametros.append("opc", tableOpcInfo.opc);
     let response = await peticionFetch(parametros, mFacadeUrl);
 
-    let contents = await {
+    let contents = {
         name: nameTable,
         titulo: "usuarios",
         titleIcon: "theaters",
@@ -1114,6 +1118,6 @@ async function consultarUsuarios() {
         dbTables: dbTables,
     };
 
-    let tUsuarios = new DataTable(".user_data", await contents);
+    let tUsuarios = new DataTable(".user_data", contents);
     loader_users.classList.remove("loader");
 }
