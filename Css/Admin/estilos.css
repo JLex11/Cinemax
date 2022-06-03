@@ -35,7 +35,7 @@ body {
     overflow-x: hidden;
 }
 
-.material-icons-sharp {
+.material-icons-round {
     user-select: none;
     -webkit-user-select: none;
 }
@@ -370,7 +370,7 @@ section {
     background: linear-gradient(to right, #912222, #c62e23);
 }
 
-.header_item span.material-icons-sharp {
+.header_item span.material-icons-round {
     text-shadow: -2px 3px 4px rgba(0, 0, 0, 0.292);
     font-size: 40pt;
 }
@@ -637,7 +637,7 @@ section {
 }
 
 table {
-    border-spacing: 10px;
+    border-spacing: 5px 5px;
     min-width: 100%;
 }
 
@@ -669,7 +669,7 @@ td.editableOn:focus {
 td {
     vertical-align: middle;
     display: table-cell;
-    max-width: 250px;
+    max-width: 100px;
     font-size: 12pt;
     font-weight: 300;
     overflow: hidden;
@@ -688,9 +688,18 @@ td:last-child {
     border-radius: 0 10px 10px 0;
 }
 
-td input {
-    border: 0;
-    background: transparent;
+.container_foto_inputFile input {
+    display: none;
+}
+
+.inputFile_custom span.material-icons-round {
+    font-size: 26pt;
+    cursor: pointer;
+}
+
+.inputFile_custom:hover span.material-icons-round {
+    color: #2c2c2c;
+    transform: scale(0.95);
 }
 
 tbody td div {
@@ -699,13 +708,14 @@ tbody td div {
     align-items: center;
 }
 
+tbody td a {
+    display: flex;
+}
+
 tbody td img {
-    min-width: 35px;
-    min-height: 35px;
     width: 35px;
     height: 35px;
     object-fit: cover;
-    border-radius: 50%;
 }
 
 .table_check {
@@ -798,12 +808,12 @@ div.checkboxToButton::after {
     border-radius: 50%;
 }
 
-.sub_container_buttons .btns .material-icons-sharp {
+.sub_container_buttons .btns .material-icons-round {
     transition: transform 0.3s;
     color: #202020;
 }
 
-.sub_container_buttons .btns:hover .material-icons-sharp {
+.sub_container_buttons .btns:hover .material-icons-round {
     transform: scale(1.1);
     color: rgb(0, 0, 0);
 }
@@ -946,7 +956,7 @@ input.input_agregar_form:focus ~ .content_label > p {
         padding: 10px;
     }
 
-    div#chi2 .header_item span.material-icons-sharp {
+    div#chi2 .header_item span.material-icons-round {
         font-size: 25pt;
     }
 

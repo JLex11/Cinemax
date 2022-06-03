@@ -170,7 +170,7 @@ class HeaderCards {
 
     renderIcon() {
         let spanIcon = document.createElement("span");
-        spanIcon.classList.add("material-icons-sharp");
+        spanIcon.classList.add("material-icons-round");
         spanIcon.innerText = this.icon;
         this.headerItem.appendChild(spanIcon);
     }
@@ -279,7 +279,7 @@ class DataTable {
         <div class="section_subtitle">
             <h2>${this.titulo}</h2>
             <div>
-                <span class="material-icons-sharp">${this.titleIcon}</span>
+                <span class="material-icons-round">${this.titleIcon}</span>
                 <h2 class="contRows">${this.cantRows}</h2>
             </div>
         </div>
@@ -290,7 +290,7 @@ class DataTable {
         let fragment = document.createDocumentFragment();
         this.buttons.forEach((button) => {
             let divBtn = document.createElement("div");
-            divBtn.innerHTML = `<span class="material-icons-sharp">${button.icon}</span>`;
+            divBtn.innerHTML = `<span class="material-icons-round">${button.icon}</span>`;
             divBtn.id = button.id;
             divBtn.classList.add("btns");
             divBtn.addEventListener("click", button.action);
@@ -311,7 +311,7 @@ class DataTable {
         function crearBtnCerrar() {
             let btnCerrarForm = document.createElement("button");
             btnCerrarForm.classList.add("btn_form_cerrar");
-            btnCerrarForm.innerHTML = `<span class="material-icons-sharp">close</span>`;
+            btnCerrarForm.innerHTML = `<span class="material-icons-round">close</span>`;
             btnCerrarForm.addEventListener("click", (e) => {
                 e.preventDefault();
                 let sub_container_form = actBtns.parentNode.parentNode;
@@ -322,7 +322,7 @@ class DataTable {
         function crearBtnEnviar() {
             let btnEnviarForm = document.createElement("button");
             btnEnviarForm.classList.add("btn_form_enviar");
-            btnEnviarForm.innerHTML = `<span class="material-icons-sharp">send</span>`;
+            btnEnviarForm.innerHTML = `<span class="material-icons-round">send</span>`;
             btnEnviarForm.addEventListener("click", (e) => {
                 e.preventDefault();
                 let form = actBtns.parentNode;
@@ -493,6 +493,7 @@ class DataTable {
                 input.type = "button";
                 input.value = "aceptar";
 
+                //Cuando se hace click en el boton aceptar
                 input.addEventListener("click",() => {
                         let trParent = input.parentNode.parentNode;
                         let tdHijos = trParent.querySelectorAll("td");
@@ -538,7 +539,9 @@ class DataTable {
                     },
                     { once: true }
                 );
+
             } else {
+                //Activar la edicion de los campos
                 let nameCampo = this.headers[index - 1].replace(/ /, "");
                 let tableOfTd = this.tableFields[index - 1].table;
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
@@ -567,10 +570,21 @@ class DataTable {
                     renderSelect();
                 } else if (hijo.querySelector("img") || nameCampo == "foto") {
                     let image = hijo.querySelector("a img") ? hijo.querySelector("a") : hijo.querySelector("img");
+
                     let div = document.createElement("div");
-                    /* div.appendChild(image); */
+                    div.classList.add('container_foto_inputFile');
+
+                    if (image) div.appendChild(image);
+                    else div.innerHTML = `<img>`;
+
+                    let ramdomId = Math.round(Math.random(1) * 100);
                     div.innerHTML += `
-                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
+                    <label for="${ramdomId}-${this.titulo}">
+                        <div class="inputFile_custom">
+                            <span class="material-icons-round">add_photo_alternate</span>
+                        </div>
+                    </label>
+                    <input id="${ramdomId}-${this.titulo}" type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
                     hijo.append(div);
                     hijo.classList.add("editableOn");
                 } else {
