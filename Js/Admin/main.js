@@ -1,6 +1,7 @@
 /* ------------ Navegacion por mainSections ------------- */
 let navBar = document.querySelector("nav");
 let navOptions = document.querySelectorAll(".option img");
+let targetSpan = navBar.querySelector('.targetStyles');
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 
@@ -24,11 +25,13 @@ function navInSections() {
             mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
         });
 
-        let posElementClicked = [...navOptions];
         navBar.addEventListener("click", (e) => {
-            if (mainSectionsX[posElementClicked.indexOf(e.target)] !== undefined) {
-                main.scrollLeft = mainSectionsX[posElementClicked.indexOf(e.target)];
+            let posElementClicked = [...navOptions].indexOf(e.target);
+            if (mainSectionsX[posElementClicked] !== undefined) {
+                main.scrollLeft = mainSectionsX[posElementClicked];
             }
+            /* console.log((main.scrollLeft / targetSpan.clientWidth) * 4); */
+            moverTargetSpan(posElementClicked);
         });
     }
 
@@ -36,6 +39,8 @@ function navInSections() {
         return (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
+                    indexSectionActiva = [...mainSections].indexOf(entry.target);
+
                     if (firstExecute) {
                         main.classList.add("section_focus_change");
                         setTimeout(() => {
@@ -43,7 +48,7 @@ function navInSections() {
                         }, 500);
                     } else firstExecute = true;
 
-                    stylizedNavOption();
+                    moverTargetSpan(indexSectionActiva);
 
                     if (entry.target.id == "users_section") {
                         if (!fEjecutadaUsers) {
@@ -67,19 +72,19 @@ function navInSections() {
                     } else loader.classList.remove("loader");
                 }
 
-                function stylizedNavOption() {
-                    indexSectionActiva = [...mainSections].indexOf(entry.target);
-                    navOptions.forEach((op, index) => {
-                        window.scrollTo({ top: 0 });
-                        if (index == indexSectionActiva) op.parentNode.classList.add("active_option");
-                        else op.parentNode.classList.remove("active_option");
-                    });
-                }
             });
         };
     }
 
     return { loader, loader_users };
+}
+
+function moverTargetSpan(posicion) {
+    targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
+    targetSpan.classList.add('targetOnMove');
+    setTimeout(() => {
+        targetSpan.classList.remove('targetOnMove');
+    }, 300); 
 }
 
 /* ------------ Header y Button Up ------------- */
@@ -90,11 +95,11 @@ function headerAndButtonUp() {
     let header = document.getElementById("header");
     window.addEventListener("scroll", () => {
         if (document.documentElement.scrollTop >= 40) {
-            header.style.backgroundColor = "white";
             buttonUp.classList.add("button_up_active");
+            header.classList.add("header_fixedStyles");
         } else {
-            header.style.backgroundColor = "transparent";
             buttonUp.classList.remove("button_up_active");
+            header.classList.remove("header_fixedStyles");
         }
     });
 
@@ -309,8 +314,8 @@ class DataTable {
             btnCerrarForm.innerHTML = `<span class="material-icons-sharp">close</span>`;
             btnCerrarForm.addEventListener("click", (e) => {
                 e.preventDefault();
-                let form = actBtns.parentNode;
-                form.remove();
+                let sub_container_form = actBtns.parentNode.parentNode;
+                sub_container_form.remove();
             });
             actBtns.appendChild(btnCerrarForm);
         }

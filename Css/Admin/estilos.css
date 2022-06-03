@@ -30,7 +30,6 @@ body {
     background-attachment: fixed;
     background-position: center center;
     font-family: var(--Font-Principal);
-    text-rendering: optimizeSpeed;
     min-height: 100vh;
     padding-bottom: 60px;
     overflow-x: hidden;
@@ -128,46 +127,56 @@ div.loader {
 
 /* --------------------------------- Header --------------------------------- */
 header {
+    padding: 0 10px;
     display: flex;
     position: sticky;
     top: 0;
+    top: 5px;
     z-index: 1000;
     font-family: var(--Font-Principal);
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    background: transparent;
+    justify-content: space-between;
+    border-radius: 10px;
+    transition: color, box-shadow, margin, background;
+    transition-duration: .3s;
+}
+
+header.header_fixedStyles {
+    color: white;
+    box-shadow: 0 0 10px #000000ab;
+    margin: 5px;
+    background: var(--color-blue);
+}
+
+header h1 {
+    font-size: 16pt;
 }
 
 h1 {
-    color: var(--color-dark);
     font-weight: 300;
     font-size: 20pt;
 }
 
 /* -------------------- Button Up ------------------- */
-.button_up_active span.material-icons-sharp {
-    font-size: 30pt;
+div.button_up_active {
+    transform: scale(1);
 }
 
 .button_up {
     display: flex;
-    position: fixed;
-    top: 50px;
-    right: 1%;
-    border-radius: 50%;
-    box-shadow: 0 5px 15px #0000005e;
-    color: white;
-    background: var(--color-blue);
     cursor: pointer;
-    z-index: 100;
+    transform: scale(0);
 }
 
-.button_up .material-icons-sharp {
-    font-size: 0;
-    transition: font-size 0.3s;
+.button_up span {
+    font-size: 25pt;
+    transition: transform .3s;
 }
 
-.button_up:hover {
-    outline: 2px solid white;
+.button_up:hover span {
+    transform: translateY(5px);
 }
 
 /* ----------------------------------- Nav ---------------------------------- */
@@ -184,7 +193,7 @@ nav {
     margin: 0 auto;
     padding: 6px;
     border-radius: 15px;
-    background: #ffffffa8;
+    background: #ffffffbf;
     box-shadow: 0 0 20px #0000004a;
     flex-direction: column;
 }
@@ -192,7 +201,7 @@ nav {
 nav ul {
     width: 100%;
     display: flex;
-    gap: 3px;
+    position: relative;
 }
 
 ul li {
@@ -213,14 +222,23 @@ li:hover {
     filter: brightness(0.9);
 }
 
-.active_option {
-    position: relative;
+.targetStyles {
+    position: absolute;
     border-radius: 10px;
     background: #ffffff;
-    box-shadow: 0 0 10px #00000047;
+    box-shadow: 0 0 9px #00000066;
+    padding: 3px;
+    transition: left .3s .2s;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
+    z-index: -1;
 }
 
-.active_option::before {
+.targetStyles::before {
     content: "";
     position: absolute;
     bottom: -3px;
@@ -228,24 +246,12 @@ li:hover {
     height: 5px;
     border-radius: 5px;
     background: var(--color-blue);
+    transition: width .3s .1s, margin .4s;
 }
 
-.active_option img {
-    animation: active_option 0.3s ease-in-out;
-}
-
-@keyframes active_option {
-    0% {
-        transform: scale(1.1);
-    }
-
-    50% {
-        transform: scale(0.9);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+.targetOnMove::before {
+    width: 80%;
+    margin: -100%;
 }
 
 /* ---------------------------------- Main ---------------------------------- */
@@ -253,7 +259,7 @@ main {
     display: flex;
     width: 100%;
     max-width: 1500px;
-    margin: 0 auto;
+    margin: 10px auto;
     overflow-x: auto;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -295,7 +301,7 @@ h3 {
 
 section {
     position: relative;
-    width: 100%;
+    max-width: 100%;
     min-width: 100%;
     padding: 0 20px 0 20px;
     scroll-snap-align: start;
@@ -808,12 +814,12 @@ div.checkboxToButton::after {
 
 @keyframes aparecerForm {
     0% {
-        transform: scale(0);
+        transform: scale(1, 0);
         filter: opacity(0);
     }
 
     100% {
-        transform: scale(1);
+        transform: scale(1, 1);
         filter: opacity(1);
     }
 }
