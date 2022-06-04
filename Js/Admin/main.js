@@ -8,16 +8,12 @@ let posElementClicked = 0;
 
 var { loader, loader_users } = navInSections();
 function navInSections() {
-    let indexSectionActiva;
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
-    let firstExecute = false;
     var loader = document.getElementById("loader");
     var loader_users = document.getElementById("loader_users");
 
     GoToSection();
-    /* const observer = new IntersectionObserver(sectionIsFocused(), { root: main, threshold: 0.1 });
-    mainSections.forEach((section) => observer.observe(section)); */
 
     function GoToSection() {
         let mainSectionsX = [];
@@ -26,11 +22,36 @@ function navInSections() {
         navBar.addEventListener("click", (e) => {
             posElementClicked = [...navOptions].indexOf(e.target);
             if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
-                main.scrollLeft = mainSectionsX[posElementClicked];
+                moverMainScroll();
                 moverTargetSpan(posElementClicked);
                 consultasADb(posElementClicked);
             }
         });
+
+        function moverMainScroll() {
+            main.scrollLeft = mainSectionsX[posElementClicked];
+            main.classList.add('section_focus_change');
+            setTimeout(() => {
+                main.classList.remove('section_focus_change');
+            }, 500);
+        }
+
+        function moverTargetSpan(posicion) {
+            navOptions.forEach((option, index) => {
+                if (index == posicion) option.parentNode.classList.add("option_active");
+                else option.parentNode.classList.remove("option_active");
+            });
+        
+            targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
+            targetSpan.classList.add("targetOnMove");
+            setTimeout(() => {
+                targetSpan.classList.remove("targetOnMove");
+            }, 300);
+        
+            window.scrollTo({
+                top: 0,
+            });
+        }
 
         function consultasADb(position) {
             if (position == 1) {
@@ -56,67 +77,7 @@ function navInSections() {
         }
     }
 
-    /* function sectionIsFocused() {
-        return (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    indexSectionActiva = [...mainSections].indexOf(entry.target);
-
-                    if (firstExecute) {
-                        main.classList.add("section_focus_change");
-                        setTimeout(() => {
-                            main.classList.remove("section_focus_change");
-                        }, 500);
-                    } else firstExecute = true;
-                    
-                    if (posElementClicked != indexSectionActiva) {
-                    } else {
-                        moverTargetSpan(indexSectionActiva);
-                    }
-
-                    if (entry.target.id == "users_section") {
-                        if (!fEjecutadaUsers) {
-                            loader_users.classList.add("loader");
-                            consultarUsuarios();
-                            fEjecutadaUsers = true;
-                        }
-                    } else loader_users.classList.remove("loader");
-
-                    if (entry.target.id == "data_section") {
-                        if (!fEjecutadaData) {
-                            loader.classList.add("loader");
-                            consultarPeliculas();
-                            consultarActores();
-                            consultarDirectores();
-                            consultarGeneros();
-                            consultarEstadisticas();
-                            //se desactiva el loader desde una de las funciones
-                            fEjecutadaData = true;
-                        }
-                    } else loader.classList.remove("loader");
-                }
-            });
-        };
-    } */
-
     return { loader, loader_users };
-}
-
-function moverTargetSpan(posicion) {
-    navOptions.forEach((option, index) => {
-        if (index == posicion) option.parentNode.classList.add("option_active");
-        else option.parentNode.classList.remove("option_active");
-    });
-
-    targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
-    targetSpan.classList.add("targetOnMove");
-    setTimeout(() => {
-        targetSpan.classList.remove("targetOnMove");
-    }, 300);
-
-    window.scrollTo({
-        top: 0,
-    });
 }
 
 /* ------------ Header y Button Up ------------- */
