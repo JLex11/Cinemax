@@ -16,19 +16,14 @@
     --color-blue: #0069bd;
     --color-green: #51be55;
     --color-red: #f44336;
-    --color-dark: #3d3d50;
+    --color-dark: #2c2c2e;
     --color-hover: #dccec882;
-    --color-white-semi-transparent: #fafafef5;
-    --item-box-shadow: 0 0 30px #00000014;
+    --color-white-semi-transparent: #fafafefc;
+    --item-box-shadow: 0 0 30px #00000029;
     --item-padding: 10px;
 }
 
 body {
-    /* background: rgb(252 252 252);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center center; */
     font-family: var(--Font-Principal);
     padding-bottom: 60px;
     overflow-x: hidden;
@@ -134,7 +129,6 @@ header {
     font-family: var(--Font-Principal);
     flex-direction: row;
     align-items: center;
-    background: transparent;
     justify-content: space-between;
     background: white;
 }
@@ -230,7 +224,7 @@ li.option_active {
     align-items: center;
     box-sizing: content-box;
     z-index: 1;
-    transform: scale(1.2) translateY(-4px);
+    transform: scale(1.1) translateY(-4px);
 }
 
 .targetStyles::before {
@@ -260,11 +254,9 @@ main {
     width: 100%;
     max-width: 1500px;
     margin: 10px auto;
-    overflow-x: auto;
+    overflow-x: hidden;
     flex-direction: row;
     flex-wrap: nowrap;
-    scroll-margin-top: 60px;
-    scroll-snap-type: x mandatory;
 }
 
 main.section_focus_change {
@@ -290,22 +282,21 @@ main::-webkit-scrollbar {
 }
 
 h2 {
-    font-weight: 300;
+    font-weight: 200;
 }
 
 h3 {
-    font-weight: 300;
+    font-weight: 200;
 }
 
 /* -------------------------------- Sections -------------------------------- */
 
 section {
-    /* position: relative; */
     max-width: 100%;
+    position: relative;
     min-width: 100%;
     padding: 0 20px 0 20px;
-    scroll-snap-align: start;
-    scroll-padding-top: 60px;
+    /* scroll-padding-top: 60px; */
 }
 
 .section_title {
@@ -331,7 +322,7 @@ section {
 
 .container_header_items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px;
     width: 100%;
 }
@@ -418,12 +409,12 @@ section {
 }
 
 .section_subtitle {
+    font-size: 10pt;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 10px;
-    padding-bottom: 5px;
     border-bottom: var(--item-border);
 }
 
@@ -623,7 +614,7 @@ section {
     border-radius: 20px;
     background: var(--color-white-semi-transparent);
     overflow: hidden;
-    border: var(--item-border);
+    /* border: var(--item-border); */
     box-shadow: var(--item-box-shadow);
     align-items: center;
     flex-direction: column;
@@ -632,13 +623,13 @@ section {
 .container_table {
     max-height: 500px;
     width: 100%;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     border-radius: 10px;
     overflow: auto;
 }
 
 table {
-    border-spacing: 20px 5px;
+    border-spacing: 10px 5px;
     min-width: 100%;
 }
 
@@ -799,13 +790,10 @@ div.checkboxToButton::after {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition-property: border-radius, background;
-    transition-duration: 0.3s;
 }
 
 .sub_container_buttons .btns .material-icons-round {
     padding: 5px;
-    color: #bfbfbf;
 }
 
 .sub_container_buttons .btns:hover .material-icons-round {
@@ -924,23 +912,67 @@ input.input_agregar_form:focus ~ .content_label > p {
 }
 
 .container_form_act_btns button:hover:first-child {
-    outline: 2px solid #ffffff;
     background: red;
     color: white;
-    box-shadow: 0 0 15px #7a7a7a;
+    box-shadow: 0 0 15px #ff0000;
 }
 
 .container_form_act_btns button:hover:last-child {
     outline: 2px solid #2196f3;
-    box-shadow: 0 0 15px #888888;
+    box-shadow: 0 0 15px #2196f3;
+}
+
+/* ------------ Prefer Color Scheme ----------- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-dark-mode: #1b1b1b;
+        --border-item-dark: 1px solid #5f5f5f;
+    }
+
+    body {
+        background: var(--bg-dark-mode);
+        color: #efefef;
+    }
+
+    header {
+        background: var(--color-dark);
+    }
+
+    .item {
+        background: var(--color-dark);
+    }
+
+    .info_item div:first-child, .foto_and_title, .container_buttons_and_form, .section_subtitle {
+        border-bottom: var(--border-item-dark);
+    }
+
+    .targetStyles {
+        background: #3b3b3b;
+    }
+
+    .targetStyles::before {
+        background: #fcfcfc;
+    }
+
+    .section_subbody {
+        background: var(--color-dark);
+    }
+
+    .sub_container_buttons .btns:hover .material-icons-round {
+        color: gray;
+    }
+
+    .custom_checkbox {
+        background: #1b1b1b;
+    }
+
+    .custom_checkbox::after {
+        background: #6d6d6d;
+    }
 }
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */
 @media screen and (max-width: 500px) {
-    main {
-        scroll-snap-type: x proximity;
-    }
-
     div#chi2 {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
@@ -983,55 +1015,4 @@ input.input_agregar_form:focus ~ .content_label > p {
     .section_subbody {
         padding: 5px;
     }
-
-    /* ------------- Responsive Table ------------- */
-    table thead {
-        display: none;
-    }
-
-    table tbody {
-        display: flex;
-    }
-
-    table tr {
-        box-shadow: 0 0 10px #00000021;
-        gap: 5px;
-        padding: 5px;
-        border-radius: 10px;
-        width: 350px;
-        max-height: 400px;
-        margin-right: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        position: relative;
-        overflow: auto;
-    }
-
-    table tr td {
-        width: 50%;
-        min-height: 35px;
-        text-align: right;
-        white-space: initial;
-    }
-
-
-    table tr td:first-child,
-    table tr td:first-child::before {
-        width: fit-content;
-        border: 0;
-    }
-
-    table tr td:last-child {
-        border-radius: 0;
-    }
-
-    table tr td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 5px;
-        width: 50%;
-        text-align: left;
-    }
-
 }

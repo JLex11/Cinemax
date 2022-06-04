@@ -4,6 +4,7 @@ let navOptions = document.querySelectorAll(".option img");
 let targetSpan = navBar.querySelector('.targetStyles');
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
+let posElementClicked = 0;
 
 var { loader, loader_users } = navInSections();
 function navInSections() {
@@ -15,27 +16,47 @@ function navInSections() {
     var loader_users = document.getElementById("loader_users");
 
     GoToSection();
-    const observer = new IntersectionObserver(sectionIsFocused(), { root: main, threshold: 0.1 });
-    mainSections.forEach((section) => observer.observe(section));
+    /* const observer = new IntersectionObserver(sectionIsFocused(), { root: main, threshold: 0.1 });
+    mainSections.forEach((section) => observer.observe(section)); */
 
     function GoToSection() {
         let mainSectionsX = [];
         mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
-        window.addEventListener("resize", () => {
-            mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
-        });
 
         navBar.addEventListener("click", (e) => {
-            let posElementClicked = [...navOptions].indexOf(e.target);
+            posElementClicked = [...navOptions].indexOf(e.target);
             if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
                 main.scrollLeft = mainSectionsX[posElementClicked];
                 moverTargetSpan(posElementClicked);
+                consultasADb(posElementClicked);
             }
-            /* console.log((main.scrollLeft / targetSpan.clientWidth) * 4); */
         });
+
+        function consultasADb(position) {
+            if (position == 1) {
+                if (!fEjecutadaUsers) {
+                    loader_users.classList.add("loader");
+                    consultarUsuarios();
+                    fEjecutadaUsers = true;
+                }
+            }
+                
+            if (position == 2) {
+                if (!fEjecutadaData) {
+                    loader.classList.add("loader");
+                    consultarPeliculas();
+                    consultarActores();
+                    consultarDirectores();
+                    consultarGeneros();
+                    consultarEstadisticas();
+                    //se desactiva el loader desde una de las funciones
+                    fEjecutadaData = true;
+                }
+            }
+        }
     }
 
-    function sectionIsFocused() {
+    /* function sectionIsFocused() {
         return (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -47,8 +68,11 @@ function navInSections() {
                             main.classList.remove("section_focus_change");
                         }, 500);
                     } else firstExecute = true;
-
-                    moverTargetSpan(indexSectionActiva);
+                    
+                    if (posElementClicked != indexSectionActiva) {
+                    } else {
+                        moverTargetSpan(indexSectionActiva);
+                    }
 
                     if (entry.target.id == "users_section") {
                         if (!fEjecutadaUsers) {
@@ -71,44 +95,43 @@ function navInSections() {
                         }
                     } else loader.classList.remove("loader");
                 }
-
             });
         };
-    }
+    } */
 
     return { loader, loader_users };
 }
 
 function moverTargetSpan(posicion) {
     navOptions.forEach((option, index) => {
-        if (index == posicion) option.parentNode.classList.add('option_active');
-        else option.parentNode.classList.remove('option_active');
-    })
+        if (index == posicion) option.parentNode.classList.add("option_active");
+        else option.parentNode.classList.remove("option_active");
+    });
 
     targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
-    targetSpan.classList.add('targetOnMove');
+    targetSpan.classList.add("targetOnMove");
     setTimeout(() => {
-        targetSpan.classList.remove('targetOnMove');
-    }, 300); 
+        targetSpan.classList.remove("targetOnMove");
+    }, 300);
+
+    window.scrollTo({
+        top: 0,
+    });
 }
 
 /* ------------ Header y Button Up ------------- */
-headerAndButtonUp();
+let buttonUp = document.getElementById("button_up");
+window.addEventListener("scroll", () => {
+    if (document.documentElement.scrollTop >= 40) {
+        buttonUp.classList.add("button_up_active");
+    } else {
+        buttonUp.classList.remove("button_up_active");
+    }
+});
 
-function headerAndButtonUp() {
-    let buttonUp = document.getElementById("button_up");
-    window.addEventListener("scroll", () => {
-        if (document.documentElement.scrollTop >= 40) {
-            buttonUp.classList.add("button_up_active");
-        } else {
-            buttonUp.classList.remove("button_up_active");
-        }
-    });
-
-    buttonUp.addEventListener("click", () => {
-        window.scrollTo({ top: 0 });
-    });
-}
+buttonUp.addEventListener("click", () => {
+    window.scrollTo({ top: 0 });
+});
 
 /* -------------------- Grafico --------------- */
 /* function crearGrafico(contenedor, labels, parametros, valores) {
@@ -195,7 +218,6 @@ class HeaderCards {
         this.headerItem.appendChild(this.containerBody);
     }
 }
-
 /* ---------------------- Datatable --------------------- */
 class DataTable {
     elementParent;
