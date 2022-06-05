@@ -483,10 +483,8 @@ class DataTable {
 
     async deleteRow(id) {
         let datos = new FormData();
-        datos.append("idpelicula", id);
+        datos.append("campo", id);
         datos.append("opc", this.dbParametros.opcEliminar);
-        datos.get("idpelicula");
-        datos.get("opc");
         let response = this.peticionF(datos, this.dbParametros.url);
         response.then((r) => {
             alert(r);
@@ -816,7 +814,7 @@ async function consultarEstadisticas() {
                     let checkBox = tEstadisticas.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tEstadisticas.eliminarFilas(fila);
                         }
                     });
@@ -899,7 +897,7 @@ async function consultarActores() {
                     let checkBox = tActores.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tActores.eliminarFilas(fila);
                         }
                     });
@@ -982,7 +980,7 @@ async function consultarDirectores() {
                     let checkBox = tDirectores.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tDirectores.eliminarFilas(fila);
                         }
                     });
@@ -1065,7 +1063,7 @@ async function consultarGeneros() {
                     let checkBox = tGeneros.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tGeneros.eliminarFilas(fila);
                         }
                     });
@@ -1148,7 +1146,7 @@ async function consultarUsuarios() {
                     let checkBox = tUsuario.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tUsuarios.eliminarFilas(fila);
                         }
                     });

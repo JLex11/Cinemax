@@ -108,7 +108,7 @@ class Pelicula
     public static function eliminar($campo) {
         include "../Connection/conexion.php";
 
-        $sql = mysqli_query($cnn, "UPDATE pelicula SET estado = 'F' WHERE idpelicula = '$campo'");
+        mysqli_query($cnn, "UPDATE pelicula SET estado = 'F' WHERE idpelicula = '$campo'");
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";
@@ -272,6 +272,19 @@ class Actor
         }
         return $datos;
     }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        mysqli_query($cnn, "UPDATE actor SET estado = 'F' WHERE idactor = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        } else {
+            $datos[0] = "Se elimino correctamente";
+        }
+        return $datos;
+    }   
 }
 
 /* ----------------------------- Actor pelicula ----------------------------- */
@@ -399,6 +412,19 @@ class Director
         }
         return $datos;
     }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        mysqli_query($cnn, "UPDATE director SET estado = 'F' WHERE director = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        } else {
+            $datos[0] = "Se elimino correctamente";
+        }
+        return $datos;
+    }
 }
 
 /* -------------------------------- DirectorPelicula -------------------------------- */
@@ -510,6 +536,19 @@ class Genero
         }
         else {
             $datos[0] = "se actualizo correctamente";
+        }
+        return $datos;
+    }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        mysqli_query($cnn, "UPDATE genero SET estado = 'F' WHERE idgenero = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        } else {
+            $datos[0] = "Se elimino correctamente";
         }
         return $datos;
     }
@@ -625,6 +664,19 @@ class Tipo
         }
         return $datos;
     }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        mysqli_query($cnn, "UPDATE tipo SET estado = 'F' WHERE idtipo = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        } else {
+            $datos[0] = "Se elimino correctamente";
+        }
+        return $datos;
+    }
 }
 
 /* --------------------------------- Pais --------------------------------- */
@@ -678,6 +730,19 @@ class Pais
         }
         else {
             $datos[0] = "se actualizo correctamente";
+        }
+        return $datos;
+    }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        mysqli_query($cnn, "UPDATE pais SET estado = 'F' WHERE idpais = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        } else {
+            $datos[0] = "Se elimino correctamente";
         }
         return $datos;
     }

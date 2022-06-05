@@ -39,7 +39,7 @@ if ($opc == '2') {
 }
 
 if ($opc == '3') {
-  $campo = $_POST["idpelicula"];
+  $campo = $_POST["campo"];
 
   $pelicula = Pelicula::eliminar($campo);
   echo json_encode($pelicula);
@@ -90,6 +90,14 @@ if ($opc == '62') {
   echo json_encode($actor);
 }
 
+if ($opc == '63') {
+  $campo = $_POST["campo"];
+
+  $actor = Actor::eliminar($campo);
+  echo json_encode($actor);
+}
+
+
 /* ----------------------------- Actor pelicula 81-100 ----------------------------- */
 if ($opc == '81') {
   $opcion = $opc;
@@ -136,6 +144,13 @@ if ($opc == '102') {
   echo json_encode($director);
 }
 
+if ($opc == '103') {
+  $campo = $_POST["campo"];
+
+  $director = Director::eliminar($campo);
+  echo json_encode($director);
+}
+
 /* ---------------------------- Director pelicula 121-140 --------------------------- */
 if ($opc == '121') {
   $opcion = $opc;
@@ -175,6 +190,13 @@ if ($opc == '142') {
   $estado = $_POST["estado"];
   
   $genero = Genero::editar($idgenero, $nombre, $estado);
+  echo json_encode($genero);
+}
+
+if ($opc == '143') {
+  $campo = $_POST["campo"];
+
+  $genero = Genero::eliminar($campo);
   echo json_encode($genero);
 }
 
@@ -220,6 +242,12 @@ if ($opc == '182') {
   echo json_encode($tipo);
 }
 
+if ($opc == '183') {
+  $campo = $_POST["campo"];
+
+  $tipo = Tipo::eliminar($campo);
+  echo json_encode($tipo);
+}
 
 /* ----------------------------- Pais 201-220 ---------------------------- */
 if ($opc == '201') {
@@ -238,6 +266,13 @@ if ($opc == '202') {
   $estado = $_POST["estado"];
   
   $pais = Pais::editar($idpais, $nombre, $estado);
+  echo json_encode($pais);
+}
+
+if ($opc == '203') {
+  $campo = $_POST["campo"];
+
+  $pais = Pais::eliminar($campo);
   echo json_encode($pais);
 }
 
