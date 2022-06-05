@@ -416,7 +416,7 @@ class Director
     public static function eliminar($campo) {
         include "../Connection/conexion.php";
 
-        mysqli_query($cnn, "UPDATE director SET estado = 'F' WHERE director = '$campo'");
+        mysqli_query($cnn, "UPDATE director SET estado = 'F' WHERE iddirector = '$campo'");
         $rows = mysqli_affected_rows($cnn);
         if ($rows == 0) {
             $datos[0] = "No hubo cambios";

@@ -1,17 +1,31 @@
-/* ------------ Navegacion por mainSections ------------- */
 let navBar = document.querySelector("nav");
 let navOptions = document.querySelectorAll(".option img");
-let targetSpan = navBar.querySelector('.targetStyles');
+let targetSpan = navBar.querySelector(".targetStyles");
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 let loader = document.getElementById("loader");
 let loader_users = document.getElementById("loader_users");
 let posElementClicked = 0;
+let firstSession = false;
 
-addEventListener("load",() => {
-    navInSections();
-    headerAndButtonUp();
+addEventListener("load", () => {
+    setTimeout(() => {
+        checkFirstTime();
+        navInSections();
+        headerAndButtonUp();
+        crearGrafico();
+    }, 300);
 });
+
+function checkFirstTime() {
+    if (localStorage.getItem("firstSession")) {
+        firstSession = false;
+    } else {
+        firstSession = true;
+        localStorage.setItem("firstSession", firstSession);
+        navBar.classList.add("navFirst");
+    }
+}
 
 function navInSections() {
     let fEjecutadaData = false;
@@ -27,16 +41,30 @@ function navInSections() {
         moverMainScroll();
         moverTargetSpan(posElementClicked);
         consultasADb(posElementClicked);
+        ocultarNavBar(true);
     }
 
     navBar.addEventListener("click", (e) => {
         posElementClicked = [...navOptions].indexOf(e.target);
-        localStorage.setItem("posElementClicked", posElementClicked);
         if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
+            localStorage.setItem("posElementClicked", posElementClicked);
             moverMainScroll();
             moverTargetSpan(posElementClicked);
             consultasADb(posElementClicked);
         }
+    });
+
+    navBar.addEventListener("mouseover", () => {
+        ocultarNavBar(false);
+        if (!firstSession == false) {
+            navBar.classList.remove("navFirst");
+        }
+
+        setTimeout(() => {
+            navBar.addEventListener("mouseleave", () => {
+                ocultarNavBar(true);
+            });
+        }, 1000);
     });
 
     /* addEventListener("keydown", (e) => {
@@ -65,18 +93,30 @@ function navInSections() {
         }
     }); */
 
-    addEventListener("resize", () => {
+    addEventListener("resize", (e) => {
         mainSections.forEach((section, index) => {
             mainSectionsX[index] = Math.floor(section.getBoundingClientRect().x);
             console.log(mainSectionsX);
         });
     });
 
+    function ocultarNavBar(active) {
+        if (active) {
+            setTimeout(() => {
+                navBar.classList.add("navHidden");
+            }, 1000);
+        }
+
+        if (!active) {
+            navBar.classList.remove("navHidden");
+        }
+    }
+
     function moverMainScroll() {
         main.scrollLeft = mainSectionsX[posElementClicked];
-        main.classList.add('section_focus_change');
+        main.classList.add("section_focus_change");
         setTimeout(() => {
-            main.classList.remove('section_focus_change');
+            main.classList.remove("section_focus_change");
         }, 500);
     }
 
@@ -85,13 +125,13 @@ function navInSections() {
             if (index == posicion) option.parentNode.classList.add("option_active");
             else option.parentNode.classList.remove("option_active");
         });
-    
+
         targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
         targetSpan.classList.add("targetOnMove");
         setTimeout(() => {
             targetSpan.classList.remove("targetOnMove");
         }, 300);
-    
+
         window.scrollTo({
             top: 0,
         });
@@ -105,7 +145,7 @@ function navInSections() {
                 fEjecutadaUsers = true;
             }
         }
-            
+
         if (position == 2) {
             if (!fEjecutadaData) {
                 loader.classList.add("loader");
@@ -121,7 +161,6 @@ function navInSections() {
     }
 }
 
-/* ------------ Header y Button Up ------------- */
 function headerAndButtonUp() {
     let buttonUp = document.getElementById("button_up");
     window.addEventListener("scroll", () => {
@@ -133,39 +172,47 @@ function headerAndButtonUp() {
     });
 
     buttonUp.addEventListener("click", () => {
-        window.scrollTo({ top: 0 });
+        window.scrollTo({
+            top: 0
+        });
     });
 }
 
+function crearGrafico() {
+    let grafico = {
+        contenedor: "grafico",
+        labels: ["Total"],
+        parametros: ["Total", "Registrados", "No registrados"],
+        valores: [
+            [5000, 3500, 1500]
+        ],
+    };
+    renderGrafico({
+        ...grafico
+    });
 
-/* -------------------- Grafico --------------- */
-function crearGrafico(contenedor, labels, parametros, valores) {
-    let canvasGrafico = document.getElementById(`${contenedor}`);
-
-    const grafico = new Chart(canvasGrafico, {
-        type: "line",
-        data: {
-            labels: parametros,
-            datasets: [
-                {
+    function renderGrafico({
+        contenedor,
+        labels,
+        parametros,
+        valores
+    }) {
+        let canvasGrafico = document.getElementById(`${contenedor}`);
+        const grafico = new Chart(canvasGrafico, {
+            type: "line",
+            data: {
+                labels: parametros,
+                datasets: [{
                     label: labels[0],
                     data: valores[0],
                     backgroundColor: ["#077fdb", "green", "red"],
-                },
-            ],
-        },
-        responsive: true,
-    });
-    let chartGrafico = grafico;
+                }, ],
+            },
+            responsive: true,
+        });
+        let chartGrafico = grafico;
+    }
 }
-
-window.addEventListener("load", () => {
-    contenedor = "grafico";
-    labels = ["Total"];
-    parametros = ["Total", "Registrados", "No registrados"];
-    valores = [[5000, 3500, 1500]];
-    crearGrafico(contenedor, labels, parametros, valores);
-});
 
 /* ---------------------- HeaderCards --------------------- */
 class HeaderCards {
@@ -338,6 +385,7 @@ class DataTable {
         let fragment = document.createDocumentFragment();
         let actBtns = document.createElement("div");
         actBtns.classList.add("container_form_act_btns");
+
         function crearBtnCerrar() {
             let btnCerrarForm = document.createElement("button");
             btnCerrarForm.classList.add("btn_form_cerrar");
@@ -349,6 +397,7 @@ class DataTable {
             });
             actBtns.appendChild(btnCerrarForm);
         }
+
         function crearBtnEnviar() {
             let btnEnviarForm = document.createElement("button");
             btnEnviarForm.classList.add("btn_form_enviar");
@@ -477,7 +526,7 @@ class DataTable {
         datos.append("opc", this.dbParametros.opcEditar);
         let response = this.peticionF(datos, this.dbParametros.url);
         response.then((r) => {
-            /* alert(r); */
+            alert(r);
         });
     }
 
@@ -488,7 +537,7 @@ class DataTable {
         let response = this.peticionF(datos, this.dbParametros.url);
         response.then((r) => {
             alert(r);
-        })
+        });
     }
 
     insertarFilas(datos) {
@@ -532,54 +581,52 @@ class DataTable {
                 input.value = "aceptar";
 
                 //Cuando se hace click en el boton aceptar
-                input.addEventListener("click",() => {
-                        let trParent = input.parentNode.parentNode;
-                        let tdHijos = trParent.querySelectorAll("td");
+                input.addEventListener("click", () => {
+                    let trParent = input.parentNode.parentNode;
+                    let tdHijos = trParent.querySelectorAll("td");
 
-                        tdHijos.forEach((td, index) => {
-                            if (index == 0) {
-                                checkboxLabel.classList.remove("checkboxToButton");
-                                input.type = "checkbox";
-                                input.value = "";
-                                input.checked = false;
-                            } else {
-                                let nameCampo = this.headers[index - 1].replace(/ /, "");
-                                if (nameCampo == "foto") {
-                                    let inputFileImg = td.querySelector("input[type=file]");
-                                    if (inputFileImg.files[0]) {
+                    tdHijos.forEach((td, index) => {
+                        if (index == 0) {
+                            checkboxLabel.classList.remove("checkboxToButton");
+                            input.type = "checkbox";
+                            input.value = "";
+                            input.checked = false;
+                        } else {
+                            let nameCampo = this.headers[index - 1].replace(/ /, "");
+                            if (nameCampo == "foto") {
+                                let inputFileImg = td.querySelector("input[type=file]");
+                                if (inputFileImg.files[0]) {
+                                    let blobImg = new Blob(inputFileImg.files);
 
-                                        let blobImg = new Blob(inputFileImg.files);
+                                    let reader = new FileReader();
+                                    reader.readAsDataURL(inputFileImg.files[0]);
+                                    reader.addEventListener("load", (e) => {
+                                        td.innerHTML = `<img src="${e.currentTarget.result}">`;
+                                    });
 
-                                        let reader = new FileReader();
-                                        reader.readAsDataURL(inputFileImg.files[0]);
-                                        reader.addEventListener("load", (e) => {
-                                            td.innerHTML = `<img src="${e.currentTarget.result}">`;
-                                        });
-
-                                        formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
-                                    }
-
-                                    let label = td.querySelector('label');
-                                    label.remove();
-                                    inputFileImg.remove();
-                                } else if (td.querySelector("select")) {
-                                    let select = td.querySelector("select");
-                                    let selectOption = select.options[select.selectedIndex];
-                                    formDataEditados.append(nameCampo, selectOption.value);
-                                    td.innerHTML = selectOption.text;
-                                } else {
-                                    formDataEditados.append(nameCampo, td.textContent);
+                                    formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
                                 }
 
-                                td.contentEditable = false;
-                                td.classList.remove("editableOn");
+                                let label = td.querySelector("label");
+                                label.remove();
+                                inputFileImg.remove();
+                            } else if (td.querySelector("select")) {
+                                let select = td.querySelector("select");
+                                let selectOption = select.options[select.selectedIndex];
+                                formDataEditados.append(nameCampo, selectOption.value);
+                                td.innerHTML = selectOption.text;
+                            } else {
+                                formDataEditados.append(nameCampo, td.textContent);
                             }
-                        });
-                        this.updateRow(formDataEditados);
-                    },
-                    { once: true }
-                );
 
+                            td.contentEditable = false;
+                            td.classList.remove("editableOn");
+                        }
+                    });
+                    this.updateRow(formDataEditados);
+                }, {
+                    once: true
+                });
             } else {
                 //Activar la edicion de los campos
                 let nameCampo = this.headers[index - 1].replace(/ /, "");
@@ -612,7 +659,7 @@ class DataTable {
                     let image = hijo.querySelector("a img") ? hijo.querySelector("a") : hijo.querySelector("img");
 
                     let div = document.createElement("div");
-                    div.classList.add('container_foto_inputFile');
+                    div.classList.add("container_foto_inputFile");
 
                     if (image) div.appendChild(image);
                     else div.innerHTML = `<img>`;
@@ -627,6 +674,7 @@ class DataTable {
                     <input id="${ramdomId}-${this.titulo}" type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
                     hijo.append(div);
                     hijo.classList.add("editableOn");
+
                 } else {
                     hijo.contentEditable = true;
                     hijo.classList.add("editableOn");
@@ -636,16 +684,18 @@ class DataTable {
     }
 
     eliminarFilas(fila) {
-        let filaEliminarTds = fila.querySelectorAll('td');
+        let filaEliminarTds = fila.querySelectorAll("td");
         filaEliminarTds.forEach((td, i) => {
-            if (this.describe[i-1]) {
-                if (this.describe[i-1].Key == 'PRI') {
+            if (this.headers[i - 1]) {
+                if (this.headers[i - 1].indexOf('id') == 0) {
                     this.deleteRow(td.textContent);
+                }
+
+                if (this.headers[i - 1].indexOf('estado') == 0) {
+                    td.textContent = 'F';
                 }
             }
         });
-
-        fila.remove();
         this.cantRows--;
         this.renderTitleBar();
     }
@@ -671,6 +721,7 @@ const mFacadeUrl = "../Model/facade.php";
 const btn_add = { id: "btn_add", icon: "add" };
 const btn_edit = { id: "btn_edit", icon: "edit" };
 const btn_delete = { id: "btn_edit", icon: "delete" };
+
 async function consultarDbTables() {
     let tableDatos;
     if (!tableDatos) {
@@ -703,8 +754,7 @@ async function consultarPeliculas() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
@@ -732,6 +782,7 @@ async function consultarPeliculas() {
                     checkBox.forEach((check) => {
                         if (check.checked) {
                             let fila = check.parentNode.parentNode;
+                            check.checked = false;
                             tPeliculas.eliminarFilas(fila);
                         }
                     });
@@ -751,12 +802,13 @@ async function consultarPeliculas() {
     let contentsCard = {
         id: "Peliculas",
         icon: "movie",
-        bodyElements: [
-            {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Peliculas",
-            },
-        ],
+        bodyElements: [{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Peliculas",
+        },{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Nuevas",
+        }, ],
     };
 
     let peliculasCard = new HeaderCards("chi2", contentsCard);
@@ -786,8 +838,7 @@ async function consultarEstadisticas() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
@@ -834,12 +885,10 @@ async function consultarEstadisticas() {
     let contentsCard = {
         id: "Estadisticas",
         icon: "bar_chart",
-        bodyElements: [
-            {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Estadisticas",
-            },
-        ],
+        bodyElements: [{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Estadisticas",
+        }, ],
     };
 
     let estadisticasCard = new HeaderCards("chi2", contentsCard);
@@ -869,8 +918,7 @@ async function consultarActores() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
@@ -917,12 +965,10 @@ async function consultarActores() {
     let contentsCard = {
         id: "Actores",
         icon: "groups",
-        bodyElements: [
-            {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Actores",
-            },
-        ],
+        bodyElements: [{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Actores",
+        }, ],
     };
 
     let actoresCard = new HeaderCards("chi2", contentsCard);
@@ -952,8 +998,7 @@ async function consultarDirectores() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
@@ -1000,12 +1045,10 @@ async function consultarDirectores() {
     let contentsCard = {
         id: "Directores",
         icon: "people",
-        bodyElements: [
-            {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Directores",
-            },
-        ],
+        bodyElements: [{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Directores",
+        }, ],
     };
 
     let directoresCard = new HeaderCards("chi2", contentsCard);
@@ -1035,8 +1078,7 @@ async function consultarGeneros() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
@@ -1083,12 +1125,10 @@ async function consultarGeneros() {
     let contentsCard = {
         id: "Generos",
         icon: "theaters",
-        bodyElements: [
-            {
-                number: Object.getOwnPropertyNames(await contents.trs).length - 1,
-                name: "Generos",
-            },
-        ],
+        bodyElements: [{
+            number: Object.getOwnPropertyNames(await contents.trs).length - 1,
+            name: "Generos",
+        }, ],
     };
 
     let generosCard = new HeaderCards("chi2", contentsCard);
@@ -1118,8 +1158,7 @@ async function consultarUsuarios() {
         headers: Object.keys(await response.datos[0]),
         tableFields: await response.table_Fields,
         describe: await response.describe,
-        actBtns: [
-            {
+        actBtns: [{
                 id: btn_add.id,
                 icon: btn_add.icon,
                 action: function () {
