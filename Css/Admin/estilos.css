@@ -9,7 +9,7 @@
 }
 
 :root {
-    --item-border: 1px solid #cdcdcd;--Font-Principal:
+    --item-border: 1px solid #bcbcbc;--Font-Principal:
     "Poppins", sans-serif;
     --background-light-color: #eceef9;
     --color-active: #ffffffb3;
@@ -200,7 +200,7 @@ li:hover {
 }
 
 li.option_active {
-    transform: scale(1.1) translateY(-3px);
+    transform: scale(1.1) translateY(-5px);
     z-index: 2;
 }
 
@@ -220,9 +220,8 @@ ul li, li img, .targetStyles {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: content-box;
     z-index: 1;
-    transform: scale(1.25) translateY(-5px);
+    transform: scale(1.2) translateY(-5px);
 }
 
 .targetStyles::before {
@@ -237,7 +236,7 @@ ul li, li img, .targetStyles {
 }
 
 .targetOnMove {
-    transform: scale(0.9) translate(0);
+    transform: scale(0.9) translateY(0);
 }
 
 .targetOnMove::before {
@@ -280,7 +279,7 @@ main::-webkit-scrollbar {
 }
 
 h2 {
-    font-weight: 200;
+    font-weight: 300;
 }
 
 h3 {
@@ -312,13 +311,13 @@ section {
 
 /* -------------------------- Sections header items ------------------------- */
 .section_header {
+    overflow-x: auto;
     display: flex;
-    margin-bottom: 20px;
     justify-content: flex-start;
-    top: 40px;
 }
 
 .container_header_items {
+    padding: 15px 5px;
     display: flex;
     gap: 10px;
     width: 100%;
@@ -421,7 +420,7 @@ section {
 }
 
 .section_subtitle div span {
-    font-size: 24pt;
+    font-size: 20pt;
 }
 
 .section_body {
@@ -437,20 +436,19 @@ section {
 
 /* ---------------------------------- Item ---------------------------------- */
 .item {
-    display: inline-block;
+    display: flex;
     padding: 10px;
     border-radius: 20px;
     background: var(--color-white-semi-transparent);
     box-shadow: var(--item-box-shadow);
     transition: box-shadow 0.5s ease, transform 0.3s;
     position: relative;
-    z-index: 1;
-    overflow: hidden;
+    /* overflow: hidden; */
+    flex-direction: column;
 }
 
 .item:hover {
     box-shadow: 0px 10px 10px #00000030;
-    z-index: 2;
 }
 
 .item_header {
@@ -602,6 +600,7 @@ section {
 
 /* --------------------------------- Subbody -------------------------------- */
 .section_subbody {
+    transition: box-shadow .3s;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -609,10 +608,13 @@ section {
     border-radius: 20px;
     background: var(--color-white-semi-transparent);
     overflow: hidden;
-    /* border: var(--item-border); */
     box-shadow: var(--item-box-shadow);
     align-items: center;
     flex-direction: column;
+}
+
+.section_subbody:hover {
+    box-shadow: 0 0 20px var(--color-blue);
 }
 
 .container_table {
@@ -624,7 +626,7 @@ section {
 }
 
 table {
-    border-spacing: 10px 5px;
+    border-spacing: 10px 10px;
     min-width: 100%;
 }
 
@@ -641,6 +643,8 @@ tbody tr:hover {
 }
 
 td.editableOn {
+    padding-left: 5px;
+    border-radius: 10px;
     background: #3da8fa16;
     outline: 1px solid var(--color-blue);
     transition: all 0.3s;
@@ -700,6 +704,7 @@ tbody td a {
 }
 
 tbody td img {
+    border-radius: 50%;
     width: 35px;
     height: 35px;
     object-fit: cover;
@@ -735,7 +740,7 @@ div.checkboxToButton::after {
     width: 50px;
     height: 25px;
     border-radius: 15px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.397) inset;
+    box-shadow: 2px 2px 5px rgb(0 0 0 / 28%) inset;
     position: relative;
     padding: 2px;
     cursor: pointer;
@@ -787,8 +792,13 @@ div.checkboxToButton::after {
     cursor: pointer;
 }
 
+.container_buttons_and_form span.material-icons-round {
+    text-shadow: -1px 2px 4px #00000059;
+}
+
 .sub_container_buttons .btns .material-icons-round {
     padding: 5px;
+    color: #343434;
 }
 
 .sub_container_buttons .btns:hover .material-icons-round {
@@ -926,7 +936,7 @@ input.input_agregar_form:focus ~ .content_label > p {
 
     body {
         background: var(--bg-dark-mode);
-        color: #efefef;
+        color: #ffffff;
     }
 
     header {
@@ -937,37 +947,68 @@ input.input_agregar_form:focus ~ .content_label > p {
         background: var(--color-dark);
     }
 
+    .item:hover {
+        box-shadow: 0px 10px 10px #00000091;
+    }
+
     .info_item div:first-child, .foto_and_title, .container_buttons_and_form, .section_subtitle {
         border-bottom: var(--border-item-dark);
     }
 
     .targetStyles {
         background: #3b3b3b;
+        box-shadow: 0 5px 25px #000000;
     }
 
-    .targetStyles::before {
-        background: #fcfcfc;
+    .header_item:nth-child(1) {
+        background: linear-gradient(to right, #212d40, #152030);
+    }
+
+    .header_item:hover {
+        box-shadow: 0px 5px 15px #0000004a, -3px -3px 15px #00000042 inset;
+    }
+
+    .data_section .header_item:hover {
+        outline: 2px solid var(--color-dark);
     }
 
     .section_subbody {
         background: var(--color-dark);
     }
 
+    .container_buttons_and_form span.material-icons-round {
+        text-shadow: -1px 2px 4px #000000ad;
+    }
+
+    .sub_container_buttons .btns .material-icons-round {
+        color: #adadad;
+    }
+
     .sub_container_buttons .btns:hover .material-icons-round {
-        color: gray;
+        color: rgb(205, 205, 205);
     }
 
     .custom_checkbox {
         background: #1b1b1b;
+        box-shadow: 2px 2px 5px #000000e0 inset;
     }
 
     .custom_checkbox::after {
         background: #6d6d6d;
     }
+
+    td.editableOn:focus {
+        background: black;
+    }
 }
 
 /* ------------------------------- Responsive 500px - Mobile ------------------------------- */
 @media screen and (max-width: 500px) {
+    ul li, li img, .targetStyles {
+        width: 60px;
+        height: 60px;
+    }
+
     div#chi2 {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }

@@ -4,102 +4,146 @@ let navOptions = document.querySelectorAll(".option img");
 let targetSpan = navBar.querySelector('.targetStyles');
 let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
+let loader = document.getElementById("loader");
+let loader_users = document.getElementById("loader_users");
 let posElementClicked = 0;
 
-var { loader, loader_users } = navInSections();
+addEventListener("load",() => {
+    navInSections();
+    headerAndButtonUp();
+});
+
 function navInSections() {
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
-    var loader = document.getElementById("loader");
-    var loader_users = document.getElementById("loader_users");
+    let mainSectionsX = [];
 
-    GoToSection();
+    mainSections.forEach((section, index) => {
+        mainSectionsX[index] = Math.floor(section.getBoundingClientRect().x);
+    });
 
-    function GoToSection() {
-        let mainSectionsX = [];
-        mainSections.forEach((section, index) => (mainSectionsX[index] = section.getBoundingClientRect().x));
+    if (localStorage.getItem("posElementClicked")) {
+        posElementClicked = localStorage.getItem("posElementClicked");
+        moverMainScroll();
+        moverTargetSpan(posElementClicked);
+        consultasADb(posElementClicked);
+    }
 
-        navBar.addEventListener("click", (e) => {
-            posElementClicked = [...navOptions].indexOf(e.target);
+    navBar.addEventListener("click", (e) => {
+        posElementClicked = [...navOptions].indexOf(e.target);
+        localStorage.setItem("posElementClicked", posElementClicked);
+        if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
+            moverMainScroll();
+            moverTargetSpan(posElementClicked);
+            consultasADb(posElementClicked);
+        }
+    });
+
+    /* addEventListener("keydown", (e) => {
+        if (e.key == "ArrowRight") {
+            posElementClicked++;
             if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
+                localStorage.setItem("posElementClicked", posElementClicked);
                 moverMainScroll();
                 moverTargetSpan(posElementClicked);
                 consultasADb(posElementClicked);
+            } else {
+                posElementClicked--;
             }
+        }
+
+        if (e.key == "ArrowLeft") {
+            posElementClicked--;
+            if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
+                localStorage.setItem("posElementClicked", posElementClicked);
+                moverMainScroll();
+                moverTargetSpan(posElementClicked);
+                consultasADb(posElementClicked);
+            } else {
+                posElementClicked++;
+            }
+        }
+    }); */
+
+    addEventListener("resize", () => {
+        mainSections.forEach((section, index) => {
+            mainSectionsX[index] = Math.floor(section.getBoundingClientRect().x);
+            console.log(mainSectionsX);
         });
+    });
 
-        function moverMainScroll() {
-            main.scrollLeft = mainSectionsX[posElementClicked];
-            main.classList.add('section_focus_change');
-            setTimeout(() => {
-                main.classList.remove('section_focus_change');
-            }, 500);
-        }
+    function moverMainScroll() {
+        main.scrollLeft = mainSectionsX[posElementClicked];
+        main.classList.add('section_focus_change');
+        setTimeout(() => {
+            main.classList.remove('section_focus_change');
+        }, 500);
+    }
 
-        function moverTargetSpan(posicion) {
-            navOptions.forEach((option, index) => {
-                if (index == posicion) option.parentNode.classList.add("option_active");
-                else option.parentNode.classList.remove("option_active");
-            });
-        
-            targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
-            targetSpan.classList.add("targetOnMove");
-            setTimeout(() => {
-                targetSpan.classList.remove("targetOnMove");
-            }, 300);
-        
-            window.scrollTo({
-                top: 0,
-            });
-        }
+    function moverTargetSpan(posicion) {
+        navOptions.forEach((option, index) => {
+            if (index == posicion) option.parentNode.classList.add("option_active");
+            else option.parentNode.classList.remove("option_active");
+        });
+    
+        targetSpan.style.left = `${targetSpan.clientWidth * posicion}px`;
+        targetSpan.classList.add("targetOnMove");
+        setTimeout(() => {
+            targetSpan.classList.remove("targetOnMove");
+        }, 300);
+    
+        window.scrollTo({
+            top: 0,
+        });
+    }
 
-        function consultasADb(position) {
-            if (position == 1) {
-                if (!fEjecutadaUsers) {
-                    loader_users.classList.add("loader");
-                    consultarUsuarios();
-                    fEjecutadaUsers = true;
-                }
+    function consultasADb(position) {
+        if (position == 1) {
+            if (!fEjecutadaUsers) {
+                loader_users.classList.add("loader");
+                consultarUsuarios();
+                fEjecutadaUsers = true;
             }
-                
-            if (position == 2) {
-                if (!fEjecutadaData) {
-                    loader.classList.add("loader");
-                    consultarPeliculas();
-                    consultarActores();
-                    consultarDirectores();
-                    consultarGeneros();
-                    consultarEstadisticas();
-                    //se desactiva el loader desde una de las funciones
-                    fEjecutadaData = true;
-                }
+        }
+            
+        if (position == 2) {
+            if (!fEjecutadaData) {
+                loader.classList.add("loader");
+                consultarPeliculas();
+                consultarActores();
+                consultarDirectores();
+                consultarGeneros();
+                consultarEstadisticas();
+                //se desactiva el loader desde una de las funciones
+                fEjecutadaData = true;
             }
         }
     }
-
-    return { loader, loader_users };
 }
 
 /* ------------ Header y Button Up ------------- */
-let buttonUp = document.getElementById("button_up");
-window.addEventListener("scroll", () => {
-    if (document.documentElement.scrollTop >= 40) {
-        buttonUp.classList.add("button_up_active");
-    } else {
-        buttonUp.classList.remove("button_up_active");
-    }
-});
+function headerAndButtonUp() {
+    let buttonUp = document.getElementById("button_up");
+    window.addEventListener("scroll", () => {
+        if (document.documentElement.scrollTop >= 40) {
+            buttonUp.classList.add("button_up_active");
+        } else {
+            buttonUp.classList.remove("button_up_active");
+        }
+    });
 
-buttonUp.addEventListener("click", () => {
-    window.scrollTo({ top: 0 });
-});
+    buttonUp.addEventListener("click", () => {
+        window.scrollTo({ top: 0 });
+    });
+}
+
 
 /* -------------------- Grafico --------------- */
-/* function crearGrafico(contenedor, labels, parametros, valores) {
+function crearGrafico(contenedor, labels, parametros, valores) {
     let canvasGrafico = document.getElementById(`${contenedor}`);
 
     const grafico = new Chart(canvasGrafico, {
-        type: "bar",
+        type: "line",
         data: {
             labels: parametros,
             datasets: [
@@ -110,17 +154,18 @@ buttonUp.addEventListener("click", () => {
                 },
             ],
         },
+        responsive: true,
     });
     let chartGrafico = grafico;
-} */
+}
 
-/* window.addEventListener("load", () => {
+window.addEventListener("load", () => {
     contenedor = "grafico";
     labels = ["Total"];
     parametros = ["Total", "Registrados", "No registrados"];
     valores = [[5000, 3500, 1500]];
     crearGrafico(contenedor, labels, parametros, valores);
-}); */
+});
 
 /* ---------------------- HeaderCards --------------------- */
 class HeaderCards {
@@ -436,7 +481,17 @@ class DataTable {
         });
     }
 
-    async deleteRow(id) {}
+    async deleteRow(id) {
+        let datos = new FormData();
+        datos.append("idpelicula", id);
+        datos.append("opc", this.dbParametros.opcEliminar);
+        datos.get("idpelicula");
+        datos.get("opc");
+        let response = this.peticionF(datos, this.dbParametros.url);
+        response.then((r) => {
+            alert(r);
+        })
+    }
 
     insertarFilas(datos) {
         let dFragment = document.createDocumentFragment();
@@ -583,7 +638,16 @@ class DataTable {
     }
 
     eliminarFilas(fila) {
-        document.getElementById(fila).remove();
+        let filaEliminarTds = fila.querySelectorAll('td');
+        filaEliminarTds.forEach((td, i) => {
+            if (this.describe[i-1]) {
+                if (this.describe[i-1].Key == 'PRI') {
+                    this.deleteRow(td.textContent);
+                }
+            }
+        });
+
+        fila.remove();
         this.cantRows--;
         this.renderTitleBar();
     }
@@ -669,7 +733,7 @@ async function consultarPeliculas() {
                     let checkBox = tPeliculas.section_subbody.querySelectorAll("input[type=checkbox]");
                     checkBox.forEach((check) => {
                         if (check.checked) {
-                            let fila = check.parentNode.parentNode.id;
+                            let fila = check.parentNode.parentNode;
                             tPeliculas.eliminarFilas(fila);
                         }
                     });

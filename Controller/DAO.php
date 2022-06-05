@@ -104,6 +104,20 @@ class Pelicula
         }
         return $datos;
     }
+
+    public static function eliminar($campo) {
+        include "../Connection/conexion.php";
+
+        $sql = mysqli_query($cnn, "UPDATE pelicula SET estado = 'F' WHERE idpelicula = '$campo'");
+        $rows = mysqli_affected_rows($cnn);
+        if ($rows == 0) {
+            $datos[0] = "No hubo cambios";
+        }
+        else {
+            $datos[0] = "Se elimino correctamente";
+        }
+        return $datos;
+    }
 }
 
 /* -------------------------------- Estadisticas -------------------------------- */

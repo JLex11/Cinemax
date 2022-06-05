@@ -38,6 +38,13 @@ if ($opc == '2') {
   echo json_encode($pelicula);
 }
 
+if ($opc == '3') {
+  $campo = $_POST["idpelicula"];
+
+  $pelicula = Pelicula::eliminar($campo);
+  echo json_encode($pelicula);
+}
+
 // !Estadisticas
 /* ------------------------------ Estadisticas 21-40 ------------------------------ */
 if ($opc == '21') {
