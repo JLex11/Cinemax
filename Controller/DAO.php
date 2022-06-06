@@ -18,6 +18,36 @@ class DbTables
     }
 }
 
+function minificarImagen($imagen, $dirThumb, $finalName){
+    $widthFinal = 50;
+
+    if (preg_match('/[.](jpg)$/', $imagen)) {
+        $img = imagecreatefromjpeg($finalName);
+    } else if (preg_match('/[.](png)$/', $imagen)) {
+        $img = imagecreatefrompng($finalName);
+    } else if (preg_match('/[.](webp)$/', $imagen)) {
+        $img = imagecreatefromwebp($finalName);
+    }
+
+    $width = imagesx($img);
+    $height = imagesy($img);
+
+    $minWidth = $widthFinal;
+    $minHeight = $widthFinal;
+
+    $imageTrueColor = imagecreatetruecolor($minWidth, $minHeight);
+
+    imagecopyresized($imageTrueColor, $img, 0, 0, 0, 0, $minWidth, $minHeight, $width, $height);
+
+    if (!file_exists($dirThumb)) {
+        if (!mkdir($dirThumb)) {
+            die("Hubo un problema con la miniatura");
+        }
+    }
+
+    imagewebp($imageTrueColor, $dirThumb . $imagen);
+}
+
 /* -------------------------------- Pelicula -------------------------------- */
 class Pelicula
 {
@@ -88,9 +118,13 @@ class Pelicula
         if (empty($foto)) {
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         } else {
-            $codigo = date("His");
-            $foto = "../foto/pelicula/" . $codigo.$foto;
+            $foto = "../foto/full/pelicula/" . $foto;
+            $dirThumb = "/Cinema/foto/thumb/pelicula";
+            $finalName = "../foto/full/pelicula/" . $_FILES["foto"]["name"];
+
             copy($_FILES["foto"]["tmp_name"], $foto);
+            minificarImagen($_FILES["foto"]["name"], $dirThumb, $finalName);
+
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         }
 
@@ -256,8 +290,7 @@ class Actor
         if (empty($foto)) {
             $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE idactor = '$idactor'";
         } else {
-            $codigo = date("His");
-            $foto = "../foto/actor/" . $codigo.$foto;
+            $foto = "../foto/full/actor/" . $foto;
             copy($_FILES["foto"]["tmp_name"], $foto);
             $query = "UPDATE actor SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE idactor = '$idactor'";
         }
@@ -395,8 +428,7 @@ class Director
         if (empty($foto)) {
             $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE iddirector = '$iddirector'";
         } else {
-            $codigo = date("His");
-            $foto = "../foto/director/" . $codigo.$foto;
+            $foto = "../foto/full/director/" . $foto;
             copy($_FILES["foto"]["tmp_name"], $foto);
             $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', foto = '$foto', estado = '$estado' WHERE iddirector = '$iddirector'";
         }
