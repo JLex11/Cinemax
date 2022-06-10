@@ -13,6 +13,7 @@ addEventListener("load", () => {
         checkFirstTime();
         navInSections();
         headerAndButtonUp();
+        homeHeaderCards();
         crearGrafico();
     }, 300);
 });
@@ -33,7 +34,7 @@ function navInSections() {
     let mainSectionsX = [];
 
     mainSections.forEach((section, index) => {
-        mainSectionsX[index] = Math.floor(section.getBoundingClientRect().x);
+        mainSectionsX[index] = section.offsetLeft;
     });
 
     if (localStorage.getItem("posElementClicked")) {
@@ -67,36 +68,25 @@ function navInSections() {
         }, 1000);
     });
 
-    /* addEventListener("keydown", (e) => {
-        if (e.key == "ArrowRight") {
-            posElementClicked++;
-            if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
-                localStorage.setItem("posElementClicked", posElementClicked);
-                moverMainScroll();
-                moverTargetSpan(posElementClicked);
-                consultasADb(posElementClicked);
-            } else {
-                posElementClicked--;
-            }
-        }
+    addEventListener("keydown", (e) => {
+        let auxEleClicked = posElementClicked;
+        if (e.key > 0 && e.key < mainSectionsX.length + 1) {
+            posElementClicked = e.key - 1;
 
-        if (e.key == "ArrowLeft") {
-            posElementClicked--;
             if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
                 localStorage.setItem("posElementClicked", posElementClicked);
                 moverMainScroll();
                 moverTargetSpan(posElementClicked);
                 consultasADb(posElementClicked);
             } else {
-                posElementClicked++;
+                posElementClicked = auxEleClicked;
             }
         }
-    }); */
+    });
 
     addEventListener("resize", (e) => {
         mainSections.forEach((section, index) => {
-            mainSectionsX[index] = Math.floor(section.getBoundingClientRect().x);
-            console.log(mainSectionsX);
+            mainSectionsX[index] = section.offsetLeft;
         });
     });
 
@@ -181,10 +171,10 @@ function headerAndButtonUp() {
 function crearGrafico() {
     let grafico = {
         contenedor: "grafico",
-        labels: ["Total"],
-        parametros: ["Total", "Registrados", "No registrados"],
+        labels: ["Usuarios"],
+        parametros: ["En linea", "Registrados", "No registrados", "Pendientes", "Semi-Registrados"],
         valores: [
-            [5000, 3500, 1500]
+            [2850, 3000, 2900, 3160, 3109]
         ],
     };
     renderGrafico({
@@ -205,13 +195,44 @@ function crearGrafico() {
                 datasets: [{
                     label: labels[0],
                     data: valores[0],
-                    backgroundColor: ["#077fdb", "green", "red"],
+                    backgroundColor: ["#0069bd", "green", "red"],
                 }, ],
             },
             responsive: true,
         });
-        let chartGrafico = grafico;
     }
+}
+
+function homeHeaderCards() {
+    let contentsCard = [{
+            id: "InLine",
+            icon: "person",
+            bodyElements: [{
+                number: 890,
+                name: "En Linea 🔵",
+            }]
+        },
+        {
+            id: "Registered",
+            icon: "done",
+            bodyElements: [{
+                number: 578,
+                name: "Registrados 🟢",
+            }]
+        },
+        {
+            id: "Unregistered",
+            icon: "clear",
+            bodyElements: [{
+                number: 300,
+                name: "No Registrados 🔴",
+            }]
+        }
+    ];
+
+    let inLineCard = new HeaderCards("homeCards", contentsCard[0]);
+    let registeredCard = new HeaderCards("homeCards", contentsCard[1]);
+    let unregisteredCard = new HeaderCards("homeCards", contentsCard[2]);
 }
 
 /* ---------------------- HeaderCards --------------------- */
@@ -414,7 +435,7 @@ class DataTable {
 
         formulario.id = "form" + this.titulo;
 
-        for (let i = 0; i < this.headers.length; i++) {
+        for (let i = 1; i < this.headers.length; i++) {
             let divContentLabel = document.createElement("div");
             divContentLabel.classList.add("content_label");
 
@@ -422,9 +443,44 @@ class DataTable {
             pText.textContent = this.capitalizarString(this.headers[i]);
 
             let input = document.createElement("input");
-            input.type = "text";
-            input.name = this.headers[i].replace(/ /g, "");
-            input.placeholder = this.capitalizarString(this.headers[i]);
+
+            if (this.describe[i]) {
+                let firstP = this.describe[i].Type.indexOf('(');
+                let endP = this.describe[i].Type.indexOf(')');
+                let inputType = this.describe[i].Type.slice(0, firstP);
+                let inputLenght = this.describe[i].Type.slice(firstP + 1, endP);
+
+                if (inputType == 'int') {
+                    input = document.createElement("input");
+                    input.type = 'text';
+                    input.setAttribute('maxlength', inputLenght);
+                    input.setAttribute('pattern', '[0-9]');
+                    input.name = this.headers[i].replace(/ /g, "");
+                    input.placeholder = this.capitalizarString(this.headers[i]);
+
+                } else if (inputType == 'tex') {
+                    input = document.createElement("textarea");
+                    input.setAttribute('maxlength', inputLenght);
+                    input.name = this.headers[i].replace(/ /g, "");
+                    input.placeholder = this.capitalizarString(this.headers[i]);
+
+                } else if (inputType == 'char') {
+                    input = document.createElement("input");
+                    input.setAttribute('maxlength', inputLenght);
+                    input.type = 'text';
+                    input.name = this.headers[i].replace(/ /g, "");
+                    input.placeholder = this.capitalizarString(this.headers[i]);
+
+                } else if (inputType == 'dat') {
+                    input = document.createElement("input");
+                    input.setAttribute('maxlength', inputLenght);
+                    input.type = 'date';
+
+                } else if (inputType == 'enum') {
+                    input = document.createElement('select');
+                }
+            }
+
             input.classList.add("input_agregar_form");
 
             divContentLabel.appendChild(pText);
@@ -718,9 +774,18 @@ async function peticionFetch(parametros, url) {
 /* -------------Consultas a db-------------- */
 //variables
 const mFacadeUrl = "../Model/facade.php";
-const btn_add = { id: "btn_add", icon: "add" };
-const btn_edit = { id: "btn_edit", icon: "edit" };
-const btn_delete = { id: "btn_edit", icon: "delete" };
+const btn_add = {
+    id: "btn_add",
+    icon: "add"
+};
+const btn_edit = {
+    id: "btn_edit",
+    icon: "edit"
+};
+const btn_delete = {
+    id: "btn_edit",
+    icon: "delete"
+};
 
 async function consultarDbTables() {
     let tableDatos;
@@ -805,7 +870,7 @@ async function consultarPeliculas() {
         bodyElements: [{
             number: Object.getOwnPropertyNames(await contents.trs).length - 1,
             name: "Peliculas",
-        },{
+        }, {
             number: Object.getOwnPropertyNames(await contents.trs).length - 1,
             name: "Nuevas",
         }, ],

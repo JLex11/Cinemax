@@ -183,9 +183,20 @@ nav ul {
   padding-top: 10px;
   width: 100%;
   display: flex;
-  /* position: relative; */
   transition: transform .3s;
   justify-content: center;
+}
+
+nav ul::before {
+  box-shadow: 0 3px 5px #00000052;
+  content: "";
+  position: absolute;
+  top: 200%;
+  width: 10px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--color-blue);
+  transition: width .3s .3s, top .3s;
 }
 
 ul li {
@@ -249,7 +260,7 @@ li img,
   margin: -100%;
 }
 
-.navFirst ul::before {
+.navFirst ul::after {
   content: "🖱️ Acerca el puntero para navegar.";
   width: 100%;
   height: 100%;
@@ -257,7 +268,7 @@ li img,
   border: 1px dashed gray;
   position: absolute;
   background: #ffffffc2;
-  top: -140%;
+  top: -145%;
   text-align: center;
   font-size: 14pt;
   border-radius: 10px;
@@ -270,9 +281,15 @@ li img,
   transform: translateY(110%);
 }
 
-.navHidden span.targetStyles::before {
-  transform: translateY(-1200%);
-  width: 120%;
+.navHidden ul::before {
+  box-shadow: 0 3px 5px #00000052;
+  content: "";
+  position: absolute;
+  top: -25%;
+  width: 50%;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--color-blue);
 }
 
 /* ---------------------------------- Main ---------------------------------- */
@@ -876,7 +893,7 @@ div.checkboxToButton::after {
 }
 
 .content_label {
-  width: calc(50% - 15px);
+  width: 200px;
   display: flex;
   position: relative;
   flex-direction: column;

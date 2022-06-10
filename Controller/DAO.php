@@ -61,12 +61,12 @@ class Pelicula
                 . "    pelicula.titulooriginal AS 'titulo original',\n"
                 . "    pelicula.titulolatino AS 'titulo latino',\n"
                 . "    pelicula.foto,\n"
+                . "    tipo.tipo,\n"
+                . "    pais.nombre AS pais,\n"
                 . "    pelicula.lanzamiento,\n"
                 . "    pelicula.duracion,\n"
                 . "    pelicula.resena,\n"
                 . "    pelicula.estado,\n"
-                . "    tipo.tipo,\n"
-                . "    pais.nombre AS pais,\n"
                 . "    estadisticas.cantvistas AS vistas,\n"
                 . "    estadisticas.cantlikes AS likes,\n"
                 . "    estadisticas.cantcomentarios AS comentarios\n"
@@ -119,11 +119,7 @@ class Pelicula
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         } else {
             $foto = "../foto/full/pelicula/" . $foto;
-            $dirThumb = "/Cinema/foto/thumb/pelicula";
-            $finalName = "../foto/full/pelicula/" . $_FILES["foto"]["name"];
-
             copy($_FILES["foto"]["tmp_name"], $foto);
-            minificarImagen($_FILES["foto"]["name"], $dirThumb, $finalName);
 
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         }
