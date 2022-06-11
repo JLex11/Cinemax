@@ -39,17 +39,19 @@ function navInSections() {
 
     if (localStorage.getItem("posElementClicked")) {
         posElementClicked = localStorage.getItem("posElementClicked");
-        moverMainScroll();
+        moverMainScroll({"focusAnimation": true});
         moverTargetSpan(posElementClicked);
         consultasADb(posElementClicked);
         ocultarNavBar(true);
     }
 
     navBar.addEventListener("click", (e) => {
-        posElementClicked = [...navOptions].indexOf(e.target);
-        if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
+        let posNavOpt = [...navOptions].indexOf(e.target);
+        if (mainSectionsX[posNavOpt] !== undefined && posNavOpt >= 0) {
+            posElementClicked = posNavOpt;
             localStorage.setItem("posElementClicked", posElementClicked);
-            moverMainScroll();
+
+            moverMainScroll({"focusAnimation": true});
             moverTargetSpan(posElementClicked);
             consultasADb(posElementClicked);
         }
@@ -75,7 +77,7 @@ function navInSections() {
 
             if (mainSectionsX[posElementClicked] !== undefined && posElementClicked >= 0) {
                 localStorage.setItem("posElementClicked", posElementClicked);
-                moverMainScroll();
+                moverMainScroll({"focusAnimation": true});
                 moverTargetSpan(posElementClicked);
                 consultasADb(posElementClicked);
             } else {
@@ -84,10 +86,11 @@ function navInSections() {
         }
     });
 
-    addEventListener("resize", (e) => {
+    addEventListener("resize", () => {
         mainSections.forEach((section, index) => {
             mainSectionsX[index] = section.offsetLeft;
         });
+        moverMainScroll({ "focusAnimation": false });
     });
 
     function ocultarNavBar(active) {
@@ -102,12 +105,14 @@ function navInSections() {
         }
     }
 
-    function moverMainScroll() {
-        main.scrollLeft = mainSectionsX[posElementClicked];
-        main.classList.add("section_focus_change");
-        setTimeout(() => {
-            main.classList.remove("section_focus_change");
-        }, 500);
+    function moverMainScroll(options) {
+        if (options.focusAnimation == true) {
+            main.classList.add("section_focus_change");
+            setTimeout(() => {
+                main.classList.remove("section_focus_change");
+            }, 500);
+        }
+        main.scrollLeft = mainSectionsX[posElementClicked];    
     }
 
     function moverTargetSpan(posicion) {
@@ -127,8 +132,8 @@ function navInSections() {
         });
     }
 
-    function consultasADb(position) {
-        if (position == 1) {
+    function consultasADb(posicion) {
+        if (posicion == 1) {
             if (!fEjecutadaUsers) {
                 loader_users.classList.add("loader");
                 consultarUsuarios();
@@ -136,7 +141,7 @@ function navInSections() {
             }
         }
 
-        if (position == 2) {
+        if (posicion == 2) {
             if (!fEjecutadaData) {
                 loader.classList.add("loader");
                 consultarPeliculas();
@@ -177,17 +182,10 @@ function crearGrafico() {
             [2850, 3000, 2900, 3160, 3109]
         ],
     };
-    renderGrafico({
-        ...grafico
-    });
+    renderGrafico({...grafico});
 
-    function renderGrafico({
-        contenedor,
-        labels,
-        parametros,
-        valores
-    }) {
-        let canvasGrafico = document.getElementById(`${contenedor}`);
+    function renderGrafico({ contenedor, labels, parametros, valores }) {
+        let canvasGrafico = document.getElementById(contenedor);
         const grafico = new Chart(canvasGrafico, {
             type: "line",
             data: {
@@ -196,7 +194,7 @@ function crearGrafico() {
                     label: labels[0],
                     data: valores[0],
                     backgroundColor: ["#0069bd", "green", "red"],
-                }, ],
+                }],
             },
             responsive: true,
         });
@@ -258,6 +256,8 @@ class HeaderCards {
     }
 
     makeCard() {
+        this.makeScrolleableHParent();
+        this.renderScrolleableButtons();
         this.renderIcon();
         this.renderBody();
 
@@ -265,6 +265,18 @@ class HeaderCards {
         this.hrefElement.appendChild(this.headerItem);
         this.hrefElement.href = "#" + this.id;
         this.principalContainer.appendChild(this.hrefElement);
+    }
+
+    makeScrolleableHParent() {
+        let parentOfContainer = this.principalContainer.parentNode;
+        parentOfContainer.addEventListener("wheel", e => {
+            e.preventDefault();
+            parentOfContainer.scrollLeft += e.deltaY;
+        });
+    }
+
+    renderScrolleableButtons() {
+        
     }
 
     renderIcon() {

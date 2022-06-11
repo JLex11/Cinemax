@@ -4,7 +4,6 @@
   padding: 0;
   text-decoration: none;
   box-sizing: border-box;
-  /* outline: 1px solid #ffffffe0; */
   list-style: none;
 }
 
@@ -26,8 +25,6 @@
 
 body {
   font-family: var(--Font-Principal);
-  padding-bottom: 60px;
-  overflow-x: hidden;
 }
 
 .material-icons-round {
@@ -294,32 +291,18 @@ li img,
 
 /* ---------------------------------- Main ---------------------------------- */
 main {
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
   display: flex;
-  width: 100%;
   max-width: 1500px;
   margin: 0 auto;
   overflow-x: hidden;
   flex-direction: row;
   flex-wrap: nowrap;
+  transition: transform .5s;
 }
 
 main.section_focus_change {
-  animation: section_focus_change 0.5s;
-}
-
-@keyframes section_focus_change {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(0.95);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+  transform: scale(0.90);
 }
 
 main::-webkit-scrollbar {
@@ -335,13 +318,11 @@ h3 {
 }
 
 /* -------------------------------- Sections -------------------------------- */
-
 section {
-  max-width: 100%;
+  width: 100%;
   position: relative;
   min-width: 100%;
-  padding: 0 20px 0 20px;
-  /* scroll-padding-top: 60px; */
+  padding: 0 15px;
 }
 
 .section_title {
@@ -359,6 +340,7 @@ section {
 
 /* -------------------------- Sections header items ------------------------- */
 .section_header {
+  width: 100%;
   overflow-x: auto;
   display: flex;
   justify-content: flex-start;
@@ -368,14 +350,12 @@ section {
   padding: 15px 5px;
   display: flex;
   gap: 10px;
-  width: 100%;
 }
 
 .header_item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  bottom: 0;
   padding: 15px;
   border-radius: 25px;
   color: white;
@@ -1093,7 +1073,7 @@ input.input_agregar_form:focus~.content_label>p {
   }
 
   section {
-    padding: 0 10px 100px 10px;
+    padding: 0 10px;
   }
 
   .container_items {

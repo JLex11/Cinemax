@@ -1,0 +1,33 @@
+{
+    "theme-color": "#0069bd",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/Cinemax",
+    "start_url": "./View/cinemaxAdmin.html",
+    "name": "Cinemax | Admin",
+    "short_name": "Adm. Cinemax",
+    "prefer_related_applications": false,
+    "description": "Aplicativo de administraci\u00f3n de datos de sitio web de peliculas",
+    "icons": [
+        {
+            "src": "./icon-192x192.webp",
+            "sizes": "192x192",
+            "type": "image/webp"
+        },
+        {
+            "src": "./icon-256x256.webp",
+            "sizes": "256x256",
+            "type": "image/webp"
+        },
+        {
+            "src": "./icon-384x384.webp",
+            "sizes": "384x384",
+            "type": "image/webp"
+        },
+        {
+            "src": "./icon-512x512.webp",
+            "sizes": "512x512",
+            "type": "image/webp"
+        }
+    ]
+}
