@@ -113,8 +113,8 @@ function navInSections() {
       setTimeout(() => {
         main.classList.remove("section_focus_change");
       }, 500);
+      main.scrollLeft = mainSectionsX[posElementClicked];
     }
-    main.scrollLeft = mainSectionsX[posElementClicked];
   }
 
   function moverTargetSpan(posicion) {
@@ -127,7 +127,7 @@ function navInSections() {
     targetSpan.classList.add("targetOnMove");
     setTimeout(() => {
       targetSpan.classList.remove("targetOnMove");
-    }, 300);
+    }, 500);
 
     window.scrollTo({
       top: 0,
@@ -282,8 +282,7 @@ function isScrollableElement(elementParent, overflowElement) {
     isVisibilyScrollButtons();
   }, 3000); */
 
-  elementParent.addEventListener("resize", () => {
-    console.log("resize element parent", elementParent);
+  addEventListener("resize", () => {
     wOverflowElement = overflowElement.offsetWidth;
     wElementParent = elementParent.offsetWidth;
     isVisibilyScrollButtons();
@@ -373,12 +372,15 @@ class DataTable {
   tableFields;
   describe;
   trs;
+  indexUltElement;
+  numRowsPerPage;
   dbParametros;
   dbTables;
   cantRows;
   table;
   thead;
   tbody;
+  container_rows_actions;
 
   constructor(elementParent, contents) {
     this.elementParent = document.querySelector(elementParent);
@@ -388,6 +390,7 @@ class DataTable {
     this.container_table = document.createElement("div");
     this.container_buttons_and_form = document.createElement("div");
     this.sub_container_buttons = document.createElement("div");
+    this.container_rows_actions = document.createElement("div");
     this.table = document.createElement("table");
     this.thead = document.createElement("thead");
     this.tbody = document.createElement("tbody");
@@ -399,6 +402,8 @@ class DataTable {
     this.describe = contents.describe;
     this.buttons = contents.actBtns;
     this.trs = contents.trs;
+    this.indexUltElement = 0;
+    this.numRowsPerPage = 5;
     this.dbParametros = contents.dbParametros;
     this.dbTables = contents.dbTables;
     this.cantRows = Object.getOwnPropertyNames(this.trs).length - 1;
@@ -410,6 +415,7 @@ class DataTable {
     this.renderActionBtns();
     this.renderHeaders();
     this.renderTrs();
+    this.renderRowActions();
 
     this.table.appendChild(this.thead);
     this.table.appendChild(this.tbody);
@@ -419,17 +425,23 @@ class DataTable {
 
     this.container_buttons_and_form.classList.add("container_buttons_and_form");
 
-    this.section_subbody.appendChild(this.container_buttons_and_form);
-    this.section_subbody.appendChild(this.container_table);
+    this.container_rows_actions.classList.add("container_rows_actions");
+
+    this.section_subbody.append(
+      this.container_buttons_and_form,
+      this.container_table,
+      this.container_rows_actions
+    );
     this.section_subbody.classList.add("section_subbody");
 
-    this.container_subsection.appendChild(this.container_section_subtitle);
-    this.container_subsection.appendChild(this.section_subbody);
+    this.container_subsection.append(
+      this.container_section_subtitle,
+      this.section_subbody
+    );
     this.container_subsection.classList.add("container_subsection");
     this.container_subsection.id = this.titulo;
 
     this.elementParent.appendChild(this.container_subsection);
-    /* console.log(this.titulo, this.describe); */
   }
 
   capitalizarString(string) {
@@ -577,39 +589,65 @@ class DataTable {
 
   renderTrs() {
     let dFragment = document.createDocumentFragment();
-    this.trs.forEach((t) => {
-      let rowId = `${t[Object.keys(t)[0]]}-${this.tableName}`;
-      let checkBoxId = `${t[Object.keys(t)[0]]}-${this.titulo}`;
+    for (let i = this.indexUltElement; i < this.numRowsPerPage; i++) {
+      if (this.trs[i]) {
+        this.indexUltElement++;
+        let t = this.trs[i];
+        let rowId = `${t[Object.keys(t)[0]]}-${this.tableName}`;
+        let checkBoxId = `${t[Object.keys(t)[0]]}-${this.titulo}`;
 
-      let tr = document.createElement("tr");
-      tr.id = rowId;
+        let tr = document.createElement("tr");
+        tr.id = rowId;
 
-      let td = document.createElement("td");
-      td.innerHTML = `
+        let td = document.createElement("td");
+        td.innerHTML = `
             <input type="checkbox" id="${checkBoxId}" class="table_check">
             <label for="${checkBoxId}">
                 <div class="custom_checkbox" id="custom_checkbox"></div>
             </label>`;
 
-      tr.appendChild(td);
-      let headersCont = 0;
-      for (let i in t) {
-        let td = document.createElement("td");
-        td.setAttribute("data-label", `${this.capitalizarString(this.headers[headersCont])}`);
-
-        if (t[i].indexOf("../foto") == 0) {
-          td.innerHTML = `
-                    <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
-        } else {
-          td.textContent = t[i];
-        }
-        headersCont++;
         tr.appendChild(td);
+        let headersCont = 0;
+        for (let i in t) {
+          let td = document.createElement("td");
+          td.setAttribute("data-label", `${this.capitalizarString(this.headers[headersCont])}`);
+
+          if (t[i].indexOf("../foto") == 0) {
+            td.innerHTML = `
+                    <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
+          } else {
+            td.textContent = t[i];
+          }
+          headersCont++;
+          tr.appendChild(td);
+        }
+        dFragment.appendChild(tr);
       }
-      dFragment.appendChild(tr);
-    });
+    }
     this.tbody.innerHTML = "";
     this.tbody.appendChild(dFragment);
+  }
+
+  renderRowActions() {
+    let numPages = Math.ceil(this.cantRows / this.numRowsPerPage);
+    let actualPage = Math.ceil(this.indexUltElement / this.numRowsPerPage);
+    
+    let container_pages_number = document.createElement("div");
+    container_pages_number.classList.add("container_pages_number");
+    container_pages_number.innerHTML = `
+    <p>Mostrando pagina: ${actualPage} / ${numPages}</p>`;
+
+
+    let container_pages_nav = document.createElement("div");
+    container_pages_nav.classList.add("container_pages_nav");
+    container_pages_nav.innerHTML = `
+    <ul>
+      <li>${actualPage - 1 >= 1 ? actualPage - 1 : actualPage}</li>
+      <li>${numPages - actualPage > 1 ? "..." : "|"}</li>
+      <li>${numPages}</li>
+    </ul>`;
+
+    this.container_rows_actions.append(container_pages_number, container_pages_nav);
   }
 
   async peticionF(parametros, url) {
