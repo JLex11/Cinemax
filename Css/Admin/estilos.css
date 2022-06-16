@@ -25,7 +25,6 @@
 body {
   background: var(--bg);
   font-family: var(--Font-Principal);
-  text-rendering: geometricPrecision;
 }
 
 .material-icons-round {
@@ -848,12 +847,11 @@ div.checkboxToButton::after {
 
 .sub_container_buttons .btns .material-icons-round {
   padding: 5px;
-  color: #343434;
 }
 
 .sub_container_buttons .btns:hover .material-icons-round {
-  transform: scale(1.1);
-  color: rgb(0, 0, 0);
+  background: rgb(0 0 0 / 15%);
+  border-radius: 5px;
 }
 
 .sub_container_form {
@@ -979,17 +977,47 @@ input.input_agregar_form:focus ~ .content_label > p {
 
 /* ---------------- Row Actions --------------- */
 .container_rows_actions {
+  padding: 10px;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
 }
 
-.container_pages_nav ul {
+.container_pages_number {
+  gap: 3px;
   display: flex;
-  gap: 15px;
+  align-items: center;
 }
 
+.container_pages_number select {
+  font-size: 12pt;
+  border: 0;
+  box-shadow: 0 2px 5px #00000029;
+  background: #0000001a;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.container_pages_nav ul {
+  display: flex;
+  gap: 5px;
+}
+
+.container_pages_nav ul li {
+  padding: 5px 10px;
+}
+
+.container_pages_nav ul li:hover {
+  background: rgb(0 0 0 / 8%);
+  border-radius: 5px;
+}
+
+.container_pages_nav ul li.actualPage_indicator {
+  box-shadow: 0 2px 5px #00000029;
+  background: #0000001a;
+  border-radius: 5px;
+}
 /* ------------ Prefer Color Scheme ----------- */
 @media (prefers-color-scheme: dark) {
   :root {
