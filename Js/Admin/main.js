@@ -144,9 +144,9 @@ function navInSections() {
         if (posicion == 2) {
             if (!fEjecutadaData) {
                 loader.classList.add("loader");
-                let observer = new IntersectionObserver((entries, observer) => {
+                let observer = new IntersectionObserver((entries) => {
                     entries.forEach((entry) => { 
-                        console.log(entry);
+                        console.log(entry.target);
                     })
                 },{
                     root: null,
@@ -157,13 +157,13 @@ function navInSections() {
                     observer.observe(section);
                 });
 
-                /* consultarPeliculas();
+                consultarPeliculas();
                 consultarActores();
                 consultarDirectores();
                 consultarGeneros();
                 consultarEstadisticas();
                 //se desactiva el loader desde una de las funciones
-                fEjecutadaData = true; */
+                fEjecutadaData = true;
             }
         }
     }
