@@ -18,34 +18,8 @@ class DbTables
     }
 }
 
-function minificarImagen($imagen, $dirThumb, $finalName){
-    $widthFinal = 50;
-
-    if (preg_match('/[.](jpg)$/', $imagen)) {
-        $img = imagecreatefromjpeg($finalName);
-    } else if (preg_match('/[.](png)$/', $imagen)) {
-        $img = imagecreatefrompng($finalName);
-    } else if (preg_match('/[.](webp)$/', $imagen)) {
-        $img = imagecreatefromwebp($finalName);
-    }
-
-    $width = imagesx($img);
-    $height = imagesy($img);
-
-    $minWidth = $widthFinal;
-    $minHeight = $widthFinal;
-
-    $imageTrueColor = imagecreatetruecolor($minWidth, $minHeight);
-
-    imagecopyresized($imageTrueColor, $img, 0, 0, 0, 0, $minWidth, $minHeight, $width, $height);
-
-    if (!file_exists($dirThumb)) {
-        if (!mkdir($dirThumb)) {
-            die("Hubo un problema con la miniatura");
-        }
-    }
-
-    imagewebp($imageTrueColor, $dirThumb . $imagen);
+function toWebp($imagen){
+    
 }
 
 /* -------------------------------- Pelicula -------------------------------- */
