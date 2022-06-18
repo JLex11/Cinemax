@@ -219,7 +219,8 @@ class Actor
                 . "descripcion,\n"
                 . "foto,\n"
                 . "estado\n"
-                . "FROM `actor`";
+                . "FROM actor\n"
+                . "ORDER BY estado ASC";
         }
 
         $datos = array();
@@ -361,7 +362,8 @@ class Director
                 . "descripcion,\n"
                 . "foto,\n"
                 . "estado \n"
-                . "FROM director";
+                . "FROM director\n"
+                . "ORDER BY estado ASC";
         }
 
         $datos = array();
@@ -394,6 +396,9 @@ class Director
     {
         include "../Connection/conexion.php";
         $datos = array();
+
+        $nombre = ucfirst(strtolower($nombre));
+        $descripcion = ucfirst(strtolower($descripcion));
 
         if (empty($foto)) {
             $query = "UPDATE director SET nombre = '$nombre', fechanacimiento = '$fechanacimiento', descripcion = '$descripcion', estado = '$estado' WHERE iddirector = '$iddirector'";
@@ -495,7 +500,8 @@ class Genero
                 . "idgenero AS 'id genero',\n"
                 . "nombre,\n"
                 . "estado\n"
-                . "FROM genero";
+                . "FROM genero\n"
+                . "ORDER BY estado ASC";
         }
 
         $datos = array();
@@ -528,8 +534,10 @@ class Genero
     {
         include "../Connection/conexion.php";
 
-        $query = "UPDATE genero SET nombre = '$nombre', estado = '$estado' WHERE idgenero = '$idgenero'";
+        $nombre = ucfirst(strtolower($nombre));
 
+        $query = "UPDATE genero SET nombre = '$nombre', estado = '$estado' WHERE idgenero = '$idgenero'";
+        
         $datos = array();
         $sql = mysqli_query($cnn, $query);
         $rows = mysqli_affected_rows($cnn);
@@ -653,6 +661,8 @@ class Tipo
     {
         include "../Connection/conexion.php";
 
+        $tipo = ucfirst(strtolower($tipo));
+
         $query = "UPDATE generopelicula SET tipo = '$tipo', estado = '$estado' WHERE idtipo = '$idtipo'";
 
         $datos = array();
@@ -721,6 +731,8 @@ class Pais
     public static function editar($idpais, $nombre, $estado)
     {
         include "../Connection/conexion.php";
+
+        $nombre = ucfirst(strtolower($nombre));
 
         $query = "UPDATE generopelicula SET nombre = '$nombre', estado = '$estado' WHERE idpais = '$idpais'";
 
