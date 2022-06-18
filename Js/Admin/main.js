@@ -242,43 +242,63 @@ function homeHeaderCards() {
 }
 
 function makeScrollableElements() {
-    let sectionHeaders = document.querySelectorAll(".section_header");
-    sectionHeaders.forEach((sectionHeader) => {
-        let firstChild = sectionHeader.firstElementChild;
-        isScrollableElement(sectionHeader, firstChild);
+    let ovContainers = document.querySelectorAll(".overflowable_container");
+    ovContainers.forEach((ovContainer) => {
+        let firstChild = ovContainer.firstElementChild;
+        isScrollableElement(ovContainer, firstChild);
     });
 }
 
 function isScrollableElement(elementParent, overflowElement) {
+    let wOverflowElement = overflowElement.offsetWidth;
+    let wElementParent = elementParent.offsetWidth;
+
+    let buttonLeft = document.createElement("div");
+    let buttonRight = document.createElement("div");
+
+    buttonLeft.classList.add("button_left");
+    buttonLeft.classList.add("scrollButtons");
+
+    buttonRight.classList.add("button_right");
+    buttonRight.classList.add("scrollButtons");
+
+    buttonLeft.innerHTML = `
+        <span class="material-icons-round">navigate_before</span>`;
+    buttonLeft.addEventListener("click", () => {
+        elementParent.scrollLeft -= 100;
+    });
+    
+    buttonRight.innerHTML = `
+        <span class="material-icons-round">navigate_next</span>`;
+    buttonRight.addEventListener("click", () => {
+        elementParent.scrollLeft += 100;
+    });
+    
+    elementParent.parentNode.append(buttonLeft, buttonRight);
+
+    function isVisibilyScrollButtons() {
+        if (wOverflowElement > wElementParent) {
+            if (elementParent.scrollLeft > 1) {
+                buttonLeft.style.transform = "scaleX(1)";
+            } else if ((elementParent.scrollLeft + elementParent.offsetWidth) == (elementParent.scrollLeft + elementParent.parentNode.offsetWidth)) { 
+                buttonRight.style.transform = "scaleX(0)";
+            } else {
+                buttonRight.style.transform = "scaleX(1)";
+            }
+        } else {
+            buttonLeft.style.transform = "scaleX(0)";
+            buttonRight.style.transform = "scaleX(0)";
+        }
+    }
+
     elementParent.addEventListener("wheel", (e) => {
         e.preventDefault();
         elementParent.scrollLeft += e.deltaY;
     });
 
-    let wOverflowElement = overflowElement.offsetWidth;
-    let wElementParent = elementParent.offsetWidth;
-
-    let scrollButtons = document.createElement("div");
-    let containerButtons = document.createElement("div");
-    let buttonLeft = document.createElement("div");
-    let buttonRight = document.createElement("div");
-
-    scrollButtons.classList.add("scrollButtons");
-    containerButtons.classList.add("container_Buttons");
-    buttonLeft.classList.add("button_left");
-    buttonRight.classList.add("button_right");
-
-    buttonLeft.innerHTML = `
-      <span class="material-icons-round">navigate_before</span>`;
-    buttonRight.innerHTML = `
-      <span class="material-icons-round">navigate_next</span>`;
-
-    containerButtons.append(buttonLeft, buttonRight);
-    scrollButtons.appendChild(containerButtons);
-    elementParent.appendChild(scrollButtons);
-    /* setTimeout(() => {
-    isVisibilyScrollButtons();
-  }, 3000); */
+    elementParent.addEventListener("scroll", () => {
+        isVisibilyScrollButtons();
+    });
 
     addEventListener("resize", () => {
         wOverflowElement = overflowElement.offsetWidth;
@@ -286,13 +306,11 @@ function isScrollableElement(elementParent, overflowElement) {
         isVisibilyScrollButtons();
     });
 
-    function isVisibilyScrollButtons() {
-        if (wOverflowElement > wElementParent) {
-            containerButtons.style.display = "flex";
-        } else {
-            containerButtons.style.display = "none";
-        }
-    }
+    new ResizeObserver(() => {
+        wOverflowElement = overflowElement.offsetWidth;
+        wElementParent = elementParent.offsetWidth;
+        isVisibilyScrollButtons();
+    }).observe(overflowElement);
 }
 
 /* ---------------------- HeaderCards --------------------- */
@@ -370,7 +388,6 @@ class DataTable {
     describe;
     trs;
     indexUltElement;
-    numRowsOptions;
     numRowsPerPage;
     actualPage;
     dbParametros;
@@ -380,6 +397,7 @@ class DataTable {
     thead;
     tbody;
     container_rows_actions;
+    ls;
 
     constructor(elementParent, contents) {
         this.elementParent = document.querySelector(elementParent);
@@ -393,6 +411,7 @@ class DataTable {
         this.table = document.createElement("table");
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
+        this.ls = localStorage;
         this.tableName = contents.name;
         this.titulo = this.capitalizarString(contents.titulo);
         this.titleIcon = contents.titleIcon;
@@ -402,8 +421,7 @@ class DataTable {
         this.buttons = contents.actBtns;
         this.trs = contents.trs;
         this.indexUltElement = 0;
-        this.numRowsOptions = [2, 5, 10, 20, 50, 100];
-        this.numRowsPerPage = this.numRowsOptions[0];
+        this.numRowsPerPage = this.ls.getItem(`numRowsPerPage${this.titulo}`) ? this.ls.getItem(`numRowsPerPage${this.titulo}`) : 1;
         this.actualPage = 1;
         this.dbParametros = contents.dbParametros;
         this.dbTables = contents.dbTables;
@@ -417,6 +435,7 @@ class DataTable {
         this.renderHeaders();
         this.renderTrs();
         this.renderRowActions();
+        this.changeNumRowsPerPage();
 
         this.table.appendChild(this.thead);
         this.table.appendChild(this.tbody);
@@ -609,6 +628,13 @@ class DataTable {
                     if (t[i].indexOf("../foto") == 0) {
                         td.innerHTML = `
                             <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
+                    } else if (this.describe[headersCont] && this.describe[headersCont].Field == "estado") {
+                        td.textContent = t[i];
+                        if (t[i] == "T") {
+                            td.classList.add("estado_activo");
+                        } else {
+                            td.classList.add("estado_inactivo");
+                        }
                     } else {
                         td.textContent = t[i];
                     }
@@ -626,32 +652,23 @@ class DataTable {
 
     renderRowActions() {
         let numPages = Math.ceil(this.cantRows / this.numRowsPerPage);
+        while (this.actualPage > numPages) {
+            this.actualPage--;
+        }
 
         let container_pages_number = document.createElement("div");
         container_pages_number.classList.add("container_pages_number");
         container_pages_number.innerHTML += `<p>Mostrando</p>`;
 
-        let selectNumRows = document.createElement("select");
+        let inputNumRows = document.createElement("input");
+        inputNumRows.setAttribute("value", this.numRowsPerPage);
+        inputNumRows.setAttribute("max", this.cantRows);
+        inputNumRows.setAttribute("min", 1);
+
         let fragment = document.createDocumentFragment();
 
-        this.numRowsOptions.forEach((option) => {
-            if (option <= this.cantRows) {
-                let selectOption = document.createElement("option");
-                selectOption.textContent = option;
-                selectOption.value = option;
-                fragment.appendChild(selectOption);
-            }
-        });
-
-        if (!this.numRowsOptions.includes(this.cantRows)) {
-            let selectOption = document.createElement("option");
-            selectOption.textContent = "Todos";
-            selectOption.value = this.cantRows;
-            fragment.appendChild(selectOption);
-        }
-
-        selectNumRows.appendChild(fragment);
-        container_pages_number.appendChild(selectNumRows);
+        inputNumRows.appendChild(fragment);
+        container_pages_number.appendChild(inputNumRows);
         container_pages_number.innerHTML += `<p>de ${this.cantRows}</p>`;
         this.changeNumRowsPerPage(container_pages_number);
 
@@ -660,6 +677,7 @@ class DataTable {
         container_pages_nav.innerHTML = `
             <ul>
                 ${this.actualPage > 1 ? "<li>1</li>" : ""}
+                ${this.actualPage > 3 ? "<li>" + (this.actualPage - 2) + "</li>" : ""}
                 ${this.actualPage > 2 ? "<li>" + (this.actualPage - 1) + "</li>" : ""}
                 <li class="actualPage_indicator">${this.actualPage}</li>
                 ${numPages - this.actualPage > 1 ? "<li>...</li>" : ""}
@@ -673,14 +691,26 @@ class DataTable {
         this.moveInRows(container_pages_nav);
     }
 
-    changeNumRowsPerPage(selectParent) {
-        let select = selectParent.querySelector("select");
-        select.addEventListener("change", () => {
-            this.indexUltElement = 0;
-            this.numRowsPerPage = select.value;
-            this.renderRowActions();
-            this.renderTrs();
-        });
+    changeNumRowsPerPage(inputParent) {
+        if (inputParent) {
+            let input = inputParent.querySelector("input");
+            let regVal = /^[0-9]*[0-9]+$/;
+            input.addEventListener("keyup", () => {
+                if (regVal.test(input.value)) {
+                    this.indexUltElement = 0;
+                    this.numRowsPerPage = input.value > this.cantRows ? this.cantRows : input.value;
+                    this.ls.setItem(`numRowsPerPage${this.titulo}`, this.numRowsPerPage);
+                    this.renderRowActions();
+                    this.renderTrs();
+                }
+            });
+        } else {
+            if (this.ls.getItem(`numRowsPerPage${this.titulo}`)) {
+                this.numRowsPerPage = this.ls.getItem(`numRowsPerPage${this.titulo}`);
+            } else {
+                this.ls.setItem(`numRowsPerPage${this.titulo}`, this.numRowsPerPage);
+            }
+        }
     }
 
     moveInRows(container_pages_nav) {
@@ -745,7 +775,7 @@ class DataTable {
         datos.append("opc", this.dbParametros.opcEditar);
         let response = this.peticionF(datos, this.dbParametros.url);
         response.then((r) => {
-            alert(r);
+            console.log(r);
         });
     }
 
@@ -755,13 +785,12 @@ class DataTable {
         datos.append("opc", this.dbParametros.opcEliminar);
         let response = this.peticionF(datos, this.dbParametros.url);
         response.then((r) => {
-            alert(r);
+            console.log(r);
         });
     }
 
     insertarFilas(datos) {
         let dFragment = document.createDocumentFragment();
-
         let tr = document.createElement("tr");
 
         datos.forEach((fila, index) => {
@@ -773,10 +802,10 @@ class DataTable {
             if (index == 0) {
                 let td = document.createElement("td");
                 td.innerHTML = `
-          <input type="checkbox" id="${checkBoxId}" class="table_check">
-          <label for="${checkBoxId}">
-              <div class="custom_checkbox"></div>
-          </label>`;
+                    <input type="checkbox" id="${checkBoxId}" class="table_check">
+                    <label for="${checkBoxId}">
+                        <div class="custom_checkbox"></div>
+                    </label>`;
                 tr.appendChild(td);
             } else {
                 let td = document.createElement("td");
@@ -784,6 +813,7 @@ class DataTable {
                 tr.appendChild(td);
             }
         });
+
         dFragment.appendChild(tr);
         this.tbody.appendChild(dFragment);
         this.cantRows++;
@@ -841,7 +871,9 @@ class DataTable {
                                     let select = td.querySelector("select");
                                     let selectOption = select.options[select.selectedIndex];
                                     formDataEditados.append(nameCampo, selectOption.value);
-                                    td.innerHTML = selectOption.text;
+                                    td.innerHTML = this.capitalizarString(selectOption.text);
+                                } else if (nameCampo == "estado") {
+                                    formDataEditados.append(nameCampo, td.firstElementChild.dataset.estado);
                                 } else {
                                     formDataEditados.append(nameCampo, td.textContent);
                                 }
@@ -875,7 +907,6 @@ class DataTable {
                             let option = document.createElement("option");
                             option.value = values[0]; //[0] = id
                             option.innerText = values[1]; //[1] = text
-                            console.log(textSelected);
                             if (values[1] == textSelected) {
                                 option.selected = true;
                             }
@@ -884,6 +915,7 @@ class DataTable {
                         select.appendChild(fragment);
                     };
                     renderSelect();
+                    hijo.classList.add("editableOnSelect");
                 } else if (hijo.querySelector("img") || nameCampo == "foto") {
                     let image = hijo.querySelector("a img") ? hijo.querySelector("a") : hijo.querySelector("img");
 
@@ -920,12 +952,11 @@ class DataTable {
                 }
 
                 if (this.headers[i - 1].indexOf("estado") == 0) {
-                    td.textContent = "F";
+                    td.classList.add("estado_inactivo");
+                    td.classList.remove("estado_activo");
                 }
             }
         });
-        this.cantRows--;
-        this.renderTitleBar();
     }
 }
 
