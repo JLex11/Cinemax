@@ -872,9 +872,9 @@ class DataTable {
                                     let selectOption = select.options[select.selectedIndex];
                                     formDataEditados.append(nameCampo, selectOption.value);
                                     td.innerHTML = this.capitalizarString(selectOption.text);
-                                } else if (nameCampo == "estado") {
+                                } /* else if (nameCampo == "estado") {
                                     formDataEditados.append(nameCampo, td.firstElementChild.dataset.estado);
-                                } else {
+                                } */ else {
                                     formDataEditados.append(nameCampo, td.textContent);
                                 }
 
