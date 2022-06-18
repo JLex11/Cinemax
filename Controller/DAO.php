@@ -1,4 +1,19 @@
 <?php
+function imgToWebp($imagen, $ruta){
+    $quality = 80;
+    $extension = pathinfo($imagen, PATHINFO_EXTENSION);
+
+    if ($extension == "jpg" || $extension == "jpeg") {
+        $image = imagecreatefromjpeg($imagen, $quality);
+    } else if ($extension == "png") {
+        $image = imagecreatefrompng($imagen, $quality);
+    } else if ($extension == "webp") {
+        $image = $imagen;
+    }
+
+    return imagewebp($image, $ruta, $quality);
+}
+
 class DbTables
 {
     public static function listar()
@@ -16,10 +31,6 @@ class DbTables
 
         return $datos;
     }
-}
-
-function toWebp($imagen){
-    
 }
 
 /* -------------------------------- Pelicula -------------------------------- */
@@ -92,8 +103,9 @@ class Pelicula
         if (empty($foto)) {
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         } else {
-            $foto = "../foto/full/pelicula/" . $foto;
-            copy($_FILES["foto"]["tmp_name"], $foto);
+            $foto = imgToWebp($foto, "../foto/full/pelicula/");
+            /* $foto = "../foto/full/pelicula/" . $foto;
+            copy($_FILES["foto"]["tmp_name"], $foto); */
 
             $query = "UPDATE pelicula SET titulolatino = '$titulolatino', titulooriginal = '$titulooriginal', foto = '$foto', lanzamiento = '$lanzamiento', duracion = '$duracion', resena = '$resena', estado = '$estado', idtipo = '$idtipo', idpais = '$idpais' WHERE idpelicula = '$idpelicula'";
         }
