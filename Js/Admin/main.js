@@ -144,7 +144,7 @@ function navInSections() {
         if (posicion == 2) {
             if (!fEjecutadaData) {
                 loader.classList.add("loader");
-                let observer = new IntersectionObserver((entries, observer) => {
+                /* let observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach((entry) => { 
                         console.log(entry);
                     })
@@ -155,7 +155,7 @@ function navInSections() {
 
                 mainSections.forEach((section) => { 
                     observer.observe(section);
-                })
+                }) */
 
                 /* consultarPeliculas();
                 consultarActores();
