@@ -396,6 +396,7 @@ section {
     box-shadow: 3px 5px 10px #0000001a, -10px -10px 15px #00000017 inset;
     justify-content: flex-start;
     overflow-x: auto;
+    background: linear-gradient(to right, #135e97, #0672c5);
 }
 
 .header_item::-webkit-scrollbar {
@@ -405,18 +406,6 @@ section {
 .header_item:hover {
     box-shadow: 0px 5px 15px #0000004a, -3px -3px 15px #fefefe42 inset;
     z-index: 2;
-}
-
-.header_item {
-    background: linear-gradient(to right, #135e97, #0672c5);
-}
-
-.header_item:nth-child(2) {
-    background: linear-gradient(to right, #1a6e1e, #15aa1b);
-}
-
-.header_item:nth-child(3) {
-    background: linear-gradient(to right, #912222, #c62e23);
 }
 
 .header_item span.material-icons-round {
