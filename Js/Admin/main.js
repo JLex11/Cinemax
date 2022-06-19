@@ -31,7 +31,7 @@ function navInSections() {
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
     let mainSectionsX = [];
-
+    
     mainSections.forEach((section, index) => {
         mainSectionsX[index] = section.offsetLeft;
     });
@@ -250,8 +250,15 @@ function makeScrollableElements() {
 }
 
 function isScrollableElement(elementParent, overflowElement) {
+    elementParent.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        elementParent.scrollLeft += e.deltaY;
+    });
+
     let wOverflowElement = overflowElement.offsetWidth;
     let wElementParent = elementParent.offsetWidth;
+    let minRange = overflowElement.offsetWidth - overflowElement.offsetWidth * 0.01;
+    let maxRange = overflowElement.offsetWidth + overflowElement.offsetWidth * 0.01;
 
     let buttonLeft = document.createElement("div");
     let buttonRight = document.createElement("div");
@@ -267,20 +274,25 @@ function isScrollableElement(elementParent, overflowElement) {
     buttonLeft.addEventListener("click", () => {
         elementParent.scrollLeft -= 100;
     });
-    
+
     buttonRight.innerHTML = `
         <span class="material-icons-round">navigate_next</span>`;
     buttonRight.addEventListener("click", () => {
         elementParent.scrollLeft += 100;
     });
-    
+
     elementParent.parentNode.append(buttonLeft, buttonRight);
 
     function isVisibilyScrollButtons() {
         if (wOverflowElement > wElementParent) {
             if (elementParent.scrollLeft > 1) {
                 buttonLeft.style.transform = "scaleX(1)";
-            } else if ((elementParent.scrollLeft + elementParent.offsetWidth) == (elementParent.scrollLeft + elementParent.parentNode.offsetWidth)) { 
+            } else {
+                buttonLeft.style.transform = "scaleX(0)";
+            }
+
+            let scrollRelation = wElementParent + elementParent.scrollLeft;
+            if (scrollRelation > minRange && scrollRelation < maxRange) {
                 buttonRight.style.transform = "scaleX(0)";
             } else {
                 buttonRight.style.transform = "scaleX(1)";
@@ -291,11 +303,6 @@ function isScrollableElement(elementParent, overflowElement) {
         }
     }
 
-    elementParent.addEventListener("wheel", (e) => {
-        e.preventDefault();
-        elementParent.scrollLeft += e.deltaY;
-    });
-
     elementParent.addEventListener("scroll", () => {
         isVisibilyScrollButtons();
     });
@@ -303,12 +310,16 @@ function isScrollableElement(elementParent, overflowElement) {
     addEventListener("resize", () => {
         wOverflowElement = overflowElement.offsetWidth;
         wElementParent = elementParent.offsetWidth;
+        minRange = overflowElement.offsetWidth - overflowElement.offsetWidth * 0.01;
+        maxRange = overflowElement.offsetWidth + overflowElement.offsetWidth * 0.01;
         isVisibilyScrollButtons();
     });
 
     new ResizeObserver(() => {
         wOverflowElement = overflowElement.offsetWidth;
         wElementParent = elementParent.offsetWidth;
+        minRange = overflowElement.offsetWidth - overflowElement.offsetWidth * 0.01;
+        maxRange = overflowElement.offsetWidth + overflowElement.offsetWidth * 0.01;
         isVisibilyScrollButtons();
     }).observe(overflowElement);
 }
