@@ -357,7 +357,7 @@ section {
     transition: transform .1s;
     height: 100%;
     display: flex;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     position: absolute;
     align-items: center;
@@ -396,11 +396,7 @@ section {
     box-shadow: 3px 5px 10px #0000001a, -10px -10px 15px #00000017 inset;
     justify-content: flex-start;
     overflow-x: auto;
-    background: linear-gradient(to right, #176bab, #084e83);
-}
-
-.header_item:first-child, .header_item:last-child {
-    z-index: 2;
+    background: linear-gradient(to right, #135e97, #0672c5);
 }
 
 .header_item::-webkit-scrollbar {
