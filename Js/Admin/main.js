@@ -58,7 +58,7 @@ function navInSections() {
 
     navBar.addEventListener("mouseover", () => {
         ocultarNavBar(false);
-        if (!firstSession == false) {
+        if (firstSession == true) {
             navBar.classList.remove("navFirst");
         }
 
