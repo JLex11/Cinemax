@@ -340,7 +340,6 @@ section {
 
 /* -------------------------- Sections header items ------------------------- */
 .section_header {
-    margin-bottom: 20px;
     position: relative;
     width: 100%;
     display: flex;
@@ -409,7 +408,7 @@ section {
     z-index: 2;
 }
 
-.header_item:nth-child(1) {
+.header_item {
     background: linear-gradient(to right, #135e97, #0672c5);
 }
 
@@ -649,17 +648,6 @@ section {
 .container_grafico canvas.grafico {
     width: 100%;
     height: 100%;
-}
-
-/* ------------------------------ User section ------------------------------ */
-.data_section .header_item {
-    gap: 10px;
-    padding: 15px;
-    cursor: pointer;
-}
-
-.data_section .header_item:hover {
-    outline: 2px solid #ffffff;
 }
 
 /* --------------------------------- Subbody -------------------------------- */
@@ -1110,7 +1098,7 @@ input.input_agregar_form:focus ~ .content_label > p {
         border-bottom: var(--border-item-dark);
     }
 
-    .header_item:nth-child(1) {
+    .header_item {
         background: linear-gradient(to right, #212d40, #152030);
     }
 
@@ -1155,8 +1143,8 @@ input.input_agregar_form:focus ~ .content_label > p {
     }
 }
 
-/* ------------------------------- Responsive 520px - Mobile ------------------------------- */
-@media screen and (max-width: 520px) {
+/* ------------------------------- Responsive 560px - Mobile ------------------------------- */
+@media screen and (max-width: 560px) {
     .navFirst ul::before {
         content: "🤚 Toca para navegar.";
     }
@@ -1185,7 +1173,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     }
 
     div#chi2 .header_item h5:last-child {
-        font-size: 13pt;
+        font-size: 10pt;
     }
 
     .data_section .header_item {
@@ -1203,5 +1191,9 @@ input.input_agregar_form:focus ~ .content_label > p {
 
     .section_subbody {
         padding: 5px;
+    }
+
+    .container_pages_number p:first-of-type {
+        display: none;
     }
 }

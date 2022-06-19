@@ -31,7 +31,7 @@ function navInSections() {
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
     let mainSectionsX = [];
-
+    
     mainSections.forEach((section, index) => {
         mainSectionsX[index] = section.offsetLeft;
     });
