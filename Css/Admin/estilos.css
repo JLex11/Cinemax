@@ -146,10 +146,6 @@ h1 {
     align-items: center;
 }
 
-.right_section .theme span {
-    color: var(--color-blue);
-}
-
 /* -------------------- Button Up ------------------- */
 div.button_up_active {
     transform: scale(1);
