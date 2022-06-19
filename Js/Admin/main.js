@@ -11,7 +11,7 @@ let firstSession = false;
 addEventListener("load", () => {
     checkFirstTime();
     navInSections();
-    headerAndButtonUp();
+    header();
     homeHeaderCards();
     crearGrafico();
     makeScrollableElements();
@@ -156,8 +156,9 @@ function navInSections() {
     }
 }
 
-function headerAndButtonUp() {
+function header() {
     let buttonUp = document.getElementById("button_up");
+
     window.addEventListener("scroll", () => {
         if (document.documentElement.scrollTop >= 40) {
             buttonUp.classList.add("button_up_active");

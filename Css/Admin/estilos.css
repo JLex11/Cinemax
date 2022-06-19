@@ -141,11 +141,6 @@ h1 {
     font-size: 20pt;
 }
 
-.right_section {
-    display: flex;
-    align-items: center;
-}
-
 /* -------------------- Button Up ------------------- */
 div.button_up_active {
     transform: scale(1);
