@@ -98,9 +98,7 @@ function navInSections() {
             setTimeout(() => {
                 navBar.classList.add("navHidden");
             }, 1000);
-        }
-
-        if (!active) {
+        } else {
             navBar.classList.remove("navHidden");
         }
     }
@@ -275,13 +273,13 @@ function isScrollableElement(elementParent, overflowElement) {
     buttonLeft.innerHTML = `
         <span class="material-icons-round">navigate_before</span>`;
     buttonLeft.addEventListener("click", () => {
-        elementParent.scrollLeft -= 100;
+        elementParent.scrollLeft -= 300;
     });
 
     buttonRight.innerHTML = `
         <span class="material-icons-round">navigate_next</span>`;
     buttonRight.addEventListener("click", () => {
-        elementParent.scrollLeft += 100;
+        elementParent.scrollLeft += 300;
     });
 
     elementParent.parentNode.append(buttonLeft, buttonRight);

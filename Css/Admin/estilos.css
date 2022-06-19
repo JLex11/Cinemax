@@ -143,21 +143,30 @@ h1 {
 
 /* -------------------- Button Up ------------------- */
 div.button_up_active {
-    transform: scale(1);
+    transform: translateY(0);
+    animation: reboteEffect .6s;
+}
+
+@keyframes reboteEffect {
+    0%{transform: translateY(0);}
+    25%{transform: translateY(5px);}
+    50%{transform: translateY(0);}
+    75%{transform: translateY(7px);}
+    100%{transform: translateY(0);}
 }
 
 .button_up {
     display: flex;
     cursor: pointer;
-    transform: scale(0);
+    transform: translateY(-100%);
+    transition: transform 0.3s;
 }
 
 .button_up span {
     font-size: 25pt;
-    transition: transform 0.3s;
 }
 
-.button_up:hover span {
+.button_up:hover {
     transform: translateY(5px);
 }
 
@@ -293,6 +302,7 @@ nav li img,
 /* ---------------------------------- Main ---------------------------------- */
 main {
     min-height: calc(100vh - 40px);
+    width: 100%;
     display: flex;
     margin: 0 auto;
     overflow-x: hidden;
@@ -357,7 +367,7 @@ section {
     transition: transform .1s;
     height: 100%;
     display: flex;
-    z-index: 2;
+    z-index: 1;
     top: 0;
     position: absolute;
     align-items: center;
@@ -396,16 +406,11 @@ section {
     box-shadow: 3px 5px 10px #0000001a, -10px -10px 15px #00000017 inset;
     justify-content: flex-start;
     overflow-x: auto;
-    background: linear-gradient(to right, #135e97, #0672c5);
+    background: linear-gradient(to right, #1264a3, #084e83);
 }
 
 .header_item::-webkit-scrollbar {
     display: none;
-}
-
-.header_item:hover {
-    box-shadow: 0px 5px 15px #0000004a, -3px -3px 15px #fefefe42 inset;
-    z-index: 2;
 }
 
 .header_item span.material-icons-round {
@@ -869,6 +874,7 @@ div.checkboxToButton::after {
 .sub_container_buttons .btns .material-icons-round {
     padding: 5px;
     border-radius: 10px;
+    transition: color .3s;
 }
 
 .sub_container_buttons .btns:hover:nth-child(1) .material-icons-round {
@@ -1148,7 +1154,7 @@ input.input_agregar_form:focus ~ .content_label > p {
     }
 
     div#chi2 .header_item {
-        padding: 10px;
+        padding: 15px;
     }
 
     div#chi2 .header_item span.material-icons-round {
