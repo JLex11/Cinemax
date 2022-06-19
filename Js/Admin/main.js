@@ -328,7 +328,6 @@ function isScrollableElement(elementParent, overflowElement) {
 /* ---------------------- HeaderCards --------------------- */
 class HeaderCards {
     principalContainer;
-    hrefElement;
     headerItem;
     spanMaterialIcons;
     containerBody;
@@ -338,8 +337,7 @@ class HeaderCards {
 
     constructor(principalContainer, contents) {
         this.principalContainer = document.getElementById(principalContainer);
-        this.hrefElement = document.createElement("a");
-        this.headerItem = document.createElement("div");
+        this.headerItem = document.createElement("a");
         this.containerBody = document.createElement("div");
         this.id = contents.id;
         this.icon = contents.icon;
@@ -352,9 +350,8 @@ class HeaderCards {
         this.renderBody();
 
         this.headerItem.classList.add("header_item");
-        this.hrefElement.appendChild(this.headerItem);
-        this.hrefElement.href = "#" + this.id;
-        this.principalContainer.appendChild(this.hrefElement);
+        this.headerItem.href = "#" + this.id;
+        this.principalContainer.appendChild(this.headerItem);
     }
 
     renderIcon() {
