@@ -399,6 +399,10 @@ section {
     background: linear-gradient(to right, #135e97, #0672c5);
 }
 
+.header_item:first-child, .header_item:last-child {
+    z-index: 2;
+}
+
 .header_item::-webkit-scrollbar {
     display: none;
 }
