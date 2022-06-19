@@ -288,7 +288,10 @@ function isScrollableElement(elementParent, overflowElement) {
 
     function isVisibilyScrollButtons() {
         if (wOverflowElement > wElementParent) {
-            if (elementParent.scrollLeft > 1) {
+            buttonLeft.style.transform = "scaleX(1)";
+            buttonRight.style.transform = "scaleX(1)";
+
+            /* if (elementParent.scrollLeft > 1) {
                 buttonLeft.style.transform = "scaleX(1)";
             } else {
                 buttonLeft.style.transform = "scaleX(0)";
@@ -299,7 +302,7 @@ function isScrollableElement(elementParent, overflowElement) {
                 buttonRight.style.transform = "scaleX(0)";
             } else {
                 buttonRight.style.transform = "scaleX(1)";
-            }
+            } */
         } else {
             buttonLeft.style.transform = "scaleX(0)";
             buttonRight.style.transform = "scaleX(0)";
