@@ -294,7 +294,6 @@ nav li img,
 main {
     min-height: calc(100vh - 40px);
     display: flex;
-    max-width: 1500px;
     margin: 0 auto;
     overflow-x: hidden;
     flex-direction: row;
@@ -371,13 +370,13 @@ section {
 .section_header .button_right {
     transform-origin: right;
     background: linear-gradient(to left, var(--bg) 40%, transparent);
-    padding: 0 10px 0 35px;
+    padding: 0 0 0 25px;
     right: -1px;
 }
 .section_header .button_left {
     transform-origin: left;
     background: linear-gradient(to right, var(--bg) 40%, transparent);
-    padding: 0 35px 0 10px;
+    padding: 0 25px 0 0;
     left: -1px;
 }
 
@@ -753,34 +752,29 @@ td {
     flex-direction: column-reverse;
 }
 
-td.estado_activo {
-    color: var(--color-blue);
+td.estado_activo, td.estado_inactivo {
     position: relative;
 }
-td.estado_activo::before {
-    content: "Activo";
+td.estado_activo::before, td.estado_inactivo::before {
     width: 100%;
     height: 100%;
     position: absolute;
     background: var(--card-bg);
-    text-shadow: 0 0 5px var(--color-blue);
     top: 0;
     left: 0;
+    display: flex;
+    align-items: center;
 }
 
-td.estado_inactivo {
-    color: gray;
-    position: relative;
+td.estado_activo::before {
+    content: "Activo";
+    color: var(--color-blue);
+    text-shadow: 0 0 5px var(--color-blue);
 }
 td.estado_inactivo::before {
     content: "Inactivo";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background: var(--card-bg);
+    color: gray;
     text-shadow: 0 0 5px gray;
-    top: 0;
-    left: 0;
 }
 
 
@@ -1151,6 +1145,13 @@ input.input_agregar_form:focus ~ .content_label > p {
 
     td.editableOn:focus {
         background: black;
+    }
+
+    td.estado_activo::before {
+        background: var(--color-dark);
+    }
+    td.estado_inactivo::before {
+        background: var(--color-dark);
     }
 }
 
