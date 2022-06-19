@@ -172,6 +172,8 @@ function header() {
             top: 0,
         });
     });
+
+    
 }
 
 function crearGrafico() {
