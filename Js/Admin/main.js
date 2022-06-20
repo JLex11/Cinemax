@@ -590,6 +590,10 @@ class DataTable {
                         selectOption.value = key;
                         input.appendChild(selectOption);
                     }
+                } else {
+                    input = document.createElement("input");
+                    input.placeholder = this.capitalizarString(this.headers[i]);
+                    input.name = this.headers[i].replace(/ /g, "");
                 }
 
 
