@@ -584,7 +584,7 @@ class DataTable {
                     input.type = "date";
                 } else if (inputType == "enum") {
                     input = document.createElement("select");
-                    input.classList.add("editableOnSelect");
+                    input.classList.add("formSelect");
 
                     let options = { "T": "Activo", "F": "Inactivo" };
                     for (const key in options) {
