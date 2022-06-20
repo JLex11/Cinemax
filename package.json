@@ -3,6 +3,7 @@
     "eslint": "^8.17.0"
   },
   "dependencies": {
+    "chart.js": "^3.8.0",
     "git-auto-pull": "^1.0.9"
   }
 }
