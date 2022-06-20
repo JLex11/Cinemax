@@ -942,6 +942,7 @@ div.checkboxToButton::after {
 }
 
 .sub_container_form form .container_inputs {
+    padding-right: 5px;
     gap: 10px;
     display: flex;
     overflow: auto;
