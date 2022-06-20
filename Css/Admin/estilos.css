@@ -969,7 +969,7 @@ input.input_agregar_form:hover {
 }
 
 input.input_agregar_form::placeholder {
-    color: inherit;
+    color: rgb(175, 175, 175);
 }
 
 input.input_agregar_form:focus {
