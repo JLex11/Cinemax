@@ -953,7 +953,7 @@ div.checkboxToButton::after {
 .input_agregar_form {
     min-width: 100px;
     border: 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px solid #eaeaea;
     padding: 5px;
     font-size: 16px;
     background-color: transparent;
