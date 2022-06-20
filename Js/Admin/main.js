@@ -553,7 +553,6 @@ class DataTable {
             pText.textContent = this.capitalizarString(this.headers[i]);
 
             let input = document.createElement("input");
-            console.log(this.describe[i]);
 
             if (this.describe[i]) {
                 let firstP = this.describe[i].Type.indexOf("(");
@@ -584,13 +583,14 @@ class DataTable {
                     input.setAttribute("maxlength", inputLenght);
                     input.type = "date";
                 } else if (inputType == "enum") {
-                    
                     input = document.createElement("select");
+                    input.classList.add("editableOnSelect");
+
                     let options = { "T": "Activo", "F": "Inactivo" };
                     for (const key in options) {
                         let selectOption = document.createElement("option");
-                        selectOption.textContent = key;
-                        selectOption.value = options[key];
+                        selectOption.textContent = options[key];
+                        selectOption.value = key;
                         input.appendChild(selectOption);
                     }
                 }
