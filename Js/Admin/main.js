@@ -591,6 +591,7 @@ class DataTable {
 
 
                 let tableOfTd = this.tableFields[i - 1].table;
+                console.log(tableOfTd);
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
                     let renderSelect = async () => {
                         let fragment = document.createDocumentFragment();
