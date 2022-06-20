@@ -669,11 +669,6 @@ section {
     height: 100%;
 }
 
-.container_grafico canvas.grafico {
-    width: 100%;
-    height: 100%;
-}
-
 /* --------------------------------- Subbody -------------------------------- */
 .section_subbody {
     transition: box-shadow 0.3s;
