@@ -92,6 +92,7 @@ function navInSections() {
             mainSectionsX[index] = section.offsetLeft;
         });
         moverMainScroll({ focusAnimation: false, behaviorAnimation: false });
+        moverTargetSpan(posElementClicked);
     });
 
     new ResizeObserver(() => {
