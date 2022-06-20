@@ -199,20 +199,15 @@ function crearGrafico() {
         let canvasGrafico = document.getElementById(contenedor);
         // eslint-disable-next-line no-undef
         new Chart(canvasGrafico, {
-            type: "bar",
+            type: "radar",
             data: {
                 labels: parametros,
                 datasets: [
                     {
                         label: labels[0],
                         data: valores[0],
-                        backgroundColor: ["#0069bd", "lightgreen", "lightred"],
-                    },
-                    {
-                        label: labels[0],
-                        data: valores[0],
-                        backgroundColor: ["#0069bd", "green", "red"],
-                    },
+                        backgroundColor: ["#0069bd", "lightgreen", "red"],
+                    }
                 ],
             },
             responsive: true,
