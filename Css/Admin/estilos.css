@@ -997,6 +997,16 @@ textarea.input_agregar_form {
     color: inherit;
 }
 
+select.formSelect.input_agregar_form {
+    color: inherit;
+    font-size: 12pt;
+    border: 0;
+    box-shadow: 0 2px 5px #00000045;
+    background: #0000001a;
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .container_form_act_btns {
     gap: 5PX;
     display: flex;
