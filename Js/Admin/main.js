@@ -553,6 +553,7 @@ class DataTable {
             pText.textContent = this.capitalizarString(this.headers[i]);
 
             let input = document.createElement("input");
+            console.log(this.describe[i]);
 
             if (this.describe[i]) {
                 let firstP = this.describe[i].Type.indexOf("(");
@@ -583,7 +584,36 @@ class DataTable {
                     input.setAttribute("maxlength", inputLenght);
                     input.type = "date";
                 } else if (inputType == "enum") {
+                    
                     input = document.createElement("select");
+                    let options = { "T": "Activo", "F": "Inactivo" };
+                    for (const key in options) {
+                        let selectOption = document.createElement("option");
+                        selectOption.textContent = key;
+                        selectOption.value = options[key];
+                        input.appendChild(selectOption);
+                    }
+                }
+
+
+                let tableOfTd = this.tableFields[i - 1].table;
+                if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
+                    let renderSelect = async () => {
+                        let fragment = document.createDocumentFragment();
+                        let datos = await this.seeRow(tableOfTd);
+                        datos = await datos.datos;
+
+                        for (let dato of datos) {
+                            let values = Object.values(dato);
+                            let option = document.createElement("option");
+                            option.value = values[0];
+                            option.innerText = values[1];
+                            fragment.appendChild(option);
+                        }
+                        input.appendChild(fragment);
+                    };
+                    renderSelect();
+                    input.classList.add("editableOnSelect");
                 }
             }
 
@@ -893,9 +923,7 @@ class DataTable {
                                     let selectOption = select.options[select.selectedIndex];
                                     formDataEditados.append(nameCampo, selectOption.value);
                                     td.innerHTML = this.capitalizarString(selectOption.text);
-                                } /* else if (nameCampo == "estado") {
-                                    formDataEditados.append(nameCampo, td.firstElementChild.dataset.estado);
-                                } */ else {
+                                } else {
                                     formDataEditados.append(nameCampo, td.textContent);
                                 }
 
