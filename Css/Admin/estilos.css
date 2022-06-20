@@ -950,17 +950,6 @@ div.checkboxToButton::after {
     align-items: center;
 }
 
-.content_label {
-    width: 200px;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-}
-
-.content_label p {
-    font-size: 10pt;
-}
-
 input.input_agregar_form {
     border: 0;
     border-bottom: 2px solid transparent;

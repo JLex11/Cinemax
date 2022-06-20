@@ -546,12 +546,6 @@ class DataTable {
         formulario.id = "form" + this.titulo;
 
         for (let i = 1; i < this.headers.length; i++) {
-            let divContentLabel = document.createElement("div");
-            divContentLabel.classList.add("content_label");
-
-            let pText = document.createElement("p");
-            pText.textContent = this.capitalizarString(this.headers[i]);
-
             let input = document.createElement("input");
 
             if (this.describe[i]) {
@@ -619,10 +613,7 @@ class DataTable {
 
             input.classList.add("input_agregar_form");
 
-            divContentLabel.appendChild(pText);
-            divContentLabel.appendChild(input);
-
-            fragment.appendChild(divContentLabel);
+            fragment.append(input);
         }
         container_inputs.appendChild(fragment);
         container_inputs.classList.add("container_inputs");
