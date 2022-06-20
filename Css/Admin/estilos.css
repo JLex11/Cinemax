@@ -1,10 +1,27 @@
 * {
-    transition: color .1s, background .3s;
     margin: 0;
     padding: 0;
     text-decoration: none;
     box-sizing: border-box;
     list-style: none;
+}
+
+*::-webkit-scrollbar {
+    background: var(--bg);
+    border-radius: 5px;
+    width: 14px;
+}
+*::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+    background-clip: content-box;
+    border: solid 2px transparent;
+}
+*::-webkit-scrollbar-track-piece{
+    border-radius: 5px;
+}
+
+html {
     scroll-behavior: smooth;
 }
 
@@ -18,9 +35,10 @@
     --color-red: #f44336;
     --color-dark: #262627;
     --color-hover: #dccec882;
-    --card-bg: #fafafefc;
+    --primary-color: #fafafefc;
     --item-box-shadow: 0 0 20px #0000001f;
     --item-padding: 10px;
+    --target-styles-box-shadow: 0 5px 15px #0000004a;
 }
 
 body {
@@ -129,7 +147,7 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: white;
+    background: var(--primary-color);
 }
 
 header h1 {
@@ -144,15 +162,25 @@ h1 {
 /* -------------------- Button Up ------------------- */
 div.button_up_active {
     transform: translateY(0);
-    animation: reboteEffect .6s;
+    animation: reboteEffect 0.6s;
 }
 
 @keyframes reboteEffect {
-    0%{transform: translateY(0);}
-    25%{transform: translateY(5px);}
-    50%{transform: translateY(0);}
-    75%{transform: translateY(7px);}
-    100%{transform: translateY(0);}
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(5px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(7px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .button_up {
@@ -235,8 +263,8 @@ nav li img,
     left: 0;
     position: absolute;
     border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 5px 15px #0000004a;
+    background: var(--primary-color);
+    box-shadow: var(--target-styles-box-shadow);
     transition: left 0.3s 0.2s, transform 0.5s cubic-bezier(0, 0.75, 1, 0.38);
     width: 50px;
     height: 50px;
@@ -313,6 +341,7 @@ main {
 
 main.section_focus_change {
     transform: scale(0.95);
+    scroll-behavior: smooth;
 }
 
 main::-webkit-scrollbar {
@@ -356,6 +385,7 @@ section {
 
 .overflowable_container {
     overflow-x: auto;
+    scroll-behavior: smooth;
     width: 100%;
 }
 
@@ -364,7 +394,7 @@ section {
 }
 
 .section_header .scrollButtons {
-    transition: transform .1s;
+    transition: transform 0.1s;
     height: 100%;
     display: flex;
     z-index: 1;
@@ -495,11 +525,10 @@ section {
     display: flex;
     padding: 10px;
     border-radius: 20px;
-    background: var(--card-bg);
+    background: var(--primary-color);
     box-shadow: var(--item-box-shadow);
     transition: box-shadow 0.5s ease, transform 0.3s;
     position: relative;
-    /* overflow: hidden; */
     flex-direction: column;
 }
 
@@ -548,7 +577,6 @@ section {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* padding-left: 10px; */
 }
 
 .info_item div:first-child {
@@ -651,7 +679,7 @@ section {
     width: 100%;
     padding: 10px;
     border-radius: 20px;
-    background: var(--card-bg);
+    background: var(--primary-color);
     overflow: hidden;
     box-shadow: var(--item-box-shadow);
     align-items: center;
@@ -701,7 +729,7 @@ td.editableOn {
 }
 
 td.editableOn:focus {
-    background: var(--card-bg);
+    background: var(--primary-color);
     text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
     box-shadow: 0px 0px 10px var(--color-blue);
     outline: 1px solid #03a9f4;
@@ -733,14 +761,16 @@ td {
     flex-direction: column-reverse;
 }
 
-td.estado_activo, td.estado_inactivo {
+td.estado_activo,
+td.estado_inactivo {
     position: relative;
 }
-td.estado_activo::before, td.estado_inactivo::before {
+td.estado_activo::before,
+td.estado_inactivo::before {
     width: 100%;
     height: 100%;
     position: absolute;
-    background: var(--card-bg);
+    background: var(--primary-color);
     top: 0;
     left: 0;
     display: flex;
@@ -757,7 +787,6 @@ td.estado_inactivo::before {
     color: gray;
     text-shadow: 0 0 5px gray;
 }
-
 
 .container_foto_inputFile input {
     display: none;
@@ -804,7 +833,7 @@ div.checkboxToButton::after {
     width: 100%;
     height: 100%;
     position: relative;
-    color: var(--card-bg);
+    color: var(--primary-color);
     font-size: 8pt;
     align-items: center;
     justify-content: center;
@@ -874,7 +903,7 @@ div.checkboxToButton::after {
 .sub_container_buttons .btns .material-icons-round {
     padding: 5px;
     border-radius: 10px;
-    transition: color .3s;
+    transition: color 0.3s;
 }
 
 .sub_container_buttons .btns:hover:nth-child(1) .material-icons-round {
@@ -1028,13 +1057,13 @@ input.input_agregar_form:focus ~ .content_label > p {
 
 .container_pages_number input {
     color: inherit;
-    background: #0000001a;
+    background: var(--bg);
     font-size: 12pt;
     border: 0;
-    width: 30px;
-    box-shadow: 0 2px 5px #00000045;
+    width: 25px;
+    box-shadow: 0 2px 5px #0000001b;
     border-radius: 5px;
-    padding: 5px;
+    padding: 8px 5px;
 }
 
 .container_pages_nav ul {
@@ -1062,23 +1091,12 @@ input.input_agregar_form:focus ~ .content_label > p {
     :root {
         --bg: #1b1b1b;
         --border-item-dark: 1px solid #5f5f5f;
+        --primary-color: #262627;
+        --target-styles-box-shadow: 0 5px 25px #000000b0;
     }
 
     body {
         color: #ffffff;
-    }
-
-    header {
-        background: var(--color-dark);
-    }
-
-    .targetStyles {
-        background: var(--color-dark);
-        box-shadow: 0 5px 25px #000000b0;
-    }
-
-    .item {
-        background: var(--color-dark);
     }
 
     .item:hover {
@@ -1097,14 +1115,6 @@ input.input_agregar_form:focus ~ .content_label > p {
 
     .header_item:hover {
         box-shadow: 0px 5px 15px #0000004a, -3px -3px 15px #00000042 inset;
-    }
-
-    .data_section .header_item:hover {
-        outline: 2px solid var(--color-dark);
-    }
-
-    .section_subbody {
-        background: var(--color-dark);
     }
 
     .container_buttons_and_form span.material-icons-round {
@@ -1126,13 +1136,6 @@ input.input_agregar_form:focus ~ .content_label > p {
 
     td.editableOn:focus {
         background: black;
-    }
-
-    td.estado_activo::before {
-        background: var(--color-dark);
-    }
-    td.estado_inactivo::before {
-        background: var(--color-dark);
     }
 }
 

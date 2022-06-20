@@ -1,3 +1,4 @@
+let body = document.querySelector("body");
 let navBar = document.querySelector("nav");
 let navOptions = document.querySelectorAll(".option img");
 let targetSpan = navBar.querySelector(".targetStyles");
@@ -31,9 +32,10 @@ function navInSections() {
     let fEjecutadaData = false;
     let fEjecutadaUsers = false;
     let mainSectionsX = [];
-    
+
     mainSections.forEach((section, index) => {
         mainSectionsX[index] = section.offsetLeft;
+        console.log("mainSectionsX[index]", mainSectionsX[index]);
     });
 
     if (localStorage.getItem("posElementClicked")) {
@@ -89,9 +91,15 @@ function navInSections() {
         mainSections.forEach((section, index) => {
             mainSectionsX[index] = section.offsetLeft;
         });
-        moverMainScroll({ focusAnimation: false });
-        moverTargetSpan(posElementClicked);
+        moverMainScroll({ focusAnimation: false, behaviorAnimation: false });
     });
+
+    new ResizeObserver(() => {
+        mainSections.forEach((section, index) => {
+            mainSectionsX[index] = section.offsetLeft;
+        });
+        moverMainScroll({ focusAnimation: false, behaviorAnimation: false });
+    }).observe(body);
 
     function ocultarNavBar(active) {
         if (active) {
@@ -110,7 +118,10 @@ function navInSections() {
                 main.classList.remove("section_focus_change");
             }, 500);
         }
-        main.scrollLeft = mainSectionsX[posElementClicked];
+
+        main.scroll({
+            left: mainSectionsX[posElementClicked]
+        });
     }
 
     function moverTargetSpan(posicion) {
