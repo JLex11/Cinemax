@@ -1093,7 +1093,7 @@ select.formSelect.input_agregar_form {
     }
 
     *::-webkit-scrollbar-thumb {
-        background: #1a1a1a;
+        background: var(--bg);
     }
 
     body {
