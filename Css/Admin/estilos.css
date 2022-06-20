@@ -924,6 +924,7 @@ div.checkboxToButton::after {
 
 .sub_container_form {
     animation: aparecerForm 0.3s;
+    transform-origin: top;
     width: 100%;
 }
 
