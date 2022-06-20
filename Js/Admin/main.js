@@ -208,6 +208,11 @@ function crearGrafico() {
                         data: valores[0],
                         backgroundColor: ["#0069bd", "green", "red"],
                     },
+                    {
+                        label: labels[0],
+                        data: valores[0],
+                        backgroundColor: ["#0069bd", "green", "red"],
+                    },
                 ],
             },
             responsive: true,
