@@ -590,15 +590,10 @@ class DataTable {
                         selectOption.value = key;
                         input.appendChild(selectOption);
                     }
-                } else {
-                    input = document.createElement("input");
-                    input.placeholder = this.capitalizarString(this.headers[i]);
-                    input.name = this.headers[i].replace(/ /g, "");
                 }
 
 
                 let tableOfTd = this.tableFields[i].table;
-                console.log(tableOfTd);
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
                     let renderSelect = async () => {
                         let fragment = document.createDocumentFragment();
@@ -617,6 +612,8 @@ class DataTable {
                     renderSelect();
                     input.classList.add("editableOnSelect");
                 }
+            } else {
+                input.placeholder = this.capitalizarString(this.headers[i]);
             }
 
             input.classList.add("input_agregar_form");
