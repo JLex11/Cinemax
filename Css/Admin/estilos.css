@@ -9,7 +9,7 @@
 *::-webkit-scrollbar {
     background: var(--bg);
     border-radius: 5px;
-    width: 14px;
+    width: 16px;
 }
 *::-webkit-scrollbar-thumb {
     background: var(--color-blue);
@@ -701,7 +701,7 @@ section {
     overflow: auto;
 }
 .container_table::-webkit-scrollbar {
-    height: 10px;
+    height: 14px;
 }
 
 table {
