@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "eslint": "^8.17.0"
+  },
+  "dependencies": {
+    "git-auto-pull": "^1.0.9"
   }
 }
