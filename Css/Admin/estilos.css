@@ -12,7 +12,7 @@
     width: 14px;
 }
 *::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: var(--color-blue);
     border-radius: 5px;
     background-clip: content-box;
     border: solid 2px transparent;
@@ -1097,6 +1097,10 @@ input.input_agregar_form:focus ~ .content_label > p {
         --border-item-dark: 1px solid #5f5f5f;
         --primary-color: #262627;
         --target-styles-box-shadow: 0 5px 25px #000000b0;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
     }
 
     body {
