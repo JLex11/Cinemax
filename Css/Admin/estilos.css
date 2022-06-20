@@ -700,6 +700,9 @@ section {
     border-radius: 10px;
     overflow: auto;
 }
+.container_table::-webkit-scrollbar {
+    height: 10px;
+}
 
 table {
     border-spacing: 15px 0;
@@ -969,7 +972,7 @@ input.input_agregar_form:hover {
 }
 
 input.input_agregar_form::placeholder {
-    color: rgb(175, 175, 175);
+    color: inherit;
 }
 
 input.input_agregar_form:focus {
