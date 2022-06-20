@@ -1085,7 +1085,7 @@ select.formSelect.input_agregar_form {
 /* ------------ Prefer Color Scheme ----------- */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: #1b1b1b;
+        --bg: #151515;
         --notifications-bg: #1b1b1b8e;
         --border-item-dark: 1px solid #5f5f5f;
         --primary-color: #262627;
@@ -1093,7 +1093,7 @@ select.formSelect.input_agregar_form {
     }
 
     *::-webkit-scrollbar-thumb {
-        background: var(--primary-color);
+        background: #1a1a1a;
     }
 
     body {
