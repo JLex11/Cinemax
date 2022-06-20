@@ -924,39 +924,30 @@ div.checkboxToButton::after {
 
 .sub_container_form {
     animation: aparecerForm 0.3s;
+    width: 100%;
 }
 
 @keyframes aparecerForm {
-    0% {
-        transform: scale(1, 0);
-        filter: opacity(0);
-    }
-
-    100% {
-        transform: scale(1, 1);
-        filter: opacity(1);
-    }
+    0% {transform: scaleY(0);}
+    100% {transform: scaleY(1);}
 }
 
 .sub_container_form form {
+    border-bottom: var(--item-border);
     padding: 10px;
-    box-shadow: 0 0 10px rgb(0 0 0 / 10%) inset;
-    background: white;
-    margin: 10px 0;
-    border-radius: 10px;
     gap: 10px;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
 }
 
 .sub_container_form form .container_inputs {
     gap: 10px;
     display: flex;
+    overflow: auto;
     width: 100%;
-    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
 }
 
 .content_label {
@@ -972,12 +963,11 @@ div.checkboxToButton::after {
 
 input.input_agregar_form {
     border: 0;
-    border-bottom: 2px solid #d5d5d5;
+    border-bottom: 2px solid transparent;
     padding: 5px 10px;
     font-size: 16px;
     background-color: transparent;
     color: #000000;
-    text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
     transition: outline 0.3s, box-shadow 0.3s, border-radius 0.3s, transform 0.3s, padding 0.3s;
 }
 
@@ -986,15 +976,11 @@ input.input_agregar_form:hover {
 }
 
 input.input_agregar_form::placeholder {
-    color: gray;
-    text-shadow: none;
+    color: rgb(0, 0, 0);
 }
 
 input.input_agregar_form:focus {
-    padding-left: 10px;
-    transform: translateY(5px);
-    border-radius: 10px;
-    outline: 2px solid #03a9f4;
+    border-bottom: 2px solid #2196f3;
     box-shadow: 0px 0px 10px var(--color-blue);
 }
 
@@ -1005,11 +991,10 @@ input.input_agregar_form:focus ~ .content_label > p {
 }
 
 .container_form_act_btns {
-    gap: 15px;
+    gap: 5PX;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
 }
 
 .container_form_act_btns button {
