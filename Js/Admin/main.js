@@ -563,18 +563,15 @@ class DataTable {
                     input.setAttribute("maxlength", inputLenght);
                     input.setAttribute("pattern", "[0-9]");
                     input.name = this.headers[i].replace(/ /g, "");
-                    input.placeholder = this.capitalizarString(this.headers[i]);
                 } else if (inputType == "tex") {
                     input = document.createElement("textarea");
                     input.setAttribute("maxlength", inputLenght);
                     input.name = this.headers[i].replace(/ /g, "");
-                    input.placeholder = this.capitalizarString(this.headers[i]);
                 } else if (inputType == "char") {
                     input = document.createElement("input");
                     input.setAttribute("maxlength", inputLenght);
                     input.type = "text";
                     input.name = this.headers[i].replace(/ /g, "");
-                    input.placeholder = this.capitalizarString(this.headers[i]);
                 } else if (inputType == "dat" || inputType == "year") {
                     input = document.createElement("input");
                     input.setAttribute("maxlength", inputLenght);
@@ -612,10 +609,9 @@ class DataTable {
                     renderSelect();
                     input.classList.add("editableOnSelect");
                 }
-            } else {
-                input.placeholder = this.capitalizarString(this.headers[i]);
             }
-
+            
+            input.placeholder = this.capitalizarString(this.headers[i]);
             input.classList.add("input_agregar_form");
 
             fragment.append(input);
