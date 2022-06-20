@@ -199,7 +199,7 @@ function crearGrafico() {
         let canvasGrafico = document.getElementById(contenedor);
         // eslint-disable-next-line no-undef
         new Chart(canvasGrafico, {
-            type: "line",
+            type: "polarArea",
             data: {
                 labels: parametros,
                 datasets: [
