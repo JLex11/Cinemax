@@ -590,7 +590,7 @@ class DataTable {
                 }
 
 
-                let tableOfTd = this.tableFields[i - 1].table;
+                let tableOfTd = this.tableFields[i].table;
                 console.log(tableOfTd);
                 if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
                     let renderSelect = async () => {
