@@ -544,6 +544,7 @@ class DataTable {
         crearBtnEnviar();
 
         formulario.id = "form" + this.titulo;
+        console.log(this.describe);
 
         for (let i = 1; i < this.headers.length; i++) {
             let input = document.createElement("input");
