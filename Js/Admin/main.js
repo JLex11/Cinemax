@@ -575,7 +575,7 @@ class DataTable {
                     input.type = "text";
                     input.name = this.headers[i].replace(/ /g, "");
                     input.placeholder = this.capitalizarString(this.headers[i]);
-                } else if (inputType == "dat") {
+                } else if (inputType == "dat" || inputType == "year") {
                     input = document.createElement("input");
                     input.setAttribute("maxlength", inputLenght);
                     input.type = "date";
