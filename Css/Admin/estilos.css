@@ -976,7 +976,7 @@ input.input_agregar_form:hover {
 }
 
 input.input_agregar_form::placeholder {
-    color: rgb(0, 0, 0);
+    color: inherit;
 }
 
 input.input_agregar_form:focus {
@@ -988,6 +988,13 @@ input.input_agregar_form:focus ~ .content_label > p {
     top: -10px;
     left: 5px;
     color: var(--color-blue);
+}
+
+textarea.input_agregar_form {
+    border: 0;
+}
+textarea.input_agregar_form {
+    color: inherit;
 }
 
 .container_form_act_btns {
