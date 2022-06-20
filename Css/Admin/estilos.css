@@ -950,14 +950,16 @@ div.checkboxToButton::after {
     align-items: center;
 }
 
-input.input_agregar_form {
+.input_agregar_form {
+    min-width: 100px;
     border: 0;
     border-bottom: 2px solid transparent;
-    padding: 5px 10px;
+    padding: 5px;
     font-size: 16px;
     background-color: transparent;
     color: #000000;
-    transition: outline 0.3s, box-shadow 0.3s, border-radius 0.3s, transform 0.3s, padding 0.3s;
+    transition: box-shadow 0.3s;
+    height: 35px;
 }
 
 input.input_agregar_form:hover {
