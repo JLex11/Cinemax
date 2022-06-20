@@ -264,7 +264,7 @@ function makeScrollableElements() {
 function isScrollableElement(elementParent, overflowElement) {
     elementParent.addEventListener("wheel", (e) => {
         e.preventDefault();
-        elementParent.scrollLeft += e.deltaY;
+        elementParent.scrollLeft += e.deltaY / 4;
     });
 
     let wOverflowElement = overflowElement.offsetWidth;

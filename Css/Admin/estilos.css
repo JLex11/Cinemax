@@ -29,7 +29,7 @@ html {
     --item-border: 1px solid #e5e5e5;
     --Font-Principal: "Poppins", sans-serif;
     --bg: #fbfbff;
-    --notifications-bg: #fbfbff9d;
+    --notifications-bg: #fbfbfff7;
     --color-active: #ffffffb3;
     --color-blue: #0069bd;
     --color-green: #51be55;
@@ -328,48 +328,6 @@ nav li img,
     height: 5px;
     border-radius: 5px;
     background: var(--color-blue);
-}
-
-/* ------------------- Aside ------------------ */
-aside.notifications_suggestions_panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 350px;
-    padding: 20px;
-    background: var(--notifications-bg);
-    backdrop-filter: blur(5px);
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 1000;
-    margin: 10px 5px;
-    height: calc(100vh - 20px);
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00000088;
-    overflow: hidden auto;
-}
-
-.notifications_suggestions_panel > div {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    max-height: 100%;
-    padding: 0 10px;
-    overflow: hidden auto;
-}
-
-.notifications_suggestions_panel .card {
-    background: rgb(0 0 0 / 90%);
-    width: 100%;
-    border-radius: 15px;
-    padding: var(--item-padding);
-}
-
-.notifications_suggestions_panel .card .header_card {
-    display: flex;
-    justify-content: space-between;
 }
 
 /* ------------------- Main -------------------- */
