@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "eslint": "^8.18.0"
-  },
   "name": "cinemax",
   "version": "1.0.0",
   "main": ".eslintrc.js",
@@ -97,5 +94,8 @@
     "url": "https://github.com/JLex11/Cinemax/issues"
   },
   "homepage": "https://github.com/JLex11/Cinemax#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "eslint": "^8.18.0"
+  }
 }
