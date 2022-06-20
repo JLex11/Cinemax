@@ -550,6 +550,8 @@ class DataTable {
             let input = document.createElement("input");
 
             if (this.describe[i]) {
+                console.log(this.describe[i]);
+
                 let firstP = this.describe[i].Type.indexOf("(");
                 let endP = this.describe[i].Type.indexOf(")");
                 let inputType = this.describe[i].Type.slice(0, firstP);
