@@ -878,56 +878,51 @@ class DataTable {
                 input.value = "aceptar";
 
                 //Cuando se hace click en el boton aceptar
-                input.addEventListener(
-                    "click",
-                    () => {
-                        let trParent = input.parentNode.parentNode;
-                        let tdHijos = trParent.querySelectorAll("td");
+                input.addEventListener("click",() => {
+                    let trParent = input.parentNode.parentNode;
+                    let tdHijos = trParent.querySelectorAll("td");
 
-                        tdHijos.forEach((td, index) => {
-                            if (index == 0) {
-                                checkboxLabel.classList.remove("checkboxToButton");
-                                input.type = "checkbox";
-                                input.value = "";
-                                input.checked = false;
-                            } else {
-                                let nameCampo = this.headers[index - 1].replace(/ /, "");
-                                if (nameCampo == "foto") {
-                                    let inputFileImg = td.querySelector("input[type=file]");
-                                    if (inputFileImg.files[0]) {
-                                        let blobImg = new Blob(inputFileImg.files);
+                    tdHijos.forEach((td, index) => {
+                        if (index == 0) {
+                            checkboxLabel.classList.remove("checkboxToButton");
+                            input.type = "checkbox";
+                            input.value = "";
+                            input.checked = false;
+                        } else {
+                            let nameCampo = this.headers[index - 1].replace(/ /, "");
+                            if (nameCampo == "foto") {
+                                let inputFileImg = td.querySelector("input[type=file]");
+                                if (inputFileImg.files[0]) {
+                                    let blobImg = new Blob(inputFileImg.files);
 
-                                        let reader = new FileReader();
-                                        reader.readAsDataURL(inputFileImg.files[0]);
-                                        reader.addEventListener("load", (e) => {
-                                            td.innerHTML = `<img src="${e.currentTarget.result}">`;
-                                        });
+                                    let reader = new FileReader();
+                                    reader.readAsDataURL(inputFileImg.files[0]);
+                                    reader.addEventListener("load", (e) => {
+                                        td.innerHTML = `<img src="${e.currentTarget.result}">`;
+                                    });
 
-                                        formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
-                                    }
-
-                                    let label = td.querySelector("label");
-                                    label.remove();
-                                    inputFileImg.remove();
-                                } else if (td.querySelector("select")) {
-                                    let select = td.querySelector("select");
-                                    let selectOption = select.options[select.selectedIndex];
-                                    formDataEditados.append(nameCampo, selectOption.value);
-                                    td.innerHTML = this.capitalizarString(selectOption.text);
-                                } else {
-                                    formDataEditados.append(nameCampo, td.textContent);
+                                    formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
                                 }
 
-                                td.contentEditable = false;
-                                td.classList.remove("editableOn");
+                                let label = td.querySelector("label");
+                                label.remove();
+                                inputFileImg.remove();
+                            } else if (td.querySelector("select")) {
+                                let select = td.querySelector("select");
+                                let selectOption = select.options[select.selectedIndex];
+                                formDataEditados.append(nameCampo, selectOption.value);
+                                td.innerHTML = this.capitalizarString(selectOption.text);
+                            } else {
+                                formDataEditados.append(nameCampo, td.textContent);
                             }
-                        });
-                        this.updateRow(formDataEditados);
-                    },
-                    {
-                        once: true,
-                    }
-                );
+
+                            td.contentEditable = false;
+                            td.classList.remove("editableOn");
+                        }
+                    });
+                    this.updateRow(formDataEditados);
+                },
+                {once: true,});
             } else {
                 //Activar la edicion de los campos
                 let nameCampo = this.headers[index - 1].replace(/ /, "");

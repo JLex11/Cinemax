@@ -363,8 +363,8 @@ h3 {
 section {
     width: 100%;
     min-width: 100%;
-    height: fit-content;
-    padding: 0 30px;
+    min-height: fit-content;
+    padding: 0 30px 30px 30px;
 }
 
 .section_title {
