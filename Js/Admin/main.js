@@ -35,7 +35,6 @@ function navInSections() {
 
     mainSections.forEach((section, index) => {
         mainSectionsX[index] = section.offsetLeft;
-        console.log("mainSectionsX[index]", mainSectionsX[index]);
     });
 
     if (localStorage.getItem("posElementClicked")) {
@@ -1018,6 +1017,7 @@ async function peticionFetch(parametros, url) {
 /* -------------Consultas a db-------------- */
 //variables
 const mFacadeUrl = "../Model/facade.php";
+/* const mFacadeUrl = "http://cinemaxadmon.000webhostapp.com/Model/facade.php"; */
 const btn_add = {
     id: "btn_add",
     icon: "add",

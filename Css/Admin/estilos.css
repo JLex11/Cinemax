@@ -7,17 +7,18 @@
 }
 
 *::-webkit-scrollbar {
-    background: var(--bg);
-    border-radius: 5px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
 }
 *::-webkit-scrollbar-thumb {
     background: var(--color-blue);
-    border-radius: 5px;
     background-clip: content-box;
-    border: solid 2px transparent;
+    border-radius: 5px;
+    border: 2px solid var(--bg);
 }
-*::-webkit-scrollbar-track-piece{
+*::-webkit-scrollbar-track-piece {
+    background: var(--bg);
+    background-clip: content-box;
     border-radius: 5px;
 }
 
@@ -332,7 +333,6 @@ nav li img,
 
 /* ------------------- Main -------------------- */
 main {
-    min-height: calc(100vh - var(--header-height));
     width: 100%;
     display: flex;
     margin: 0 auto;
@@ -363,7 +363,8 @@ h3 {
 section {
     width: 100%;
     min-width: 100%;
-    padding: 0 15px;
+    height: fit-content;
+    padding: 0 30px;
 }
 
 .section_title {
@@ -903,20 +904,12 @@ div.checkboxToButton::after {
 
 .sub_container_buttons .btns .material-icons-round {
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     transition: color 0.3s;
 }
 
-.sub_container_buttons .btns:hover:nth-child(1) .material-icons-round {
-    background: linear-gradient(var(--color-green), #327935);
-    color: white;
-}
-.sub_container_buttons .btns:hover:nth-child(2) .material-icons-round {
-    background: linear-gradient(var(--color-blue), #09365a);
-    color: white;
-}
-.sub_container_buttons .btns:hover:nth-child(3) .material-icons-round {
-    background: linear-gradient(var(--color-red), #91251d);
+.sub_container_buttons .btns:hover .material-icons-round {
+    background: var(--color-blue);
     color: white;
 }
 
@@ -1179,7 +1172,7 @@ select.formSelect.input_agregar_form {
     }
 
     section {
-        padding: 0 10px;
+        padding: 0 5px;
     }
 
     .container_items {

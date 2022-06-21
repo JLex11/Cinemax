@@ -1,7 +1,10 @@
 <?php
 //$_SERVER invoca un archivo principal de trabajo
 include $_SERVER["DOCUMENT_ROOT"] . '/Cinemax/Controller/DAO.php';
+//Definir tipo de response
+header("Content-type: application/json; charset=utf-8");
 
+//experiments
 $opc = $_REQUEST['opc'];
 
 // !Tables
