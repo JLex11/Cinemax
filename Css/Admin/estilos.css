@@ -14,10 +14,10 @@
     background: var(--color-blue);
     background-clip: content-box;
     border-radius: 5px;
-    border: 2px solid var(--bg);
+    border: 2px solid transparent;
 }
 *::-webkit-scrollbar-track-piece {
-    background: var(--bg);
+    background: #e8e8e8;
     background-clip: content-box;
     border-radius: 5px;
 }
