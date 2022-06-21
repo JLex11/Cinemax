@@ -1086,7 +1086,14 @@ select.formSelect.input_agregar_form {
     }
 
     *::-webkit-scrollbar-thumb {
+        background-clip: content-box;
+        border: 2px solid transparent;
         background: var(--primary-color);
+    }
+    
+    *::-webkit-scrollbar-track-piece {
+        background: var(--bg);
+        background-clip: content-box;
     }
 
     body {
