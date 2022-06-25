@@ -6,6 +6,7 @@ let mainSections = document.querySelectorAll("section");
 let main = document.querySelector("main");
 let loader = document.getElementById("loader");
 let loader_users = document.getElementById("loader_users");
+/* let prevElementClicked = 0; */
 let posElementClicked = 0;
 let firstSession = false;
 
@@ -113,14 +114,15 @@ function navInSections() {
 
     function moverMainScroll(options) {
         if (options.focusAnimation == true) {
-            main.classList.add("section_focus_change");
+            main.classList.add('section_focus_change');
             setTimeout(() => {
-                main.classList.remove("section_focus_change");
+                main.classList.remove('section_focus_change');
             }, 500);
         }
 
+        /* prevElementClicked = posElementClicked; */
         main.scroll({
-            left: mainSectionsX[posElementClicked]
+            left: mainSectionsX[posElementClicked],
         });
     }
 
@@ -264,7 +266,7 @@ function makeScrollableElements() {
 function isScrollableElement(elementParent, overflowElement) {
     elementParent.addEventListener("wheel", (e) => {
         e.preventDefault();
-        elementParent.scrollLeft += e.deltaY / 4;
+        elementParent.scrollLeft += e.deltaY / 2;
     });
 
     let wOverflowElement = overflowElement.offsetWidth;
@@ -551,46 +553,45 @@ class DataTable {
             if (this.describe[i]) {
                 console.log(this.describe[i]);
 
-                let firstP = this.describe[i].Type.indexOf("(");
-                let endP = this.describe[i].Type.indexOf(")");
+                let firstP = this.describe[i].Type.indexOf('(');
+                let endP = this.describe[i].Type.indexOf(')');
                 let inputType = this.describe[i].Type.slice(0, firstP);
                 let inputLenght = this.describe[i].Type.slice(firstP + 1, endP);
 
-                if (inputType == "int") {
-                    input = document.createElement("input");
-                    input.type = "text";
-                    input.setAttribute("maxlength", inputLenght);
-                    input.setAttribute("pattern", "[0-9]");
-                    input.name = this.headers[i].replace(/ /g, "");
-                } else if (inputType == "tex") {
-                    input = document.createElement("textarea");
-                    input.setAttribute("maxlength", inputLenght);
-                    input.name = this.headers[i].replace(/ /g, "");
-                } else if (inputType == "char") {
-                    input = document.createElement("input");
-                    input.setAttribute("maxlength", inputLenght);
-                    input.type = "text";
-                    input.name = this.headers[i].replace(/ /g, "");
-                } else if (inputType == "dat" || inputType == "year") {
-                    input = document.createElement("input");
-                    input.setAttribute("maxlength", inputLenght);
-                    input.type = "date";
-                } else if (inputType == "enum") {
-                    input = document.createElement("select");
-                    input.classList.add("formSelect");
+                if (inputType == 'int') {
+                    input = document.createElement('input');
+                    input.type = 'text';
+                    input.setAttribute('maxlength', inputLenght);
+                    input.setAttribute('pattern', '[0-9]');
+                    input.name = this.headers[i].replace(/ /g, '');
+                } else if (inputType == 'tex') {
+                    input = document.createElement('textarea');
+                    input.setAttribute('maxlength', inputLenght);
+                    input.name = this.headers[i].replace(/ /g, '');
+                } else if (inputType == 'char') {
+                    input = document.createElement('input');
+                    input.setAttribute('maxlength', inputLenght);
+                    input.type = 'text';
+                    input.name = this.headers[i].replace(/ /g, '');
+                } else if (inputType == 'dat' || inputType == 'year') {
+                    input = document.createElement('input');
+                    input.setAttribute('maxlength', inputLenght);
+                    input.type = 'date';
+                } else if (inputType == 'enum') {
+                    input = document.createElement('select');
+                    input.classList.add('formSelect');
 
-                    let options = { "T": "Activo", "F": "Inactivo" };
+                    let options = { T: 'Activo', F: 'Inactivo' };
                     for (const key in options) {
-                        let selectOption = document.createElement("option");
+                        let selectOption = document.createElement('option');
                         selectOption.textContent = options[key];
                         selectOption.value = key;
                         input.appendChild(selectOption);
                     }
                 }
 
-
                 let tableOfTd = this.tableFields[i].table;
-                if (this.tableName != tableOfTd && tableOfTd != "estadisticas") {
+                if (this.tableName != tableOfTd && tableOfTd != 'estadisticas') {
                     let renderSelect = async () => {
                         let fragment = document.createDocumentFragment();
                         let datos = await this.seeRow(tableOfTd);
@@ -598,7 +599,7 @@ class DataTable {
 
                         for (let dato of datos) {
                             let values = Object.values(dato);
-                            let option = document.createElement("option");
+                            let option = document.createElement('option');
                             option.value = values[0];
                             option.innerText = values[1];
                             fragment.appendChild(option);
@@ -606,10 +607,10 @@ class DataTable {
                         input.appendChild(fragment);
                     };
                     renderSelect();
-                    input.classList.add("editableOnSelect");
+                    input.classList.add('editableOnSelect');
                 }
             }
-            
+
             input.placeholder = this.capitalizarString(this.headers[i]);
             input.classList.add("input_agregar_form");
 
@@ -667,15 +668,28 @@ class DataTable {
                     let td = document.createElement("td");
                     td.setAttribute("data-label", `${this.capitalizarString(this.headers[headersCont])}`);
 
-                    if (t[i].indexOf("../foto") == 0) {
-                        td.innerHTML = `
-                            <a target="_blank" href="${t[i]}"><img src="${t[i]}" loading="lazy"></a>`;
-                    } else if (this.describe[headersCont] && this.describe[headersCont].Field == "estado") {
+                    let describe = this.describe[headersCont] ? this.describe[headersCont] : false;
+                    if (describe && describe.Field == 'foto') {
+                        let a = document.createElement('a');
+                        a.setAttribute('target', '_blank');
+                        a.href = t[i];
+
+                        let img = document.createElement('img');
+                        img.src = t[i];
+                        img.setAttribute('loading', 'lazy');
+                        img.addEventListener('error', () => {
+                            td.innerHTML = `
+                                <span class="material-icons-round" style="color: gray;">image_not_supported</span>`;
+                        });
+
+                        a.appendChild(img);
+                        td.appendChild(a);
+                    } else if (describe && describe.Field == 'estado') {
                         td.textContent = t[i];
-                        if (t[i] == "T") {
-                            td.classList.add("estado_activo");
+                        if (t[i] == 'T') {
+                            td.classList.add('estado_activo');
                         } else {
-                            td.classList.add("estado_inactivo");
+                            td.classList.add('estado_inactivo');
                         }
                     } else {
                         td.textContent = t[i];
@@ -737,13 +751,17 @@ class DataTable {
         if (inputParent) {
             let input = inputParent.querySelector("input");
             let regVal = /^[0-9]*[0-9]+$/;
-            input.addEventListener("keyup", () => {
-                if (regVal.test(input.value)) {
-                    this.indexUltElement = 0;
-                    this.numRowsPerPage = input.value > this.cantRows ? this.cantRows : input.value;
-                    this.ls.setItem(`numRowsPerPage${this.titulo}`, this.numRowsPerPage);
-                    this.renderRowActions();
-                    this.renderTrs();
+            input.addEventListener('keypress', (e) => {
+                if (e.key == 'Enter') {
+                    if (regVal.test(input.value)) {
+                        this.indexUltElement = 0;
+                        this.numRowsPerPage = input.value > this.cantRows ? this.cantRows : input.value;
+                        this.ls.setItem(`numRowsPerPage${this.titulo}`, this.numRowsPerPage);
+                        this.renderRowActions();
+                        this.renderTrs();
+                    } else {
+                        input.value = this.numRowsPerPage;
+                    }
                 }
             });
         } else {
@@ -878,51 +896,54 @@ class DataTable {
                 input.value = "aceptar";
 
                 //Cuando se hace click en el boton aceptar
-                input.addEventListener("click",() => {
-                    let trParent = input.parentNode.parentNode;
-                    let tdHijos = trParent.querySelectorAll("td");
+                input.addEventListener(
+                    'click',
+                    () => {
+                        let trParent = input.parentNode.parentNode;
+                        let tdHijos = trParent.querySelectorAll('td');
 
-                    tdHijos.forEach((td, index) => {
-                        if (index == 0) {
-                            checkboxLabel.classList.remove("checkboxToButton");
-                            input.type = "checkbox";
-                            input.value = "";
-                            input.checked = false;
-                        } else {
-                            let nameCampo = this.headers[index - 1].replace(/ /, "");
-                            if (nameCampo == "foto") {
-                                let inputFileImg = td.querySelector("input[type=file]");
-                                if (inputFileImg.files[0]) {
-                                    let blobImg = new Blob(inputFileImg.files);
+                        tdHijos.forEach((td, index) => {
+                            if (index == 0) {
+                                checkboxLabel.classList.remove('checkboxToButton');
+                                input.type = 'checkbox';
+                                input.value = '';
+                                input.checked = false;
+                            } else {
+                                let nameCampo = this.headers[index - 1].replace(/ /, '');
+                                if (nameCampo == 'foto') {
+                                    let inputFileImg = td.querySelector('input[type=file]');
+                                    if (inputFileImg.files[0]) {
+                                        let blobImg = new Blob(inputFileImg.files);
 
-                                    let reader = new FileReader();
-                                    reader.readAsDataURL(inputFileImg.files[0]);
-                                    reader.addEventListener("load", (e) => {
-                                        td.innerHTML = `<img src="${e.currentTarget.result}">`;
-                                    });
+                                        let reader = new FileReader();
+                                        reader.readAsDataURL(inputFileImg.files[0]);
+                                        reader.addEventListener('load', (e) => {
+                                            td.innerHTML = `<img src="${e.currentTarget.result}">`;
+                                        });
 
-                                    formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
+                                        formDataEditados.append(nameCampo, blobImg, inputFileImg.files[0].name);
+                                    }
+
+                                    let label = td.querySelector('label');
+                                    label.remove();
+                                    inputFileImg.remove();
+                                } else if (td.querySelector('select')) {
+                                    let select = td.querySelector('select');
+                                    let selectOption = select.options[select.selectedIndex];
+                                    formDataEditados.append(nameCampo, selectOption.value);
+                                    td.innerHTML = this.capitalizarString(selectOption.text);
+                                } else {
+                                    formDataEditados.append(nameCampo, td.textContent);
                                 }
 
-                                let label = td.querySelector("label");
-                                label.remove();
-                                inputFileImg.remove();
-                            } else if (td.querySelector("select")) {
-                                let select = td.querySelector("select");
-                                let selectOption = select.options[select.selectedIndex];
-                                formDataEditados.append(nameCampo, selectOption.value);
-                                td.innerHTML = this.capitalizarString(selectOption.text);
-                            } else {
-                                formDataEditados.append(nameCampo, td.textContent);
+                                td.contentEditable = false;
+                                td.classList.remove('editableOn');
                             }
-
-                            td.contentEditable = false;
-                            td.classList.remove("editableOn");
-                        }
-                    });
-                    this.updateRow(formDataEditados);
-                },
-                {once: true,});
+                        });
+                        this.updateRow(formDataEditados);
+                    },
+                    { once: true }
+                );
             } else {
                 //Activar la edicion de los campos
                 let nameCampo = this.headers[index - 1].replace(/ /, "");
@@ -968,6 +989,7 @@ class DataTable {
                         </div>
                     </label>
                     <input id="${ramdomId}-${this.titulo}" type="file" accept="image/png, image/jpeg, image/jpg, image/webp">`;
+                    hijo.innerHTML = '';
                     hijo.append(div);
                     hijo.classList.add("editableOn");
                 } else {
