@@ -87,15 +87,8 @@ function navInSections() {
         }
     });
 
-    addEventListener('resize', () => {
-        mainSections.forEach((section, index) => {
-            mainSectionsX[index] = section.offsetLeft;
-        });
-        moverMainScroll({ focusAnimation: false, behaviorAnimation: false });
-        moverTargetSpan(posElementClicked);
-    });
-
     new ResizeObserver(() => {
+        console.log('resize, observer');
         mainSections.forEach((section, index) => {
             mainSectionsX[index] = section.offsetLeft;
         });
@@ -528,11 +521,9 @@ class DataTable {
 
         let containerModal = document.createElement('div');
         let containerHeader = document.createElement('div');
-        let containerBody = document.createElement('div');
 
         containerModal.classList.add('modal-container');
         containerHeader.classList.add('modal-header');
-        containerBody.classList.add('modal-body');
 
         function renderHeader() {
             let headerContent = document.createElement('div');

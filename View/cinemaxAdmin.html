@@ -5,11 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- ---------------- favicon ---------------- -->
-        <link rel="icon" type="image/webp" href="../pwa/icon-192x192.png" />
+        <link rel="icon" type="image/webp" href="../pwa/icon-192x192.webp" />
         <!-- --------------- Manifest ---------------- -->
         <link rel="manifest" href="../manifest.webmanifest" />
         <!-- -------------- Description -------------- -->
-        <meta name="descripción" content="Aplicativo para controlar las estadisticas y contenido de la pagina de peliculas cinemax" />
+        <meta name="descripcion" content="Aplicativo para controlar las estadisticas y contenido de la pagina de peliculas cinemax" />
+        <!-- ------------------ PWA ------------------ -->
+        <meta name="theme-color" content="#0069bd">
+        <link rel="apple-touch-icon" href="../apple-touch-icon.webp">
         <!-- Css -->
         <link type="text/css" rel="stylesheet" href="../Css/Admin/estilos.css" />
         <!-- Google Icons -->
@@ -17,15 +20,10 @@
         <!-- ----------------- Fonts ----------------- -->
         <link href="https://fonts.googleapis.com" />
         <link href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap" rel="stylesheet" />
         <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js');</script> 
         <title>Cinemax | Administrador</title>
     </head>
-    <body class="showingBoot">
-        <div class="container_bootloader">
-            <div class="app_icon"><img src="../pwa/icon-192x192.webp"></div>
-            <div class="app_title"><h1>Cinemax | Admin</h1></div>
-        </div>
+    <body>
         <!-- ---------------- Header ----------------- -->
         <header id="header">
             <div>
@@ -53,7 +51,9 @@
                 <li class="option">
                     <img src="../Images/logout.webp" alt="Salir" title="Salir" />
                 </li>
-                <span class="targetStyles"></span>
+                <li>
+                    <span class="targetStyles"></span>
+                </li>
             </ul>
         </nav>
         <!-- -------------------------------- Main ---- -->
@@ -215,5 +215,17 @@
         <!-- Script -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" rel="prefer"></script>
         <script src="../Js/Admin/main.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            if(document.createStyleSheet) {
+                document.createStyleSheet('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
+            }
+            else {
+                var styles = "@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');";
+                var newSS=document.createElement('link');
+                newSS.rel='stylesheet';
+                newSS.href='data:text/css,'+escape(styles);
+                document.getElementsByTagName("head")[0].appendChild(newSS);
+            }
+        </script>
     </body>
 </html>
