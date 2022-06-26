@@ -19,5 +19,8 @@
   "homepage": "https://github.com/JLex11/Cinemax#readme",
   "devDependencies": {
     "eslint": "^8.18.0"
+  },
+  "dependencies": {
+    "workbox-precaching": "^6.5.3"
   }
 }

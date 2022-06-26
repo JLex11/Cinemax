@@ -48,6 +48,10 @@ body {
     font-family: var(--Font-Principal);
 }
 
+body.showingBoot {
+    overflow: hidden;
+}
+
 .material-icons-round {
     user-select: none;
     -webkit-user-select: none;

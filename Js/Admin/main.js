@@ -1,10 +1,3 @@
-if (navigator.serviceWorker) {
-    navigator.serviceWorker
-        .register('../sw.js')
-        .then(reg => console.log('Registro de service worker exitoso', reg))
-        .catch(err => console.log('Upps! Registro de service worker fallido', err));
-}
-
 let body = document.querySelector('body');
 let navBar = document.querySelector('nav');
 let navOptions = document.querySelectorAll('.option img');

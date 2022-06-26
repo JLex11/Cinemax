@@ -1,4 +1,4 @@
-const cache_name = 'serviceWorkerCache';
+const CACHE_NAME = 'serviceWorkerCache';
 const urlToCache = [
     './',
     './*',
@@ -18,23 +18,33 @@ const urlToCache = [
     'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js',
 ];
 
-self.addEventListener('install', e => {
-    e.waitUntil(
+self.addEventListener('install', function (event) {
+    event.waitUntil(
         caches
-            .open(cache_name)
+            .open(CACHE_NAME)
             .then(cache => {
                 return cache.addAll(urlToCache);
             })
             .then(() => {
                 self.skipWaiting();
             })
-            .catch(err => console.log('Fallo registro de cache', err))
+            .catch(err => console.log('Fallo el registro de cache', err))
+    );
+});
+
+self.addEventListener('fetch', e => {
+    e.respondWith(
+        caches.match(e.request).then(res => {
+            if (res) return res;
+
+            return fetch(e.request);
+        })
     );
 });
 
 //cuando no halla internet busca los recursos para cargalos offline
 self.addEventListener('activate', e => {
-    const cacheWhiteList = [cache_name];
+    const cacheWhiteList = [CACHE_NAME];
 
     e.waitUntil(
         caches
@@ -47,16 +57,5 @@ self.addEventListener('activate', e => {
                 });
             })
             .then(() => self.clients.claim())
-    );
-});
-
-//se usa para cargar mas rapido los recursos y actualizarlos en cache
-self.addEventListener('fetch', e => {
-    e.respondWith(
-        caches.match(e.request).then(res => {
-            if (res) return res;
-
-            return fetch(e.request);
-        })
     );
 });
