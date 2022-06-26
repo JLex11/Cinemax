@@ -298,23 +298,6 @@ nav li img,
     margin: -100%;
 }
 
-.navFirst ul::after {
-    content: "🖱️ Acerca el puntero para navegar.";
-    width: 100%;
-    height: 100%;
-    padding: 5px;
-    border: 1px dashed gray;
-    position: absolute;
-    background: #ffffffc2;
-    top: -145%;
-    text-align: center;
-    font-size: 14pt;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .navHidden ul {
     transform: translateY(120%);
 }
@@ -347,10 +330,6 @@ main.section_focus_change {
     opacity: 0;
 }
 
-/* @keyframes sectionFocusAnim {
-    0%
-} */
-
 main::-webkit-scrollbar {
     display: none;
 }
@@ -368,7 +347,7 @@ section {
     width: 100%;
     min-width: 100%;
     min-height: fit-content;
-    padding: 0 30px 30px 30px;
+    padding: 0 10px 30px 10px;
 }
 
 .section_title {
@@ -377,11 +356,6 @@ section {
     margin-bottom: 5px;
     padding-bottom: 5px;
     font-size: 20pt;
-}
-
-.section_title h2 {
-    font-size: 24pt;
-    font-weight: 400;
 }
 
 /* -------------------------- Sections header items ------------------------- */
@@ -492,10 +466,6 @@ section {
 .container_subsection {
     scroll-margin-top: 40px;
     margin-bottom: 20px;
-}
-
-#container_section_subtitle-Directores {
-    scroll-margin-top: 40px;
 }
 
 .section_subtitle {
@@ -688,10 +658,39 @@ section {
     box-shadow: var(--item-box-shadow);
     align-items: center;
     flex-direction: column;
+    position: relative;
 }
 
 .section_subbody:hover {
     box-shadow: 0 0 20px var(--color-blue);
+}
+
+.modal-container {
+    overflow-y: auto;
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--primary-color);
+    z-index: 2;
+    padding-top: 40px;
+}
+
+.modal-container > div {
+    width: 100%;
+    padding: 20px;
+}
+
+.modal-container .header-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    border-bottom: var(--item-border);
 }
 
 .container_table {
@@ -724,37 +723,6 @@ th {
     text-align: start;
     white-space: nowrap;
     max-width: 250px;
-}
-
-td.editableOn {
-    max-width: 600px;
-    padding-left: 5px;
-    border-radius: 10px;
-    background: #3da8fa16;
-    outline: 1px solid var(--color-blue);
-    transition: all 0.3s;
-}
-
-td.editableOn:focus {
-    background: var(--primary-color);
-    text-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
-    box-shadow: 0px 0px 10px var(--color-blue);
-    outline: 1px solid #03a9f4;
-}
-
-.editableOnSelect {
-    max-width: 200px;
-}
-
-.editableOnSelect select {
-    margin: 0 5px;
-    color: inherit;
-    font-size: 12pt;
-    border: 0;
-    box-shadow: 0 2px 5px #00000045;
-    background: #0000001a;
-    border-radius: 5px;
-    padding: 5px;
 }
 
 td {
@@ -918,122 +886,6 @@ div.checkboxToButton::after {
     color: white;
 }
 
-.sub_container_form {
-    animation: aparecerForm 0.3s;
-    transform-origin: top;
-    width: 100%;
-}
-
-@keyframes aparecerForm {
-    0% {transform: scaleY(0);}
-    100% {transform: scaleY(1);}
-}
-
-.sub_container_form form {
-    border-bottom: var(--item-border);
-    padding: 10px;
-    gap: 10px;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-}
-
-.sub_container_form form .container_inputs {
-    padding-right: 5px;
-    gap: 10px;
-    display: flex;
-    overflow: auto;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-}
-
-.input_agregar_form {
-    min-width: 100px;
-    border: 0;
-    border-bottom: 2px solid #eaeaea;
-    padding: 5px;
-    font-size: 16px;
-    background-color: transparent;
-    color: #000000;
-    transition: box-shadow 0.3s;
-    height: 35px;
-}
-
-input.input_agregar_form:hover {
-    border-bottom: 2px solid #2196f3;
-}
-
-input.input_agregar_form::placeholder {
-    color: inherit;
-}
-
-input.input_agregar_form:focus {
-    border-bottom: 2px solid #2196f3;
-    box-shadow: 0px 0px 10px var(--color-blue);
-}
-
-input.input_agregar_form:focus ~ .content_label > p {
-    top: -10px;
-    left: 5px;
-    color: var(--color-blue);
-}
-
-textarea.input_agregar_form {
-    border: 0;
-}
-textarea.input_agregar_form {
-    color: inherit;
-}
-
-select.formSelect.input_agregar_form {
-    color: inherit;
-    font-size: 12pt;
-    border: 0;
-    box-shadow: 0 2px 5px #00000045;
-    background: #0000001a;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-.container_form_act_btns {
-    gap: 5PX;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.container_form_act_btns button {
-    border-radius: 10px;
-    padding: 8px;
-    border: none;
-    cursor: pointer;
-    transition: outline 0.1s, box-shadow 0.3s, background 0.3s, color 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.container_form_act_btns button:last-child {
-    color: white;
-    background: #dcdcdd;
-}
-
-.container_form_act_btns button:first-child {
-    background: #dcdcdd00;
-}
-
-.container_form_act_btns button:hover:first-child {
-    background: red;
-    color: white;
-    box-shadow: 0 0 15px #ff0000;
-}
-
-.container_form_act_btns button:hover:last-child {
-    outline: 2px solid #2196f3;
-    box-shadow: 0 0 15px #2196f3;
-}
-
 /* ---------------- Row Actions --------------- */
 .container_rows_actions {
     padding: 10px;
@@ -1146,19 +998,11 @@ select.formSelect.input_agregar_form {
 
     .custom_checkbox::after {
         background: #6d6d6d;
-    }
-
-    td.editableOn:focus {
-        background: black;
-    }
+    }    
 }
 
 /* ------------------------------- Responsive 560px - Mobile ------------------------------- */
 @media screen and (max-width: 560px) {
-    .navFirst ul::before {
-        content: "🤚 Toca para navegar.";
-    }
-
     nav ul li,
     nav li img,
     .targetStyles {
