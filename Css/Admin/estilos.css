@@ -44,6 +44,7 @@ html {
 }
 
 body {
+    padding-bottom: 80px;
     background: var(--bg);
     font-family: var(--Font-Principal);
 }
@@ -241,7 +242,7 @@ main {
 
 main.section_focus_change {
     scroll-behavior: smooth;
-    transform: scale(0.95);
+    transform: scale(0.90);
     opacity: 0;
 }
 
@@ -262,7 +263,7 @@ section {
     width: 100%;
     min-width: 100%;
     min-height: fit-content;
-    padding: 0 10px 30px 10px;
+    padding: 0 10px 40px 10px;
 }
 
 .section_title {
@@ -291,7 +292,6 @@ section {
 }
 
 .section_header .scrollButtons {
-    transition: transform 0.1s;
     height: 100%;
     display: flex;
     z-index: 1;
@@ -304,15 +304,13 @@ section {
 }
 
 .section_header .button_right {
-    transform-origin: right;
     background: linear-gradient(to left, var(--bg) 40%, transparent);
-    padding: 0 0 0 25px;
+    padding: 0 0 0 35px;
     right: -1px;
 }
 .section_header .button_left {
-    transform-origin: left;
     background: linear-gradient(to right, var(--bg) 40%, transparent);
-    padding: 0 25px 0 0;
+    padding: 0 35px 0 0;
     left: -1px;
 }
 
@@ -934,7 +932,7 @@ div.checkboxToButton::after {
     }
 
     div#chi2 .header_item span.material-icons-round {
-        font-size: 25pt;
+        font-size: 40pt;
     }
 
     div#chi2 .header_item h5 {
